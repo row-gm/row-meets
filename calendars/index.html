@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROW Meet Calendars 2026-27</title>
+<style>
+body{font-family:Arial,Helvetica,sans-serif;max-width:800px;margin:0 auto;padding:24px;
+color:#152225;line-height:1.6;}
+h1{color:#0A2E3F;} table{border-collapse:collapse;width:100%;margin:20px 0;}
+th{background:#0A2E3F;color:#fff;text-align:left;padding:9px 11px;font-size:13px;}
+td{border-top:1px solid #DAD3C2;padding:9px 11px;font-size:14px;}
+tr:nth-child(even) td{background:#FAF8F2;}
+code{font-family:'Courier New',monospace;font-weight:700;}
+button.copy{font-family:inherit;font-size:13px;font-weight:700;background:#0A2E3F;
+color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer;white-space:nowrap;}
+button.copy:hover{background:#136B77;}
+button.copy:focus-visible{outline:3px solid #136B77;outline-offset:2px;}
+button.copy.done{background:#12786C;}
+.note{border-left:4px solid #3FBFB0;background:#EFFAF8;padding:14px 18px;border-radius:0 8px 8px 0;}
+</style></head><body>
+<h1>ROW Meet Calendars 2026-27</h1>
+<p>Add your group's meets to your digital calendar. You get the meet dates and a
+reminder the day before each Confirm By date.</p>
+<div class="note"><strong>Subscribe, do not download.</strong> Copy your group's link and
+add it as a calendar <em>by URL</em>. If you download the file instead, you get a copy that
+never updates, and a moved meet will not move in your calendar.</div>
+<h2>How to subscribe</h2>
+<p><strong>Google Calendar</strong> (do this on a computer): Other calendars, +, From URL,
+paste the link, Add calendar. It then appears on every device signed in to that account.</p>
+<p><strong>iPhone or iPad:</strong> Settings, Apps, Calendar, Calendar Accounts, Add Account,
+Other, Add Subscribed Calendar, paste the link.</p>
+<p><strong>Outlook:</strong> Add calendar, Subscribe from web, paste the link.</p>
+<h2>Your group</h2>
+<p>Copy your group's link, then follow the steps above for your calendar app.</p>
+<table><tr><th>Group</th><th>Code</th><th>Meets and reminders</th><th></th></tr>
+<tr><td>TOPS 2</td><td><code>TOPS 2</code></td><td>8 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-tops-2.ics">Copy calendar link</button></td></tr>
+<tr><td>TOPS 1</td><td><code>TOPS 1</code></td><td>8 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-tops-1.ics">Copy calendar link</button></td></tr>
+<tr><td>Junior Development 2</td><td><code>JD2</code></td><td>10 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-jd2.ics">Copy calendar link</button></td></tr>
+<tr><td>Junior Development 1</td><td><code>JD1</code></td><td>16 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-jd1.ics">Copy calendar link</button></td></tr>
+<tr><td>Age Group Development 2</td><td><code>AGD2</code></td><td>20 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-agd2.ics">Copy calendar link</button></td></tr>
+<tr><td>Age Group Development 1</td><td><code>AGD1</code></td><td>16 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-agd1.ics">Copy calendar link</button></td></tr>
+<tr><td>Senior Development</td><td><code>SD</code></td><td>16 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-sd.ics">Copy calendar link</button></td></tr>
+<tr><td>Provincial Development 3</td><td><code>PD3</code></td><td>18 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-pd3.ics">Copy calendar link</button></td></tr>
+<tr><td>Provincial Development 2</td><td><code>PD2</code></td><td>18 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-pd2.ics">Copy calendar link</button></td></tr>
+<tr><td>Provincial Development 1</td><td><code>PD1</code></td><td>22 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-pd1.ics">Copy calendar link</button></td></tr>
+<tr><td>National Development</td><td><code>ND</code></td><td>22 entries</td><td><button type="button" class="copy" data-url="https://row-gm.github.io/row-meets/calendars/row-nd.ics">Copy calendar link</button></td></tr>
+</table>
+<p>Calendars refresh on their own, though some apps take up to a day. Meets marked
+<em>not confirmed</em> can still move.</p>
+<script>
+document.querySelectorAll('button.copy').forEach(function (b) {
+  b.addEventListener('click', function () {
+    var url = b.dataset.url, label = b.textContent;
+    function done() {
+      b.textContent = 'Copied';
+      b.classList.add('done');
+      setTimeout(function () { b.textContent = label; b.classList.remove('done'); }, 1800);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url).then(done, fallback);
+    } else { fallback(); }
+    function fallback() {
+      // Older browsers, and any page not served over https.
+      var t = document.createElement('textarea');
+      t.value = url; t.setAttribute('readonly', '');
+      t.style.position = 'fixed'; t.style.top = '-1000px';
+      document.body.appendChild(t); t.select();
+      try { document.execCommand('copy'); done(); }
+      catch (e) { window.prompt('Copy this link:', url); }
+      document.body.removeChild(t);
+    }
+  });
+});
+</script>
+</body></html>
