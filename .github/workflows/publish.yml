@@ -1,0 +1,73 @@
+name: Build meet schedule
+
+# Runs when the spreadsheet publishes new data, when the scripts change, or when
+# you press the button. There is no daily schedule for the page: nothing changes
+# on the website unless someone asks for it.
+on:
+  push:
+    paths:
+      - 'data/**'
+      - 'build/**'
+      - 'packages/**'
+      - '.github/workflows/publish.yml'
+  workflow_dispatch:
+  # Weekly backstop for the calendars only. If a publish is forgotten, families
+  # subscribed to a calendar still get whatever is in data/. This never touches
+  # the page HTML, so the website cannot change without a person.
+  schedule:
+    - cron: '0 11 * * 1'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: build-meet-schedule
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Check the data
+        # build_meet_schedule.py is the one that asserts: meet types, eligibility,
+        # pool, Yes/No fields, and the confirm-by lead time that catches a year
+        # typo. Running it to a temp folder first means a broken spreadsheet fails
+        # here, before anything is committed. make_calendars.py does not validate,
+        # so it is not the gate.
+        env:
+          ROW_MEETS_ROOT: ${{ github.workspace }}
+          ROW_MEETS_OUT: ${{ runner.temp }}/check
+          ROW_MEETS_PAGE_OUT: ${{ runner.temp }}/check-page
+        run: python build/build_meet_schedule.py
+
+      - name: Build calendars
+        env:
+          ROW_MEETS_ROOT: ${{ github.workspace }}
+          ROW_MEETS_CAL_OUT: ${{ github.workspace }}/calendars
+        run: python build/make_calendars.py
+
+      - name: Build page
+        if: github.event_name != 'schedule'
+        env:
+          ROW_MEETS_ROOT: ${{ github.workspace }}
+          ROW_MEETS_OUT: ${{ runner.temp }}/page-out
+          ROW_MEETS_PAGE_OUT: ${{ github.workspace }}/page
+        run: python build/build_meet_schedule.py
+
+      - name: Commit anything that changed
+        run: |
+          git config user.name  "ROW schedule bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add calendars page
+          if git diff --staged --quiet; then
+            echo "Nothing changed."
+          else
+            git commit -m "Rebuild schedule [skip ci]"
+            git push
+          fi
