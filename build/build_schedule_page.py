@@ -221,8 +221,9 @@ font-size:13px;color:{INK_SOFT};}}
   <h2>{TEXT['legend_heading']}</h2>
   <table class="legend"><tbody id="legend"></tbody></table>
 
-  <h2>{TEXT['event_legend_heading']}</h2>
-  <table class="legend"><tbody id="eventlegend"></tbody></table>
+  <h2 id="eventlegendhead" style="display:none;">{TEXT['event_legend_heading']}</h2>
+  <table class="legend" id="eventlegendtable" style="display:none;">
+  <tbody id="eventlegend"></tbody></table>
 
   <footer>
     <p id="built"></p>
@@ -392,9 +393,14 @@ function start() {{
   document.getElementById('legend').innerHTML = MEANING.map(function (r) {{
     return '<tr><td>' + tag(r[0], TYPE_BG[r[0]]) + '</td><td>' + r[1] + '</td></tr>';
   }}).join('');
-  document.getElementById('eventlegend').innerHTML = EVENT_MEANING.map(function (r) {{
-    return '<tr><td>' + tag(r[0], r[1]) + '</td><td>' + (r[2] || '') + '</td></tr>';
-  }}).join('');
+  // Only worth showing once there are events to explain.
+  if (data.events && data.events.length) {{
+    document.getElementById('eventlegendhead').style.display = '';
+    document.getElementById('eventlegendtable').style.display = '';
+    document.getElementById('eventlegend').innerHTML = EVENT_MEANING.map(function (r) {{
+      return '<tr><td>' + tag(r[0], r[1]) + '</td><td>' + (r[2] || '') + '</td></tr>';
+    }}).join('');
+  }}
   document.getElementById('built').textContent = 'Schedule last updated ' + data.built + '.';
   render();
 }}
