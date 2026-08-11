@@ -156,13 +156,13 @@ def ics_for(group, meets):
                 f"DTSTART;VALUE=DATE:{c1}",
                 f"DTEND;VALUE=DATE:{c2}",
                 f"SUMMARY:{esc('Confirm by: ' + m['meet_name'])}",
-                f"DESCRIPTION:{esc('Tell your coach whether you are racing ' + m['meet_name'] + '.')}",
+                f"DESCRIPTION:{esc('Log into your ROW member account and Confirm or Decline attendance.')}",
                 "TRANSP:TRANSPARENT",
                 # A day-before nudge, since the deadline is the point of this entry.
                 "BEGIN:VALARM",
                 "TRIGGER:-P1D",
                 "ACTION:DISPLAY",
-                f"DESCRIPTION:{esc('Confirm ' + m['meet_name'] + ' tomorrow')}",
+                f"DESCRIPTION:{esc('Confirm or decline ' + m['meet_name'] + ' by tomorrow')}",
                 "END:VALARM",
                 "END:VEVENT",
             ]
@@ -227,8 +227,9 @@ button.copy.done{{background:#12786C;}}
 .note{{border-left:4px solid #3FBFB0;background:#EFFAF8;padding:14px 18px;border-radius:0 8px 8px 0;}}
 </style></head><body>
 <h1>ROW Meet Calendars {SEASON}</h1>
-<p>Add your group's meets to your digital calendar. You get the meet dates and a
-reminder the day before each Confirm By date.</p>
+<p>Add your group's meets to your digital calendar. You get the meet dates and
+every Confirm By date.</p>
+<p>To confirm or decline a meet, log into your ROW member account.</p>
 <div class="note"><strong>Subscribe, do not download.</strong> Copy your group's link and
 add it as a calendar <em>by URL</em>. If you download the file instead, you get a copy that
 never updates, and a moved meet will not move in your calendar.</div>

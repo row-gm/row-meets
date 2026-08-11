@@ -338,7 +338,7 @@ calendar_callout = (
     f'color:{NAVY};font-size:20px;margin:0 0 8px;">Never miss a Confirm By date</div>'
     f'<div style="font-family:{BODY_FONT};font-size:15px;color:{INK};line-height:1.6;'
     f'margin:0 0 16px;max-width:56em;">Your group has its own calendar. Add it once and '
-    f'every meet lands in your digital calendar, with a reminder the day before each '
+    f'every meet lands in your digital calendar, including every '
     f'<strong>Confirm By</strong> date. When a date changes, it changes for you too.</div>'
     + button_link("Get your group&rsquo;s calendar", f"{CAL_BASE}/")
     + '</div>'
@@ -479,12 +479,13 @@ faqs = (
                  "race often. Talk to your coach about which meets matter most for you this "
                  "season.", 0)
         + faq_item("What does <strong>Confirm By</strong> mean?",
-                   "It is the date we need your answer by. Your family gets an email before "
-                   "each meet asking whether you are racing. Reply by that date and we enter "
-                   "you. If we do not hear from you, you are not entered.", 1)
+                   "It is the date we need your answer by. Log into your ROW member account "
+                   "and confirm or decline each meet. If we do not hear from you by that "
+                   "date, you are not entered.", 1)
         + faq_item("What if I cannot make a meet I am entered in?",
-                   "Tell your coach before the Confirm By date. After that date the club has "
-                   "usually paid your entry, so it cannot be refunded.", 2)
+                   "Decline it in your ROW member account before the Confirm By date, and tell "
+                   "your coach. After that date the club has usually paid your entry, so it "
+                   "cannot be refunded.", 2)
         + faq_item("What does a <strong>Peak</strong> meet mean for me?",
                    "It is the top of your racing calendar, the biggest meet of your season. "
                    "Your training through the year is planned so you are at your best for it. "
