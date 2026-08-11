@@ -39,11 +39,11 @@ UID:bac-fall-invitational-sd@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261106
 DTEND;VALUE=DATE:20261109
-SUMMARY:BAC Fall Invitational (not confirmed)
+SUMMARY:BAC Fall Invitational
 LOCATION:Wayne Gretzky Sports Centre\, Brantford
 DESCRIPTION:Pathway Skills for SD. 25m pool. Swimmers from all eligible g
  roups are invited. Confirm by 2026-10-03.
-STATUS:TENTATIVE
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
