@@ -93,11 +93,11 @@ UID:eswim-agi-sc-jd1@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261119
 DTEND;VALUE=DATE:20261123
-SUMMARY:ESWIM AGI (not confirmed)
+SUMMARY:ESWIM AGI
 LOCATION:Etobicoke Olympium\, Etobicoke
 DESCRIPTION:Pathway Skills for JD1. 25m pool. Swimmers from all eligible 
  groups are invited. Confirm by 2026-10-03.
-STATUS:TENTATIVE
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
@@ -116,30 +116,30 @@ DESCRIPTION:Confirm or decline ESWIM AGI by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:row-novice-meet-dec-jd1@rowswimming.ca
+UID:mssac-open-jd1@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261205
-DTEND;VALUE=DATE:20261206
-SUMMARY:ROW Novice Meet I
-LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for JD1. 25m pool. Swimmers from all eligible 
- groups are invited. Confirm by 2026-10-03.
+DTSTART;VALUE=DATE:20261218
+DTEND;VALUE=DATE:20261221
+SUMMARY:Mississauga Open
+LOCATION:Etobicoke Olympium\, Etobicoke
+DESCRIPTION:Performance for JD1. 25m pool. Swimmers from all eligible gro
+ ups are invited. Confirm by 2026-10-03.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
-UID:row-novice-meet-dec-jd1-confirm@rowswimming.ca
+UID:mssac-open-jd1-confirm@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
-SUMMARY:Confirm by: ROW Novice Meet I
+SUMMARY:Confirm by: Mississauga Open
 DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
  dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm or decline ROW Novice Meet I by tomorrow
+DESCRIPTION:Confirm or decline Mississauga Open by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT

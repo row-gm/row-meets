@@ -89,33 +89,6 @@ DESCRIPTION:Confirm or decline ROW Novice Meet I by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
-UID:row-dean-boles-jd2@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20270116
-DTEND;VALUE=DATE:20270118
-SUMMARY:ROW Dean Boles Invitational
-LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for JD2. 25m pool. Swimmers from all eligible 
- groups are invited. Confirm by 2026-12-01.
-STATUS:CONFIRMED
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-UID:row-dean-boles-jd2-confirm@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261201
-DTEND;VALUE=DATE:20261202
-SUMMARY:Confirm by: ROW Dean Boles Invitational
-DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
- dance.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Confirm or decline ROW Dean Boles Invitational by tomorrow
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
 UID:row-cunningham-classic-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270409
