@@ -147,11 +147,11 @@ UID:bac-winter-invitational-sd@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270129
 DTEND;VALUE=DATE:20270201
-SUMMARY:BAC Winter LC Invitational (not confirmed)
+SUMMARY:BAC Winter LC Invitational
 LOCATION:Wayne Gretzky Sports Centre\, Brantford
 DESCRIPTION:Pathway Skills for SD. 50m pool. Swimmers from all eligible g
  roups are invited. Confirm by 2026-12-01.
-STATUS:TENTATIVE
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
