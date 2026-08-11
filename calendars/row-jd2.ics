@@ -40,7 +40,8 @@ DTSTART;VALUE=DATE:20261101
 DTEND;VALUE=DATE:20261102
 SUMMARY:GMAC Fall Skills & Thrills
 LOCATION:University of Guelph\, Guelph
-DESCRIPTION:Pathway Skills for JD2. 25m pool. Confirm by 2026-10-03.
+DESCRIPTION:Pathway Skills for JD2. 25m pool. Swimmers from all eligible 
+ groups are invited. Confirm by 2026-10-03.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -66,7 +67,8 @@ DTSTART;VALUE=DATE:20261205
 DTEND;VALUE=DATE:20261206
 SUMMARY:ROW Novice Meet I
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for JD2. 25m pool. Confirm by 2026-10-03.
+DESCRIPTION:Pathway Skills for JD2. 25m pool. Swimmers from all eligible 
+ groups are invited. Confirm by 2026-10-03.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -91,7 +93,8 @@ DTSTART;VALUE=DATE:20270116
 DTEND;VALUE=DATE:20270118
 SUMMARY:ROW Dean Boles Invitational
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for JD2. 25m pool. Confirm by 2026-12-01.
+DESCRIPTION:Pathway Skills for JD2. 25m pool. Swimmers from all eligible 
+ groups are invited. Confirm by 2026-12-01.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -117,7 +120,8 @@ DTSTART;VALUE=DATE:20270409
 DTEND;VALUE=DATE:20270412
 SUMMARY:ROW Cunningham Classic (not confirmed)
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for JD2. 50m pool. Confirm by 2027-03-08.
+DESCRIPTION:Pathway Skills for JD2. 50m pool. Swimmers from all eligible 
+ groups are invited. Confirm by 2027-03-08.
 STATUS:TENTATIVE
 TRANSP:TRANSPARENT
 END:VEVENT

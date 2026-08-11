@@ -41,7 +41,8 @@ DTSTART;VALUE=DATE:20261106
 DTEND;VALUE=DATE:20261109
 SUMMARY:BAC Fall Invitational (not confirmed)
 LOCATION:Wayne Gretzky Sports Centre\, Brantford
-DESCRIPTION:Pathway Skills for AGD1. 25m pool. Confirm by 2026-10-03.
+DESCRIPTION:Pathway Skills for AGD1. 25m pool. Swimmers from all eligible
+  groups are invited. Confirm by 2026-10-03.
 STATUS:TENTATIVE
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -66,7 +67,8 @@ DTSTART;VALUE=DATE:20261119
 DTEND;VALUE=DATE:20261123
 SUMMARY:ESWIM AGI (not confirmed)
 LOCATION:Etobicoke Olympium\, Etobicoke
-DESCRIPTION:Pathway Skills for AGD1. 25m pool. Confirm by 2026-10-03.
+DESCRIPTION:Pathway Skills for AGD1. 25m pool. Swimmers from all eligible
+  groups are invited. Confirm by 2026-10-03.
 STATUS:TENTATIVE
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -91,7 +93,8 @@ DTSTART;VALUE=DATE:20261218
 DTEND;VALUE=DATE:20261221
 SUMMARY:Mississauga Open
 LOCATION:Etobicoke Olympium\, Etobicoke
-DESCRIPTION:Performance for AGD1. 25m pool. Confirm by 2026-10-03.
+DESCRIPTION:Performance for AGD1. 25m pool. Swimmers from all eligible gr
+ oups are invited. Confirm by 2026-10-03.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -116,7 +119,8 @@ DTSTART;VALUE=DATE:20270116
 DTEND;VALUE=DATE:20270118
 SUMMARY:ROW Dean Boles Invitational
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for AGD1. 25m pool. Confirm by 2026-12-01.
+DESCRIPTION:Pathway Skills for AGD1. 25m pool. Swimmers from all eligible
+  groups are invited. Confirm by 2026-12-01.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -142,7 +146,8 @@ DTSTART;VALUE=DATE:20270129
 DTEND;VALUE=DATE:20270201
 SUMMARY:BAC Winter LC Invitational (not confirmed)
 LOCATION:Wayne Gretzky Sports Centre\, Brantford
-DESCRIPTION:Pathway Skills for AGD1. 50m pool. Confirm by 2026-12-01.
+DESCRIPTION:Pathway Skills for AGD1. 50m pool. Swimmers from all eligible
+  groups are invited. Confirm by 2026-12-01.
 STATUS:TENTATIVE
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -168,7 +173,8 @@ DTSTART;VALUE=DATE:20270211
 DTEND;VALUE=DATE:20270215
 SUMMARY:Western Region SC Champs
 LOCATION:Canada Games Aquatic Centre\, London
-DESCRIPTION:Performance for AGD1. 25m pool. Confirm by 2027-01-18.
+DESCRIPTION:Performance for AGD1. 25m pool. Qualified swimmers from eligi
+ ble groups are welcome Confirm by 2027-01-18.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -194,7 +200,8 @@ DTSTART;VALUE=DATE:20270409
 DTEND;VALUE=DATE:20270412
 SUMMARY:ROW Cunningham Classic (not confirmed)
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for AGD1. 50m pool. Confirm by 2027-03-08.
+DESCRIPTION:Pathway Skills for AGD1. 50m pool. Swimmers from all eligible
+  groups are invited. Confirm by 2027-03-08.
 STATUS:TENTATIVE
 TRANSP:TRANSPARENT
 END:VEVENT

@@ -8,65 +8,14 @@ X-WR-CALDESC:TOPS 1 meet schedule and confirmation dates.
 X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
-UID:row-fall-first-try-tops-1@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261017
-DTEND;VALUE=DATE:20261018
-SUMMARY:ROW Fall First Try
-LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Team for TOPS 1. 25m pool. Our first officiating and voluntee
- r opportunity! Confirm by 2026-10-03.
-STATUS:CONFIRMED
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-UID:row-fall-first-try-tops-1-confirm@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261003
-DTEND;VALUE=DATE:20261004
-SUMMARY:Confirm by: ROW Fall First Try
-DESCRIPTION:Tell your coach whether you are racing ROW Fall First Try.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Confirm ROW Fall First Try tomorrow
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:gmac-fall-skills-tops-1@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261101
-DTEND;VALUE=DATE:20261102
-SUMMARY:GMAC Fall Skills & Thrills
-LOCATION:University of Guelph\, Guelph
-DESCRIPTION:Pathway Skills for TOPS 1. 25m pool. Confirm by 2026-10-03.
-STATUS:CONFIRMED
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-UID:gmac-fall-skills-tops-1-confirm@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261003
-DTEND;VALUE=DATE:20261004
-SUMMARY:Confirm by: GMAC Fall Skills & Thrills
-DESCRIPTION:Tell your coach whether you are racing GMAC Fall Skills & Thr
- ills.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Confirm GMAC Fall Skills & Thrills tomorrow
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
 UID:row-novice-meet-dec-tops-1@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261205
 DTEND;VALUE=DATE:20261206
 SUMMARY:ROW Novice Meet I
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for TOPS 1. 25m pool. Confirm by 2026-10-03.
+DESCRIPTION:Pathway Skills for TOPS 1. 25m pool. Swimmers from all eligib
+ le groups are invited. Confirm by 2026-10-03.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
@@ -82,32 +31,6 @@ BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
 DESCRIPTION:Confirm ROW Novice Meet I tomorrow
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
-UID:row-dean-boles-tops-1@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20270116
-DTEND;VALUE=DATE:20270118
-SUMMARY:ROW Dean Boles Invitational
-LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Pathway Skills for TOPS 1. 25m pool. Confirm by 2026-12-01.
-STATUS:CONFIRMED
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-UID:row-dean-boles-tops-1-confirm@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261201
-DTEND;VALUE=DATE:20261202
-SUMMARY:Confirm by: ROW Dean Boles Invitational
-DESCRIPTION:Tell your coach whether you are racing ROW Dean Boles Invitat
- ional.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Confirm ROW Dean Boles Invitational tomorrow
 END:VALARM
 END:VEVENT
 END:VCALENDAR
