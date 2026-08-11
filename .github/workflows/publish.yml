@@ -52,6 +52,12 @@ jobs:
           ROW_MEETS_CAL_OUT: ${{ github.workspace }}/calendars
         run: python build/make_calendars.py
 
+      - name: Build hosted schedule
+        env:
+          ROW_MEETS_ROOT: ${{ github.workspace }}
+          ROW_MEETS_SCHEDULE_OUT: ${{ github.workspace }}/schedule
+        run: python build/build_schedule_page.py
+
       - name: Build page
         if: github.event_name != 'schedule'
         env:
@@ -64,7 +70,7 @@ jobs:
         run: |
           git config user.name  "ROW schedule bot"
           git config user.email "actions@users.noreply.github.com"
-          git add calendars page
+          git add calendars page schedule
           if git diff --staged --quiet; then
             echo "Nothing changed."
           else
