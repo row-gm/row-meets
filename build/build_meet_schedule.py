@@ -320,6 +320,31 @@ for m in meets:
     who = going_text(m) + f'<div style="margin:8px 0 0;">{eligibility_tag(m)}</div>'
     all_rows.append([date_label(m), name, where, who])
 
+def button_link(text, url, bg=NAVY, fg=FOAM, size="15px", pad="13px 22px"):
+    """A link that reads as a button. The CMS strips JavaScript, so this is an
+    anchor wearing a button's clothes: no script, nothing to break."""
+    return (f'<a href="{url}" target="_blank" style="display:inline-block;'
+            f'font-family:{DISPLAY_FONT};text-transform:uppercase;letter-spacing:0.03em;'
+            f'font-size:{size};background:{bg};color:{fg};padding:{pad};border-radius:8px;'
+            f'text-decoration:none;white-space:nowrap;">{text}</a>')
+
+
+# A card rather than a callout. This was one line of teal text and people were
+# scrolling straight past it.
+calendar_callout = (
+    f'<div style="background:{FOAM};border:2px solid {TEAL};border-radius:12px;'
+    f'padding:22px 24px;box-shadow:0 6px 20px rgba(10,46,63,0.10);">'
+    f'<div style="font-family:{DISPLAY_FONT};text-transform:uppercase;letter-spacing:0.01em;'
+    f'color:{NAVY};font-size:20px;margin:0 0 8px;">Never miss a Confirm By date</div>'
+    f'<div style="font-family:{BODY_FONT};font-size:15px;color:{INK};line-height:1.6;'
+    f'margin:0 0 16px;max-width:56em;">Your group has its own calendar. Add it once and '
+    f'every meet lands in your digital calendar, with a reminder the day before each '
+    f'<strong>Confirm By</strong> date. When a date changes, it changes for you too.</div>'
+    + button_link("Get your group&rsquo;s calendar", f"{CAL_BASE}/")
+    + '</div>'
+)
+
+
 master_section = (
     h2("The season at a glance")
     + p("Every meet of the season in date order. The last column shows which groups are "
@@ -362,7 +387,16 @@ def meet_cells(m, tags=None):
             type_cell, eligibility_tag(m, True)]
 
 
-def block_shell(title, subtitle, body):
+def block_shell(title, subtitle, body, cal_code=None):
+    """A group's block. The calendar link sits in the header rather than only at
+    the top of the page: a swimmer reading their own table should not have to
+    scroll back up to learn a calendar exists."""
+    link = ""
+    if cal_code:
+        link = ('<span style="margin-left:auto;">'
+                + button_link("Add to calendar", f"{CAL_BASE}/#{cal_anchor(cal_code)}",
+                              bg=TEAL, size="11px", pad="6px 12px")
+                + '</span>')
     return (
         f'<div style="margin:0 0 18px;">'
         f'<div style="display:flex;gap:10px;align-items:baseline;margin:0 0 8px;">'
@@ -370,7 +404,12 @@ def block_shell(title, subtitle, body):
         f'color:{NAVY};">{title}</span>'
         f'<span style="font-family:{MONO_FONT};font-weight:700;font-size:11px;'
         f'letter-spacing:0.08em;color:{INK_SOFT};">{subtitle}</span>'
-        f'</div>{body}</div>')
+        f'{link}</div>{body}</div>')
+
+
+def cal_anchor(code):
+    """Matches the row anchors on the subscribe page."""
+    return code.lower().replace(" ", "-")
 
 
 def group_block(g):
@@ -382,7 +421,7 @@ def group_block(g):
         body = sched_table(GROUP_COLS,
                            [meet_cells(m, m["_going"][code]) for m in mine],
                            GROUP_WIDTHS, framed=False)
-    return block_shell(g["display_name"], code, body)
+    return block_shell(g["display_name"], code, body, cal_code=code)
 
 
 def pathway_block(pw):
@@ -419,11 +458,7 @@ group_section = h2("Meet schedule by pathway" if GROUP_DETAIL == "pathway"
     if GROUP_DETAIL == "pathway" else
     "Your group's meets, in date order. The <strong>Confirm By</strong> date is when your "
     "family needs to tell us whether you are racing.")
-group_section += callout(
-    "<strong>Add your meets to your digital calendar.</strong> Every group has its own "
-    "calendar with the meet dates and a reminder before each Confirm By date. "
-    f'<a href="{CAL_BASE}/" target="_blank" style="color:{TEAL};font-weight:700;">'
-    "Get your group's calendar</a>.")
+
 if GROUP_DETAIL == "pathway":
     for pw in pathways:
         group_section += pathway_block(pw)
@@ -482,6 +517,7 @@ closing = callout(
 full = wrap_page(
     page_hero,
     lanes_divider(),
+    f'<div style="margin:28px 0 0;">{calendar_callout}</div>',
     f'<div style="margin:28px 0 0;">{master_section}</div>',
     f'<div style="margin:32px 0 0;">{group_section}</div>',
     f'<div style="margin:32px 0 0;">{faqs}</div>',

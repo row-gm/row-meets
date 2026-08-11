@@ -198,7 +198,8 @@ for g in groups:
 # paste, which is what subscribing needs. This page is served from GitHub Pages
 # rather than the CMS, so it may carry script.
 rows = "\n".join(
-    f'<tr><td>{g["display_name"]}</td><td><code>{g["group_code"]}</code></td>'
+    f'<tr id="{slug(g["group_code"])}"><td>{g["display_name"]}</td>'
+    f'<td><code>{g["group_code"]}</code></td>'
     f'<td>{n} entries</td>'
     f'<td><button type="button" class="copy" data-url="{PAGES_BASE}/{fn}">'
     f'Copy calendar link</button></td></tr>'
@@ -215,6 +216,8 @@ h1{{color:#0A2E3F;}} table{{border-collapse:collapse;width:100%;margin:20px 0;}}
 th{{background:#0A2E3F;color:#fff;text-align:left;padding:9px 11px;font-size:13px;}}
 td{{border-top:1px solid #DAD3C2;padding:9px 11px;font-size:14px;}}
 tr:nth-child(even) td{{background:#FAF8F2;}}
+tr:target td{{background:#EFFAF8;box-shadow:inset 4px 0 0 #136B77;}}
+tr:target td:first-child{{font-weight:700;}}
 code{{font-family:'Courier New',monospace;font-weight:700;}}
 button.copy{{font-family:inherit;font-size:13px;font-weight:700;background:#0A2E3F;
 color:#fff;border:0;border-radius:6px;padding:8px 14px;cursor:pointer;white-space:nowrap;}}
