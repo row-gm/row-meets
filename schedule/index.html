@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ROW Meet Schedule 2026-27</title>
+<style>
+*{box-sizing:border-box;}
+body{margin:0;background:#FFFFFF;color:#152225;font-family:Arial, Helvetica, sans-serif;line-height:1.6;}
+.wrap{max-width:1000px;margin:0 auto;padding:0 18px 60px;}
+.hero{background:#0A2E3F;color:#FFFFFF;padding:30px 0 26px;margin-bottom:0;}
+.hero .wrap{padding-bottom:0;}
+.eyebrow{font-family:'Courier New', Courier, monospace;font-weight:700;font-size:11px;letter-spacing:0.16em;
+text-transform:uppercase;color:#3FBFB0;margin:0 0 8px;}
+h1{font-family:'Arial Black', Arial, Helvetica, sans-serif;text-transform:uppercase;letter-spacing:0.01em;font-size:40px;
+margin:0 0 10px;line-height:1.05;}
+.sub{font-size:16px;max-width:44em;opacity:0.92;margin:0;}
+.lanes{height:6px;background:linear-gradient(90deg,#3FBFB0 0 25%,#136B77 25% 50%,
+#F3EFE4 50% 75%,#D64545 75% 100%);}
+h2{font-family:Arial, Helvetica, sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;
+color:#0A2E3F;font-size:17px;margin:34px 0 12px;}
+.bar{position:sticky;top:0;z-index:5;background:#FFFFFF;border-bottom:1px solid #DAD3C2;
+padding:14px 0;margin-bottom:6px;}
+.bar .inner{display:flex;gap:14px;align-items:center;flex-wrap:wrap;
+max-width:1000px;margin:0 auto;padding:0 18px;}
+label{font-family:Arial, Helvetica, sans-serif;font-weight:700;font-size:11px;letter-spacing:0.08em;
+text-transform:uppercase;color:#4B5B60;}
+select{font-family:Arial, Helvetica, sans-serif;font-size:16px;padding:10px 12px;border:2px solid #0A2E3F;
+border-radius:8px;background:#FFFFFF;color:#152225;min-width:230px;}
+.count{font-size:14px;color:#4B5B60;margin-left:auto;}
+.btn{display:inline-block;font-family:Arial, Helvetica, sans-serif;font-weight:700;text-transform:uppercase;
+letter-spacing:0.06em;font-size:13px;background:#136B77;color:#FFFFFF;padding:11px 18px;
+border-radius:8px;text-decoration:none;border:0;cursor:pointer;white-space:nowrap;}
+.btn:hover{background:#0A2E3F;}
+.btn.done{background:#12786C;}
+.calcard{background:#FAF8F2;border:2px solid #136B77;border-radius:12px;
+padding:18px 20px;margin:16px 0 0;display:flex;gap:16px;align-items:center;
+flex-wrap:wrap;}
+.calcard .t{font-family:Arial, Helvetica, sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;
+color:#0A2E3F;font-size:14px;}
+.calcard .d{font-size:14px;color:#4B5B60;flex:1;min-width:220px;}
+table{border-collapse:collapse;width:100%;margin:14px 0 0;font-size:14px;}
+th{background:#0A2E3F;color:#FFFFFF;text-align:left;padding:11px 12px;
+font-family:Arial, Helvetica, sans-serif;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
+font-size:11px;}
+td{border-top:1px solid #DAD3C2;padding:12px;vertical-align:top;}
+tbody tr:nth-child(even){background:#FAF8F2;}
+.date{font-family:'Courier New', Courier, monospace;font-weight:700;color:#0A2E3F;white-space:nowrap;}
+.name{font-weight:700;color:#0A2E3F;}
+.name a{color:#0A2E3F;}
+.muted{color:#4B5B60;font-size:13px;}
+.tag{display:inline-block;font-family:Arial, Helvetica, sans-serif;font-weight:700;font-size:10.5px;
+letter-spacing:0.05em;text-transform:uppercase;color:#FFFFFF;border-radius:4px;
+padding:3px 7px;margin:0 4px 3px 0;white-space:nowrap;}
+.legend td{font-size:14px;}
+.legend td:first-child{white-space:nowrap;}
+.empty{padding:26px;text-align:center;color:#4B5B60;background:#FAF8F2;
+border:1px solid #DAD3C2;border-radius:10px;margin-top:14px;}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid #DAD3C2;
+font-size:13px;color:#4B5B60;}
+/* Narrow screens: rows become stacked cards. This is the layout the pasted page
+   cannot have, and the reason seven columns stop being a problem on a phone. */
+@media (max-width:760px){
+  h1{font-size:30px;}
+  thead{position:absolute;left:-9999px;}
+  tbody tr{display:block;border:1px solid #DAD3C2;border-radius:10px;
+  margin:0 0 12px;background:#FFFFFF;padding:4px 2px;}
+  tbody tr:nth-child(even){background:#FFFFFF;}
+  td{display:flex;gap:12px;border-top:0;padding:7px 12px;}
+  td::before{content:attr(data-label);flex:none;width:96px;font-family:Arial, Helvetica, sans-serif;
+  font-weight:700;font-size:10.5px;letter-spacing:0.05em;text-transform:uppercase;
+  color:#4B5B60;padding-top:3px;}
+  td:first-child{border-top:0;}
+  .count{margin-left:0;}
+  select{width:100%;}
+}
+</style></head><body>
+
+<div class="hero"><div class="wrap">
+  <div class="eyebrow">ROW Swim Club</div>
+  <h1>Meet Schedule</h1>
+  <p class="sub">Every meet of the 2026-27 season. Choose your group to see just yours.</p>
+</div></div>
+<div class="lanes"></div>
+
+<div class="bar"><div class="inner">
+  <label for="group">Your group</label>
+  <select id="group"><option value="">All groups</option></select>
+  <span class="count" id="count"></span>
+</div></div>
+
+<div class="wrap">
+  <div id="calcard"></div>
+  <div id="out"></div>
+
+  <h2>Reading the tags</h2>
+  <table class="legend"><tbody id="legend"></tbody></table>
+
+  <footer>
+    <p id="built"></p>
+  </footer>
+</div>
+
+<script>
+var FALLBACK = {"season": "2026-27", "built": "2026-08-11", "groups": [{"code": "TOPS 2", "name": "TOPS 2", "pathway": "Junior"}, {"code": "TOPS 1", "name": "TOPS 1", "pathway": "Junior"}, {"code": "JD2", "name": "Junior Development 2", "pathway": "Junior"}, {"code": "JD1", "name": "Junior Development 1", "pathway": "Junior"}, {"code": "AGD2", "name": "Age Group Development 2", "pathway": "Regional"}, {"code": "AGD1", "name": "Age Group Development 1", "pathway": "Regional"}, {"code": "SD", "name": "Senior Development", "pathway": "Regional"}, {"code": "PD3", "name": "Provincial Development 3", "pathway": "Provincial"}, {"code": "PD2", "name": "Provincial Development 2", "pathway": "Provincial"}, {"code": "PD1", "name": "Provincial Development 1", "pathway": "Provincial"}, {"code": "ND", "name": "National Development", "pathway": "National"}], "meets": [{"id": "row-fall-first-try", "name": "ROW Fall First Try", "start": "2026-10-17", "end": "2026-10-17", "city": "Waterloo", "venue": "Wilfrid Laurier University", "pool": "25m", "home": true, "confirmed": true, "confirmBy": "2026-10-03", "eligibility": "All Welcome", "link": "", "notes": "Our first officiating and volunteer opportunity!", "going": {"JD2": ["Team"], "JD1": ["Team"], "AGD2": ["Team"], "AGD1": ["Team"], "SD": ["Team"], "PD3": ["Team"], "PD2": ["Team"], "PD1": ["Team"], "ND": ["Team"]}}, {"id": "gmac-fall-skills", "name": "GMAC Fall Skills & Thrills", "start": "2026-11-01", "end": "2026-11-01", "city": "Guelph", "venue": "University of Guelph", "pool": "25m", "home": false, "confirmed": true, "confirmBy": "2026-10-03", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"JD2": ["Pathway Skills"], "JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"]}}, {"id": "bac-fall-invitational", "name": "BAC Fall Invitational", "start": "2026-11-06", "end": "2026-11-08", "city": "Brantford", "venue": "Wayne Gretzky Sports Centre", "pool": "25m", "home": false, "confirmed": false, "confirmBy": "2026-10-03", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"], "AGD1": ["Pathway Skills"], "SD": ["Pathway Skills"], "PD3": ["Pathway Skills"], "PD2": ["Pathway Skills"], "PD1": ["Pathway Skills"], "ND": ["Pathway Skills"]}}, {"id": "eswim-agi-sc", "name": "ESWIM AGI", "start": "2026-11-19", "end": "2026-11-22", "city": "Etobicoke", "venue": "Etobicoke Olympium", "pool": "25m", "home": false, "confirmed": false, "confirmBy": "2026-10-03", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"], "AGD1": ["Pathway Skills"], "SD": ["Pathway Skills"], "PD3": ["Pathway Skills"], "PD2": ["Pathway Skills"], "PD1": ["Pathway Skills"], "ND": ["Pathway Skills"]}}, {"id": "row-novice-meet-dec", "name": "ROW Novice Meet I", "start": "2026-12-05", "end": "2026-12-05", "city": "Waterloo", "venue": "Wilfrid Laurier University", "pool": "25m", "home": true, "confirmed": true, "confirmBy": "2026-10-03", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"TOPS 2": ["Pathway Skills"], "TOPS 1": ["Pathway Skills"], "JD2": ["Pathway Skills"], "JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"]}}, {"id": "swimon-oji", "name": "Ontario Junior International", "start": "2026-12-10", "end": "2026-12-13", "city": "Scarborough", "venue": "TPASC", "pool": "25m", "home": false, "confirmed": true, "confirmBy": "2026-10-03", "eligibility": "Qualifiers Only", "link": "", "notes": "Qualified swimmers from eligible groups are welcome", "going": {"PD1": ["Performance"], "ND": ["Performance"]}}, {"id": "mssac-open", "name": "Mississauga Open", "start": "2026-12-18", "end": "2026-12-20", "city": "Etobicoke", "venue": "Etobicoke Olympium", "pool": "25m", "home": false, "confirmed": true, "confirmBy": "2026-10-03", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"AGD2": ["Performance"], "AGD1": ["Performance"], "SD": ["Performance"], "PD3": ["Performance"], "PD2": ["Performance"], "PD1": ["Performance"], "ND": ["Performance"]}}, {"id": "row-dean-boles", "name": "ROW Dean Boles Invitational", "start": "2027-01-16", "end": "2027-01-17", "city": "Waterloo", "venue": "Wilfrid Laurier University", "pool": "25m", "home": true, "confirmed": true, "confirmBy": "2026-12-01", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"JD2": ["Pathway Skills"], "JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"], "AGD1": ["Pathway Skills"], "SD": ["Pathway Skills"], "PD3": ["Pathway Skills"], "PD2": ["Pathway Skills"], "PD1": ["Pathway Skills"], "ND": ["Pathway Skills"]}}, {"id": "bac-winter-invitational", "name": "BAC Winter LC Invitational", "start": "2027-01-29", "end": "2027-01-31", "city": "Brantford", "venue": "Wayne Gretzky Sports Centre", "pool": "50m", "home": false, "confirmed": false, "confirmBy": "2026-12-01", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"], "AGD1": ["Pathway Skills"], "SD": ["Pathway Skills"], "PD3": ["Pathway Skills"], "PD2": ["Pathway Skills"], "PD1": ["Pathway Skills"], "ND": ["Pathway Skills"]}}, {"id": "wosa-sc-regionals", "name": "Western Region SC Champs", "start": "2027-02-11", "end": "2027-02-14", "city": "London", "venue": "Canada Games Aquatic Centre", "pool": "25m", "home": false, "confirmed": true, "confirmBy": "2027-01-18", "eligibility": "Qualifiers Only", "link": "", "notes": "Qualified swimmers from eligible groups are welcome", "going": {"AGD2": ["Performance"], "AGD1": ["Performance"], "SD": ["Performance"], "PD3": ["Team"], "PD2": ["Team"], "PD1": ["Team"], "ND": ["Team"]}}, {"id": "swimon-oag", "name": "Ontario Age Group Champs", "start": "2027-03-04", "end": "2027-03-07", "city": "Toronto", "venue": "TPASC / MPAC", "pool": "50m", "home": false, "confirmed": true, "confirmBy": "2027-02-14", "eligibility": "Qualifiers Only", "link": "", "notes": "Qualified swimmers from eligible groups are welcome", "going": {"PD3": ["Peak"], "PD2": ["Peak"], "PD1": ["Peak"], "ND": ["Peak"]}}, {"id": "snc-canadian-trials", "name": "Canadian Swimming Trials", "start": "2027-04-05", "end": "2027-04-10", "city": "Victoria", "venue": "Commonwealth Games Pool", "pool": "50m", "home": false, "confirmed": true, "confirmBy": "2027-03-08", "eligibility": "Qualifiers Only", "link": "", "notes": "Qualified swimmers from eligible groups are welcome", "going": {"PD1": ["Peak"], "ND": ["Peak"]}}, {"id": "row-cunningham-classic", "name": "ROW Cunningham Classic", "start": "2027-04-09", "end": "2027-04-11", "city": "Waterloo", "venue": "Wilfrid Laurier University", "pool": "50m", "home": true, "confirmed": false, "confirmBy": "2027-03-08", "eligibility": "All Welcome", "link": "", "notes": "Swimmers from all eligible groups are invited.", "going": {"JD2": ["Pathway Skills"], "JD1": ["Pathway Skills"], "AGD2": ["Pathway Skills"], "AGD1": ["Pathway Skills"], "SD": ["Pathway Skills"], "PD3": ["Pathway Skills"], "PD2": ["Pathway Skills"], "PD1": ["Pathway Skills"], "ND": ["Pathway Skills"]}}]};
+var CAL_BASE = 'https://row-gm.github.io/row-meets/calendars';
+var TYPE_BG = {'Peak':'#0A2E3F','Performance':'#136B77','Pathway Skills':'#12786C','Team':'#6E3D6B','Qualifiers Only':'#C23A3A','Not confirmed':'#8A6420'};
+var MEANING = [
+  ['Peak','The top of your racing calendar. This is the biggest meet of your season.'],
+  ['Performance','You prepare for this one, and you race it chasing a personal best.'],
+  ['Pathway Skills','You put what you have been working on in training to the test.'],
+  ['Team','You race for the team, and you are there for the swimmers beside you.'],
+  ['Qualifiers Only','You need to have already swum a qualifying time to enter this meet. ' +
+   'Your coach will tell you if you have one.'],
+  ['Not confirmed','These meets have not yet confirmed their dates, or their ability to ' +
+   'accept our entries for our expected group size. This page, and the calendar links, ' +
+   'will automatically update as confirmation is received.']
+];
+var DASH = String.fromCharCode(8211), EMDASH = String.fromCharCode(8212);
+var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+var data = FALLBACK;
+
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function tag(text, bg) {
+  return '<span class="tag" style="background:' + bg + '">' + esc(text) + '</span>';
+}
+function d(iso) {
+  var p = iso.split('-');
+  return { m: +p[1], day: +p[2], y: +p[0] };
+}
+function dateLabel(m) {
+  var a = d(m.start), b = d(m.end);
+  if (m.start === m.end) return MON[a.m-1] + ' ' + a.day;
+  if (a.m === b.m) return MON[a.m-1] + ' ' + a.day + '\u2013' + b.day;
+  return MON[a.m-1] + ' ' + a.day + ' \u2013 ' + MON[b.m-1] + ' ' + b.day;
+}
+function confirmLabel(m) {
+  if (!m.confirmBy) return '\u2014';
+  var c = d(m.confirmBy);
+  return MON[c.m-1] + ' ' + c.day;
+}
+function typesFor(m, code) {
+  if (code && m.going[code]) return m.going[code];
+  var all = {};
+  for (var k in m.going) m.going[k].forEach(function (t) { all[t] = 1; });
+  return Object.keys(TYPE_BG).filter(function (t) { return all[t]; });
+}
+
+function render() {
+  var code = document.getElementById('group').value;
+  var list = data.meets.filter(function (m) { return !code || m.going[code]; });
+  var g = data.groups.filter(function (x) { return x.code === code; })[0];
+
+  document.getElementById('count').textContent =
+    list.length + (list.length === 1 ? ' meet' : ' meets') + (g ? ' for ' + g.name : '');
+
+  document.getElementById('calcard').innerHTML = !g ? '' :
+    '<div class="calcard"><div class="t">' + esc(g.name) + '</div>' +
+    '<div class="d">Add these meets to your calendar, including every Confirm By ' +
+    'date. To confirm, log into your ROW member account.</div>' +
+    '<button class="btn" id="copycal" data-url="' + CAL_BASE + '/row-' +
+    g.code.toLowerCase().replace(/ /g,'-') + '.ics">Copy calendar link</button></div>';
+
+  if (!list.length) {
+    document.getElementById('out').innerHTML =
+      '<div class="empty">No meets listed for this group yet.</div>';
+  } else {
+    var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
+    var h = '<table><thead><tr>' +
+      head.map(function (x) { return '<th>' + x + '</th>'; }).join('') +
+      '</tr></thead><tbody>';
+    list.forEach(function (m) {
+      var name = m.link
+        ? '<a href="' + esc(m.link) + '" target="_blank">' + esc(m.name) + '</a>'
+        : esc(m.name);
+      var extra = '';
+      if (m.home) extra += '<div class="muted">At our pool. Officials needed.</div>';
+      if (!m.confirmed) extra += '<div>' + tag('Not confirmed','#8A6420') + '</div>';
+      if (m.notes) extra += '<div class="muted">' + esc(m.notes) + '</div>';
+      h += '<tr>' +
+        '<td data-label="Date" class="date">' + dateLabel(m) + '</td>' +
+        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
+        '<td data-label="Meet"><span class="name">' + name + '</span>' + extra + '</td>' +
+        '<td data-label="Where">' + esc(m.city) +
+          '<div class="muted">' + esc(m.venue) + '</div></td>' +
+        '<td data-label="Pool">' + esc(m.pool) + '</td>' +
+        '<td data-label="Type">' + typesFor(m, code).map(function (t) {
+            return tag(t, TYPE_BG[t] || '#4B5B60');
+          }).join('') + '</td>' +
+        '<td data-label="Entry">' + (m.eligibility === 'Qualifiers Only'
+          ? tag('Qualifiers Only','#C23A3A') : tag('All Welcome','#4B5B60')) + '</td>' +
+        '</tr>';
+    });
+    document.getElementById('out').innerHTML = h + '</tbody></table>';
+  }
+
+  var b = document.getElementById('copycal');
+  if (b) b.addEventListener('click', function () {
+    var url = b.dataset.url;
+    function done() {
+      b.textContent = 'Copied'; b.classList.add('done');
+      setTimeout(function () {
+        b.textContent = 'Copy calendar link'; b.classList.remove('done');
+      }, 1800);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(url).then(done, function () { window.prompt('Copy this link:', url); });
+    } else { window.prompt('Copy this link:', url); }
+  });
+}
+
+function start() {
+  var sel = document.getElementById('group');
+  data.groups.forEach(function (g) {
+    var o = document.createElement('option');
+    o.value = g.code; o.textContent = g.name + ' (' + g.code + ')';
+    sel.appendChild(o);
+  });
+  sel.addEventListener('change', function () {
+    render();
+    try { localStorage.setItem('rowGroup', sel.value); } catch (e) {}
+  });
+  try {
+    var saved = localStorage.getItem('rowGroup');
+    if (saved) sel.value = saved;
+  } catch (e) {}
+  document.getElementById('legend').innerHTML = MEANING.map(function (r) {
+    return '<tr><td>' + tag(r[0], TYPE_BG[r[0]]) + '</td><td>' + r[1] + '</td></tr>';
+  }).join('');
+  document.getElementById('built').textContent = 'Schedule last updated ' + data.built + '.';
+  render();
+}
+
+/* A real CSV parser, because a group cell can hold "Performance, Team" and a
+   naive split on commas would tear it in half. */
+function parseCSV(text) {
+  var CR = String.fromCharCode(13), NL = String.fromCharCode(10);
+  var rows = [], row = [], field = '', q = false, i = 0;
+  text = text.split(CR + NL).join(NL).split(CR).join(NL);
+  for (; i < text.length; i++) {
+    var ch = text[i];
+    if (q) {
+      if (ch === '"') {
+        if (text[i+1] === '"') { field += '"'; i++; } else { q = false; }
+      } else { field += ch; }
+    } else if (ch === '"') { q = true; }
+    else if (ch === ',') { row.push(field); field = ''; }
+    else if (ch === NL) { row.push(field); rows.push(row); row = []; field = ''; }
+    else { field += ch; }
+  }
+  if (field !== '' || row.length) { row.push(field); rows.push(row); }
+  var head = rows.shift().map(function (h) { return h.trim(); });
+  return rows.filter(function (r) { return r.join('').trim() !== ''; })
+    .map(function (r) {
+      var o = {};
+      head.forEach(function (h, n) { o[h] = (r[n] || '').trim(); });
+      return o;
+    });
+}
+
+function build(meetRows, groupRows) {
+  var gs = groupRows
+    .filter(function (g) { return /^(yes|y|true)$/i.test(g.show_on_page); })
+    .sort(function (a, b) { return (+a.sort_order) - (+b.sort_order); })
+    .map(function (g) {
+      return { code: g.group_code, name: g.display_name, pathway: g.pathway };
+    });
+  var codes = gs.map(function (g) { return g.code; });
+  var ms = meetRows.map(function (m) {
+    var going = {};
+    codes.forEach(function (c) {
+      var v = (m[c] || '').trim();
+      if (v) {
+        going[c] = v.replace(/;/g, ',').split(',')
+          .map(function (t) { return t.trim(); })
+          .filter(Boolean);
+      }
+    });
+    return {
+      id: m.meet_id, name: m.meet_name, start: m.start_date,
+      end: m.end_date || m.start_date, city: m.city, venue: m.venue, pool: m.pool,
+      home: /^yes$/i.test(m.hosted_by_row), confirmed: /^yes$/i.test(m.confirmed),
+      confirmBy: m.confirm_by, eligibility: m.eligibility, link: m.info_link,
+      notes: m.notes, going: going
+    };
+  }).sort(function (a, b) { return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; });
+  return { season: FALLBACK.season, built: FALLBACK.built, groups: gs, meets: ms };
+}
+
+/* Live data when it is reachable, the built-in copy when it is not. Opening this
+   file straight off disk hits the fallback, which is why the preview works. */
+Promise.all([
+  fetch('../data/meets.csv').then(function (r) { if (!r.ok) throw 0; return r.text(); }),
+  fetch('../data/groups.csv').then(function (r) { if (!r.ok) throw 0; return r.text(); })
+]).then(function (texts) {
+  var live = build(parseCSV(texts[0]), parseCSV(texts[1]));
+  if (!live.meets.length || !live.groups.length) throw 0;
+  data = live;
+  data.built = 'just now';
+  start();
+}).catch(function () {
+  start();
+});
+</script>
+</body></html>
