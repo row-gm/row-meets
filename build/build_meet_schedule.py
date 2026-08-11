@@ -18,6 +18,8 @@ output; the CSVs are the single source of truth.
 
 import csv
 import os
+
+import content
 from datetime import date
 
 from row_page_helpers import (
@@ -47,6 +49,9 @@ CAL_BASE = f"{MEETS_BASE}/calendars"
 PACKAGE_BASE = f"{MEETS_BASE}/packages"
 
 SEASON = "2026-27"
+MEET_TYPES, _EVENT_TYPES = content.load_types(ROOT)
+_T, _F = content.load(ROOT, season=SEASON)
+TEXT_FALLBACK = {n: _T.get(content.TAG_KEYS.get(n, ""), "") for n, _, _ in MEET_TYPES}
 
 # "group"   — one block per group. What a family looks for, but 14 blocks is heavy.
 # "pathway" — one block per pathway, with the groups named. Roughly a third the size.
@@ -58,7 +63,7 @@ GROUP_DETAIL = "group"
 # is not racing. "Peak" in a group's cell marks the top of that group's calendar.
 # Eligibility is NOT here: a meet either has qualifying standards or it does not,
 # so it lives once on the meet, in the eligibility column.
-GROUP_TAGS = ["Peak", "Performance", "Pathway Skills", "Team"]
+
 
 
 def split_tags(cell):
@@ -75,21 +80,13 @@ PLUM = "#6E3D6B"    # dark plum
 FLAG = "#C23A3A"    # dark red, for the one tag that stops a plan
 AMBER = "#8A6420"   # dark bronze, for a date that is not settled
 
-MEET_CATEGORY = {
-    "Peak": (NAVY, FOAM),
-    "Performance": (TEAL, FOAM),
-    "Pathway Skills": (TIDE, FOAM),
-    "Team": (PLUM, FOAM),
-}
+MEET_CATEGORY = {n: (h, FOAM) for n, h, _ in MEET_TYPES}
 
-# DRAFT copy, still Andrew's to replace. Written to the swimmer, second person,
-# to match the swimmer's-voice markers on The ROW Way.
-CATEGORY_MEANING = [
-    ("Peak", "The top of your racing calendar. This is the biggest meet of your season."),
-    ("Performance", "You prepare for this one, and you race it chasing a personal best."),
-    ("Pathway Skills", "You put what you have been working on in training to the test."),
-    ("Team", "You race for the team, and you are there for the swimmers beside you."),
-]
+# Valid values for a group cell. Adding a row to the Types sheet makes it valid
+# here, in the page, and in the spreadsheet dropdown, with no code change.
+GROUP_TAGS = [n for n, _, _ in MEET_TYPES]
+
+CATEGORY_MEANING = [(n, d or TEXT_FALLBACK.get(n, "")) for n, _, d in MEET_TYPES]
 
 QUALIFIER_MEANING = ("Qualifiers Only",
                      "You need to have already swum a qualifying time to enter this meet. "
@@ -101,10 +98,18 @@ MONTHS = ["January", "February", "March", "April", "May", "June",
 
 # ---------- data ----------
 
+def _shows(g, kind):
+    """True if this group should appear for `kind` ("meets" or "events").
+    Falls back to the old show_on_page column so an older groups.csv still works."""
+    v = g.get("show_" + kind)
+    if v is None or not str(v).strip():
+        v = g.get("show_on_page", "Yes")
+    return str(v).strip().lower() in ("yes", "y", "true")
+
+
 def load():
     with open(GROUPS_CSV, encoding="utf-8-sig") as f:
-        groups = [g for g in csv.DictReader(f)
-                  if g["show_on_page"].strip().lower() in ("yes", "y", "true")]
+        groups = [g for g in csv.DictReader(f) if _shows(g, "meets")]
     groups.sort(key=lambda g: int(g["sort_order"]))
 
     with open(MEETS_CSV, encoding="utf-8-sig") as f:

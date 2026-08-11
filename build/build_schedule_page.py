@@ -14,6 +14,8 @@ Output: schedule/index.html
 import csv
 import json
 import os
+
+import content
 from datetime import date
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -21,6 +23,10 @@ ROOT = os.environ.get("ROW_MEETS_ROOT", HERE)
 OUT = os.environ.get("ROW_MEETS_SCHEDULE_OUT", os.path.join(ROOT, "schedule"))
 
 SEASON = "2026-27"
+
+# Page copy comes from the Text sheet in the spreadsheet.
+TEXT, _FAQ = content.load(ROOT, season=SEASON)
+MEET_TYPES, EVENT_TYPES = content.load_types(ROOT)
 NAVY, TEAL, CYAN, RED = "#0A2E3F", "#136B77", "#3FBFB0", "#D64545"
 SAND, FOAM, INK, INK_SOFT, LINE = "#F3EFE4", "#FFFFFF", "#152225", "#4B5B60", "#DAD3C2"
 ROW_ALT = "#FAF8F2"
@@ -31,14 +37,30 @@ BODY = "Arial, Helvetica, sans-serif"
 MONO = "'Courier New', Courier, monospace"
 UI = "Arial, Helvetica, sans-serif"
 
+def _shows(g, kind):
+    """True if this group should appear for `kind` ("meets" or "events").
+    Falls back to the old show_on_page column so an older groups.csv still works."""
+    v = g.get("show_" + kind)
+    if v is None or not str(v).strip():
+        v = g.get("show_on_page", "Yes")
+    return str(v).strip().lower() in ("yes", "y", "true")
+
+
 with open(os.path.join(ROOT, "data", "groups.csv"), encoding="utf-8-sig") as f:
     groups = [g for g in csv.DictReader(f)
-              if g["show_on_page"].strip().lower() in ("yes", "y", "true")]
+              if _shows(g, "meets") or _shows(g, "events")]
 groups.sort(key=lambda g: int(g["sort_order"]))
 
 with open(os.path.join(ROOT, "data", "meets.csv"), encoding="utf-8-sig") as f:
     meets = list(csv.DictReader(f))
 meets.sort(key=lambda m: m["start_date"].strip())
+
+events = []
+_ev_path = os.path.join(ROOT, "data", "events.csv")
+if os.path.exists(_ev_path):
+    with open(_ev_path, encoding="utf-8-sig") as f:
+        events = list(csv.DictReader(f))
+    events.sort(key=lambda e: e["start_date"].strip())
 
 codes = [g["group_code"] for g in groups]
 payload = {
@@ -46,6 +68,27 @@ payload = {
     "built": date.today().isoformat(),
     "groups": [{"code": g["group_code"], "name": g["display_name"],
                 "pathway": g["pathway"]} for g in groups],
+    "showMeets": {code: _shows(g, "meets")
+                  for g, code in zip(groups, codes)},
+    "showEvents": {code: _shows(g, "events")
+                   for g, code in zip(groups, codes)},
+    "eventTypes": {n: h for n, h, _ in EVENT_TYPES},
+    "events": [{
+        "id": e["event_id"].strip(),
+        "name": e["event_name"].strip(),
+        "type": e["event_type"].strip(),
+        "start": e["start_date"].strip(),
+        "end": (e["end_date"] or e["start_date"]).strip(),
+        "startTime": e["start_time"].strip(),
+        "endTime": e["end_time"].strip(),
+        "location": e["location"].strip(),
+        "all": e["all_groups"].strip().lower() == "yes",
+        "confirmBy": e["confirm_by"].strip(),
+        "confirmed": e["confirmed"].strip().lower() == "yes",
+        "description": e["description"].strip(),
+        "link": e["info_link"].strip(),
+        "going": {cc: True for cc in codes if e.get(cc, "").strip()},
+    } for e in events],
     "meets": [{
         "id": m["meet_id"].strip(),
         "name": m["meet_name"].strip(),
@@ -64,6 +107,20 @@ payload = {
                   for c in codes if m[c].strip()},
     } for m in meets],
 }
+
+TYPE_BG = {n: h for n, h, _ in MEET_TYPES}
+TYPE_BG["Qualifiers Only"] = FLAG
+TYPE_BG["Not confirmed"] = AMBER
+TYPE_BG_JSON = json.dumps(TYPE_BG)
+# Descriptions come from the Types sheet where given, and fall back to the Text
+# sheet so the wording written earlier is not lost.
+MEANING_JSON = json.dumps(
+    [[n, d or TEXT.get(content.TAG_KEYS.get(n, ""), "")] for n, _, d in MEET_TYPES]
+    + [[n, TEXT[content.TAG_KEYS[n]]] for n in ("Qualifiers Only", "Not confirmed")])
+GROUPCARD_BODY = json.dumps(TEXT["groupcard_body"])
+GROUPCARD_BUTTON = json.dumps(TEXT["groupcard_button"])
+SCHEDULE_EMPTY = json.dumps(TEXT["schedule_empty"])
+EVENT_MEANING_JSON = json.dumps([[n, h, d] for n, h, d in EVENT_TYPES])
 
 html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
@@ -142,24 +199,30 @@ font-size:13px;color:{INK_SOFT};}}
 </style></head><body>
 
 <div class="hero"><div class="wrap">
-  <div class="eyebrow">ROW Swim Club</div>
-  <h1>Meet Schedule</h1>
-  <p class="sub">Every meet of the {SEASON} season. Choose your group to see just yours.</p>
+  <div class="eyebrow">{TEXT['schedule_eyebrow']}</div>
+  <h1>{TEXT['schedule_title']}</h1>
+  <p class="sub">{TEXT['schedule_subtitle']}</p>
 </div></div>
 <div class="lanes"></div>
 
 <div class="bar"><div class="inner">
-  <label for="group">Your group</label>
-  <select id="group"><option value="">All groups</option></select>
+  <label for="group">{TEXT['group_label']}</label>
+  <select id="group"><option value="">{TEXT['group_all']}</option></select>
   <span class="count" id="count"></span>
 </div></div>
 
 <div class="wrap">
   <div id="calcard"></div>
+  <h2 id="meetshead">{TEXT['meets_heading']}</h2>
   <div id="out"></div>
+  <h2 id="eventshead">{TEXT['events_heading']}</h2>
+  <div id="events"></div>
 
-  <h2>Reading the tags</h2>
+  <h2>{TEXT['legend_heading']}</h2>
   <table class="legend"><tbody id="legend"></tbody></table>
+
+  <h2>{TEXT['event_legend_heading']}</h2>
+  <table class="legend"><tbody id="eventlegend"></tbody></table>
 
   <footer>
     <p id="built"></p>
@@ -169,18 +232,9 @@ font-size:13px;color:{INK_SOFT};}}
 <script>
 var FALLBACK = {json.dumps(payload)};
 var CAL_BASE = 'https://row-gm.github.io/row-meets/calendars';
-var TYPE_BG = {{'Peak':'{NAVY}','Performance':'{TEAL}','Pathway Skills':'{TIDE}','Team':'{PLUM}','Qualifiers Only':'{FLAG}','Not confirmed':'{AMBER}'}};
-var MEANING = [
-  ['Peak','The top of your racing calendar. This is the biggest meet of your season.'],
-  ['Performance','You prepare for this one, and you race it chasing a personal best.'],
-  ['Pathway Skills','You put what you have been working on in training to the test.'],
-  ['Team','You race for the team, and you are there for the swimmers beside you.'],
-  ['Qualifiers Only','You need to have already swum a qualifying time to enter this meet. ' +
-   'Your coach will tell you if you have one.'],
-  ['Not confirmed','These meets have not yet confirmed their dates, or their ability to ' +
-   'accept our entries for our expected group size. This page, and the calendar links, ' +
-   'will automatically update as confirmation is received.']
-];
+var TYPE_BG = {TYPE_BG_JSON};
+var MEANING = {MEANING_JSON};
+var EVENT_MEANING = {EVENT_MEANING_JSON};
 var DASH = String.fromCharCode(8211), EMDASH = String.fromCharCode(8212);
 var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var data = FALLBACK;
@@ -223,14 +277,18 @@ function render() {{
 
   document.getElementById('calcard').innerHTML = !g ? '' :
     '<div class="calcard"><div class="t">' + esc(g.name) + '</div>' +
-    '<div class="d">Add these meets to your calendar, including every Confirm By ' +
-    'date. To confirm, log into your ROW member account.</div>' +
+    '<div class="d">' + {GROUPCARD_BODY} + '</div>' +
     '<button class="btn" id="copycal" data-url="' + CAL_BASE + '/row-' +
-    g.code.toLowerCase().replace(/ /g,'-') + '.ics">Copy calendar link</button></div>';
+    g.code.toLowerCase().replace(/ /g,'-') + '.ics">' + {GROUPCARD_BUTTON} +
+    '</button></div>';
 
-  if (!list.length) {{
+  var showM = !code || data.showMeets[code];
+  var showE = !code || data.showEvents[code];
+  if (!showM) {{
+    document.getElementById('out').innerHTML = '';
+  }} else if (!list.length) {{
     document.getElementById('out').innerHTML =
-      '<div class="empty">No meets listed for this group yet.</div>';
+      '<div class="empty">' + {SCHEDULE_EMPTY} + '</div>';
   }} else {{
     var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
     var h = '<table><thead><tr>' +
@@ -260,6 +318,41 @@ function render() {{
     }});
     document.getElementById('out').innerHTML = h + '</tbody></table>';
   }}
+  document.getElementById('meetshead').style.display = showM ? '' : 'none';
+
+  /* Events. Own table, own columns: an event has no pool, meet type or
+     eligibility, so sharing the meets table would leave four columns empty on
+     every row. */
+  var evs = data.events.filter(function (e) {{
+    return showE && (!code || e.all || e.going[code]);
+  }});
+  document.getElementById('eventshead').style.display = evs.length ? '' : 'none';
+  if (!evs.length) {{
+    document.getElementById('events').innerHTML = '';
+  }} else {{
+    var eh = '<table><thead><tr>' +
+      ['Date','Time','Event','Location','Confirm By']
+        .map(function (x) {{ return '<th>' + x + '</th>'; }}).join('') +
+      '</tr></thead><tbody>';
+    evs.forEach(function (e) {{
+      var nm = e.link
+        ? '<a href="' + esc(e.link) + '" target="_blank">' + esc(e.name) + '</a>'
+        : esc(e.name);
+      var extra = '<div>' + tag(e.type, data.eventTypes[e.type] || '{INK_SOFT}') + '</div>';
+      if (!e.confirmed) extra += '<div>' + tag('Not confirmed','{AMBER}') + '</div>';
+      if (e.description) extra += '<div class="muted">' + esc(e.description) + '</div>';
+      var time = (e.startTime && e.endTime)
+        ? esc(e.startTime) + '&ndash;' + esc(e.endTime) : 'All day';
+      eh += '<tr>' +
+        '<td data-label="Date" class="date">' + dateLabel(e) + '</td>' +
+        '<td data-label="Time" class="date">' + time + '</td>' +
+        '<td data-label="Event"><span class="name">' + nm + '</span>' + extra + '</td>' +
+        '<td data-label="Where">' + (e.location ? esc(e.location) : '&mdash;') + '</td>' +
+        '<td data-label="Confirm by" class="date">' + confirmLabel(e) + '</td>' +
+        '</tr>';
+    }});
+    document.getElementById('events').innerHTML = eh + '</tbody></table>';
+  }}
 
   var b = document.getElementById('copycal');
   if (b) b.addEventListener('click', function () {{
@@ -267,7 +360,7 @@ function render() {{
     function done() {{
       b.textContent = 'Copied'; b.classList.add('done');
       setTimeout(function () {{
-        b.textContent = 'Copy calendar link'; b.classList.remove('done');
+        b.textContent = {GROUPCARD_BUTTON}; b.classList.remove('done');
       }}, 1800);
     }}
     if (navigator.clipboard && window.isSecureContext) {{
@@ -293,6 +386,9 @@ function start() {{
   }} catch (e) {{}}
   document.getElementById('legend').innerHTML = MEANING.map(function (r) {{
     return '<tr><td>' + tag(r[0], TYPE_BG[r[0]]) + '</td><td>' + r[1] + '</td></tr>';
+  }}).join('');
+  document.getElementById('eventlegend').innerHTML = EVENT_MEANING.map(function (r) {{
+    return '<tr><td>' + tag(r[0], r[1]) + '</td><td>' + (r[2] || '') + '</td></tr>';
   }}).join('');
   document.getElementById('built').textContent = 'Schedule last updated ' + data.built + '.';
   render();

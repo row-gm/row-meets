@@ -36,6 +36,7 @@ OUT = os.environ.get("ROW_MEETS_CAL_OUT",
 
 GROUPS_CSV = os.path.join(ROOT, "data", "groups.csv")
 MEETS_CSV = os.path.join(ROOT, "data", "meets.csv")
+EVENTS_CSV = os.path.join(ROOT, "data", "events.csv")
 PACKAGE_DIR = os.path.join(ROOT, "packages")
 GROUPS_CSV = GROUPS_CSV if os.path.exists(GROUPS_CSV) else GROUPS_CSV.replace(".csv", "_sample.csv")
 MEETS_CSV = MEETS_CSV if os.path.exists(MEETS_CSV) else MEETS_CSV.replace(".csv", "_sample.csv")
@@ -74,10 +75,19 @@ def slug(code):
     return code.lower().replace(" ", "-")
 
 
+def _shows(g, kind):
+    """True if this group should appear for `kind` ("meets" or "events").
+    Falls back to the old show_on_page column so an older groups.csv still works."""
+    v = g.get("show_" + kind)
+    if v is None or not str(v).strip():
+        v = g.get("show_on_page", "Yes")
+    return str(v).strip().lower() in ("yes", "y", "true")
+
+
 def load():
     with open(GROUPS_CSV, encoding="utf-8-sig") as f:
         groups = [g for g in csv.DictReader(f)
-                  if g["show_on_page"].strip().lower() in ("yes", "y", "true")]
+                  if _shows(g, "meets") or _shows(g, "events")]
     groups.sort(key=lambda g: int(g["sort_order"]))
     with open(MEETS_CSV, encoding="utf-8-sig") as f:
         meets = list(csv.DictReader(f))
@@ -87,10 +97,22 @@ def load():
         m["_confirm"] = (date.fromisoformat(m["confirm_by"].strip())
                          if m["confirm_by"].strip() else None)
     meets.sort(key=lambda m: m["_start"])
-    return groups, meets
+
+    events = []
+    if os.path.exists(EVENTS_CSV):
+        with open(EVENTS_CSV, encoding="utf-8-sig") as f:
+            events = list(csv.DictReader(f))
+        for e in events:
+            e["_start"] = date.fromisoformat(e["start_date"].strip())
+            e["_end"] = date.fromisoformat((e["end_date"] or e["start_date"]).strip())
+            e["_confirm"] = (date.fromisoformat(e["confirm_by"].strip())
+                             if e["confirm_by"].strip() else None)
+            e["_all"] = e["all_groups"].strip().lower() == "yes"
+        events.sort(key=lambda e: e["_start"])
+    return groups, meets, events
 
 
-def ics_for(group, meets):
+def ics_for(group, meets, events):
     code = group["group_code"]
     name = group["display_name"]
     lines = [
@@ -167,6 +189,55 @@ def ics_for(group, meets):
                 "END:VEVENT",
             ]
 
+    for e in events:
+        if not (e["_all"] or e.get(code, "").strip()):
+            continue
+        timed = e["start_time"].strip() and e["end_time"].strip()
+        if timed:
+            # A timed event needs a timezone; floating local time is what every
+            # calendar app does with a naive DTSTART, which is what we want here.
+            s = e["_start"].strftime("%Y%m%d") + "T" + e["start_time"].strip().replace(":", "") + "00"
+            t = e["_end"].strftime("%Y%m%d") + "T" + e["end_time"].strip().replace(":", "") + "00"
+            dt = [f"DTSTART:{s}", f"DTEND:{t}"]
+        else:
+            dt = [f"DTSTART;VALUE=DATE:{e['_start'].strftime('%Y%m%d')}",
+                  f"DTEND;VALUE=DATE:{(e['_end'] + timedelta(days=1)).strftime('%Y%m%d')}"]
+        tentative = e["confirmed"].strip().lower() != "yes"
+        title = e["event_name"] + (" (not confirmed)" if tentative else "")
+        desc = e["description"].strip() or e["event_type"].strip()
+        if e["_confirm"]:
+            desc += f" Confirm by {e['_confirm'].isoformat()}."
+        ev = ["BEGIN:VEVENT", f"UID:{e['event_id']}-{slug(code)}@{DOMAIN}",
+              f"DTSTAMP:{stamp}"] + dt + [
+              f"SUMMARY:{esc(title)}",
+              f"DESCRIPTION:{esc(desc)}",
+              "STATUS:TENTATIVE" if tentative else "STATUS:CONFIRMED",
+              "TRANSP:TRANSPARENT"]
+        if e["location"].strip():
+            ev.append(f"LOCATION:{esc(e['location'].strip())}")
+        if e["info_link"].strip():
+            ev.append(f"URL:{e['info_link'].strip()}")
+        ev.append("END:VEVENT")
+        lines += ev
+
+        if e["_confirm"]:
+            c1 = e["_confirm"].strftime("%Y%m%d")
+            c2 = (e["_confirm"] + timedelta(days=1)).strftime("%Y%m%d")
+            lines += [
+                "BEGIN:VEVENT",
+                f"UID:{e['event_id']}-{slug(code)}-confirm@{DOMAIN}",
+                f"DTSTAMP:{stamp}",
+                f"DTSTART;VALUE=DATE:{c1}",
+                f"DTEND;VALUE=DATE:{c2}",
+                f"SUMMARY:{esc('Confirm by: ' + e['event_name'])}",
+                f"DESCRIPTION:{esc('Log into your ROW member account and Confirm or Decline attendance.')}",
+                "TRANSP:TRANSPARENT",
+                "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY",
+                f"DESCRIPTION:{esc('Confirm or decline ' + e['event_name'] + ' by tomorrow')}",
+                "END:VALARM",
+                "END:VEVENT",
+            ]
+
     lines.append("END:VCALENDAR")
     folded = []
     for ln in lines:
@@ -174,7 +245,7 @@ def ics_for(group, meets):
     return "\r\n".join(folded) + "\r\n"
 
 
-groups, meets = load()
+groups, meets, events = load()
 os.makedirs(OUT, exist_ok=True)
 
 # Files already in the folder, so a group that is retired or hidden does not leave
@@ -184,7 +255,7 @@ existing = {fn for fn in os.listdir(OUT) if fn.endswith(".ics")} if os.path.isdi
 
 written = []
 for g in groups:
-    body = ics_for(g, meets)
+    body = ics_for(g, meets, events)
     fn = f"row-{slug(g['group_code'])}.ics"
     with open(os.path.join(OUT, fn), "w", encoding="utf-8", newline="") as f:
         f.write(body)

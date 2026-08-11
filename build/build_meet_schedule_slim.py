@@ -14,6 +14,8 @@ Output: row_meet_schedule_slim_embed.html
 
 import os
 
+import content
+
 from row_page_helpers import (
     NAVY, TEAL, CYAN, RED, SAND, FOAM, INK, INK_SOFT, LINE, ROW_ALT,
     DISPLAY_FONT, BODY_FONT, MONO_FONT,
@@ -22,6 +24,7 @@ from row_page_helpers import (
 )
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.environ.get("ROW_MEETS_ROOT", HERE)
 OUT_DIR = os.environ.get("ROW_MEETS_OUT", "/mnt/user-data/outputs")
 
 MEETS_BASE = "https://row-gm.github.io/row-meets"
@@ -30,13 +33,13 @@ CAL_BASE = f"{MEETS_BASE}/calendars"
 
 SEASON = "2026-27"
 
+# Every sentence on this page comes from the Text and FAQ sheets in the
+# spreadsheet. Nothing user-facing is written in this file.
+TEXT, FAQ = content.load(ROOT, season=SEASON)
+MEET_TYPES, _EVENT_TYPES = content.load_types(ROOT)
+
 TIDE, PLUM, FLAG, AMBER = "#12786C", "#6E3D6B", "#C23A3A", "#8A6420"
-MEET_CATEGORY = {
-    "Peak": (NAVY, FOAM),
-    "Performance": (TEAL, FOAM),
-    "Pathway Skills": (TIDE, FOAM),
-    "Team": (PLUM, FOAM),
-}
+MEET_CATEGORY = {n: (h, FOAM) for n, h, _ in MEET_TYPES}
 CATEGORY_MEANING = [
     ("Peak", "The top of your racing calendar. This is the biggest meet of your season."),
     ("Performance", "You prepare for this one, and you race it chasing a personal best."),
@@ -100,39 +103,35 @@ def button_link(text, url, bg=NAVY, fg=FOAM, size="14px", pad="15px 26px"):
 page_hero = hero(
     "ROW Swim Club",
     "Meet Schedule",
-    "Where you race this season, what each meet is for, and how to get your group's "
-    "dates into your calendar.")
+    TEXT["slim_subtitle"])
 
 doorway = (
     f'<div style="background:{NAVY};border-radius:12px;padding:26px 28px;'
     f'box-shadow:0 8px 26px rgba(10,46,63,0.22);">'
-    f'<div style="font-family:{UI_FONT};font-weight:700;text-transform:uppercase;letter-spacing:0.05em;'
-    f'color:{FOAM};font-size:22px;margin:0 0 8px;">See the full schedule</div>'
+    f'<div style="font-family:{UI_FONT};font-weight:700;text-transform:uppercase;'
+    f'letter-spacing:0.05em;color:{FOAM};font-size:18px;margin:0 0 10px;">'
+    f'{TEXT["doorway_title"]}</div>'
     f'<div style="font-family:{BODY_FONT};font-size:15px;color:{FOAM};line-height:1.6;'
-    f'margin:0 0 18px;max-width:56em;opacity:0.92;">Every meet, with a filter for your group. '
-    f'It updates the moment a date changes, so what you see there is always current.</div>'
-    + button_link(f"Open the {SEASON} schedule", SCHEDULE_URL, bg=CYAN, fg=NAVY)
+    f'margin:0 0 18px;max-width:56em;opacity:0.92;">{TEXT["doorway_body"]}</div>'
+    + button_link(TEXT["doorway_button"], SCHEDULE_URL, bg=CYAN, fg=NAVY)
     + '</div>'
 )
 
 calendar_card = (
     f'<div style="background:{FOAM};border:2px solid {TEAL};border-radius:12px;'
     f'padding:22px 24px;box-shadow:0 6px 20px rgba(10,46,63,0.10);">'
-    f'<div style="font-family:{UI_FONT};font-weight:700;text-transform:uppercase;letter-spacing:0.05em;'
-    f'color:{NAVY};font-size:20px;margin:0 0 8px;">Never miss a Confirm By date</div>'
+    f'<div style="font-family:{UI_FONT};font-weight:700;text-transform:uppercase;'
+    f'letter-spacing:0.05em;color:{NAVY};font-size:17px;margin:0 0 10px;">'
+    f'{TEXT["calcard_title"]}</div>'
     f'<div style="font-family:{BODY_FONT};font-size:15px;color:{INK};line-height:1.6;'
-    f'margin:0 0 16px;max-width:56em;">Your group has its own calendar. Add it once and every '
-    f'meet lands in your digital calendar, including every '
-    f'<strong>Confirm By</strong> date. When a date changes, it changes for you too.</div>'
-    + button_link("Get your group&rsquo;s calendar", f"{CAL_BASE}/", size="13px",
-                  pad="13px 22px")
+    f'margin:0 0 16px;max-width:56em;">{TEXT["calcard_body"]}</div>'
+    + button_link(TEXT["calcard_button"], f"{CAL_BASE}/", size="13px", pad="13px 22px")
     + '</div>'
 )
 
 types_section = (
-    h2("Reading the tags")
-    + p("Not every meet asks the same thing of you. These are the tags you will see beside "
-        "each meet name on the schedule.", margin="0 0 12px")
+    h2(TEXT["legend_heading"])
+    + p(TEXT["legend_intro"], margin="0 0 12px")
     + data_table(
         ["Tag", "What it means"],
         [[category_pill(name), text] for name, text in CATEGORY_MEANING]
@@ -140,43 +139,11 @@ types_section = (
 )
 
 faqs = (
-    h2("How meets work")
-    + faq_list(
-        faq_item("Do I have to go to every meet on my group's list?",
-                 "No. Racing is how you find out what your training is worth, so we hope you "
-                 "race often. Talk to your coach about which meets matter most for you this "
-                 "season.", 0)
-        + faq_item("What does <strong>Confirm By</strong> mean?",
-                   "It is the date we need your answer by. Log into your ROW member account "
-                   "and confirm or decline each meet. If we do not hear from you by that "
-                   "date, you are not entered.", 1)
-        + faq_item("What if I cannot make a meet I am entered in?",
-                   "Decline it in your ROW member account before the Confirm By date, and tell "
-                   "your coach. After that date the club has usually paid your entry, so it "
-                   "cannot be refunded.", 2)
-        + faq_item("Why does the pool length matter?",
-                   "A 25 metre pool is called short course and a 50 metre pool is called long "
-                   "course. There are more turns in a short course race, so times from the two "
-                   "are not compared with each other. You keep a best time in each.", 3)
-        + faq_item("What are qualifying times?",
-                   "Some meets only accept swimmers who have already swum a set time. Your "
-                   "coach will tell you if you have one. Every meet marked "
-                   "<strong>All Welcome</strong> is open to everyone in your group.", 4)
-        + faq_item("Do my parents need to help at meets?",
-                   "At the meets ROW hosts, yes. Those meets say "
-                   "<strong>At our pool. Officials needed.</strong> on the "
-                   "schedule. A meet cannot run without officials and volunteers from our own "
-                   "families. The Officiating page explains how to start, and no experience is "
-                   "needed.", 5)
-        + faq_item("Is the schedule final?",
-                   "Meets marked not confirmed can still move. The schedule updates as soon as "
-                   "anything changes, so check it before your family books travel.", 6)
-    )
+    h2(TEXT["faq_heading"])
+    + faq_list("".join(faq_item(q, a, i) for i, (q, a) in enumerate(FAQ)))
 )
 
-closing = callout(
-    "Not sure which meets are right for you? Ask your coach on deck. For entries and payments, "
-    "your family can email the club office at <strong>office@rowswimming.ca</strong>.")
+closing = callout(TEXT["closing"])
 
 full = wrap_page(
     page_hero,
