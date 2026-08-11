@@ -268,6 +268,11 @@ function typesFor(m, code) {{
 }}
 
 function render() {{
+  // A missing key should degrade to an empty section, not stop the page.
+  data.events = data.events || [];
+  data.showMeets = data.showMeets || {{}};
+  data.showEvents = data.showEvents || {{}};
+  data.eventTypes = data.eventTypes || {{}};
   var code = document.getElementById('group').value;
   var list = data.meets.filter(function (m) {{ return !code || m.going[code]; }});
   var g = data.groups.filter(function (x) {{ return x.code === code; }})[0];
@@ -282,8 +287,8 @@ function render() {{
     g.code.toLowerCase().replace(/ /g,'-') + '.ics">' + {GROUPCARD_BUTTON} +
     '</button></div>';
 
-  var showM = !code || data.showMeets[code];
-  var showE = !code || data.showEvents[code];
+  var showM = !code || data.showMeets[code] !== false;
+  var showE = !code || data.showEvents[code] !== false;
   if (!showM) {{
     document.getElementById('out').innerHTML = '';
   }} else if (!list.length) {{
@@ -421,9 +426,16 @@ function parseCSV(text) {{
     }});
 }}
 
-function build(meetRows, groupRows) {{
+function shows(g, kind) {{
+  var v = g['show_' + kind];
+  if (v === undefined || String(v).trim() === '') v = g.show_on_page;
+  if (v === undefined || String(v).trim() === '') v = 'Yes';
+  return /^(yes|y|true)$/i.test(String(v).trim());
+}}
+
+function build(meetRows, groupRows, eventRows) {{
   var gs = groupRows
-    .filter(function (g) {{ return /^(yes|y|true)$/i.test(g.show_on_page); }})
+    .filter(function (g) {{ return shows(g, 'meets') || shows(g, 'events'); }})
     .sort(function (a, b) {{ return (+a.sort_order) - (+b.sort_order); }})
     .map(function (g) {{
       return {{ code: g.group_code, name: g.display_name, pathway: g.pathway }};
@@ -447,16 +459,46 @@ function build(meetRows, groupRows) {{
       notes: m.notes, going: going
     }};
   }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
-  return {{ season: FALLBACK.season, built: FALLBACK.built, groups: gs, meets: ms }};
+  var showMeets = {{}}, showEvents = {{}};
+  groupRows.forEach(function (g) {{
+    showMeets[g.group_code] = shows(g, 'meets');
+    showEvents[g.group_code] = shows(g, 'events');
+  }});
+
+  var es = (eventRows || []).map(function (e) {{
+    var going = {{}};
+    codes.forEach(function (cc) {{ if ((e[cc] || '').trim()) going[cc] = true; }});
+    return {{
+      id: e.event_id, name: e.event_name, type: e.event_type,
+      start: e.start_date, end: e.end_date || e.start_date,
+      startTime: e.start_time || '', endTime: e.end_time || '',
+      location: e.location || '', all: /^yes$/i.test(e.all_groups || ''),
+      confirmBy: e.confirm_by || '', confirmed: /^yes$/i.test(e.confirmed || ''),
+      description: e.description || '', link: e.info_link || '', going: going
+    }};
+  }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
+
+  // Every key the renderer reads must be here. Returning a partial object is
+  // what broke this page: data.events was undefined and rendering stopped.
+  return {{
+    season: FALLBACK.season, built: FALLBACK.built,
+    groups: gs, meets: ms, events: es,
+    showMeets: showMeets, showEvents: showEvents,
+    eventTypes: FALLBACK.eventTypes
+  }};
 }}
 
 /* Live data when it is reachable, the built-in copy when it is not. Opening this
    file straight off disk hits the fallback, which is why the preview works. */
 Promise.all([
   fetch('../data/meets.csv').then(function (r) {{ if (!r.ok) throw 0; return r.text(); }}),
-  fetch('../data/groups.csv').then(function (r) {{ if (!r.ok) throw 0; return r.text(); }})
+  fetch('../data/groups.csv').then(function (r) {{ if (!r.ok) throw 0; return r.text(); }}),
+  // Optional. No events.csv simply means no events.
+  fetch('../data/events.csv').then(function (r) {{ return r.ok ? r.text() : ''; }})
+    .catch(function () {{ return ''; }})
 ]).then(function (texts) {{
-  var live = build(parseCSV(texts[0]), parseCSV(texts[1]));
+  var live = build(parseCSV(texts[0]), parseCSV(texts[1]),
+                   texts[2] ? parseCSV(texts[2]) : []);
   if (!live.meets.length || !live.groups.length) throw 0;
   data = live;
   data.built = 'just now';
