@@ -25,12 +25,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
 SUMMARY:Confirm by: ROW Novice Meet I
-DESCRIPTION:Tell your coach whether you are racing ROW Novice Meet I.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm ROW Novice Meet I tomorrow
+DESCRIPTION:Confirm or decline ROW Novice Meet I by tomorrow
 END:VALARM
 END:VEVENT
 END:VCALENDAR

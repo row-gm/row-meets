@@ -26,12 +26,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
 SUMMARY:Confirm by: ROW Fall First Try
-DESCRIPTION:Tell your coach whether you are racing ROW Fall First Try.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm ROW Fall First Try tomorrow
+DESCRIPTION:Confirm or decline ROW Fall First Try by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -52,12 +53,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
 SUMMARY:Confirm by: BAC Fall Invitational
-DESCRIPTION:Tell your coach whether you are racing BAC Fall Invitational.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm BAC Fall Invitational tomorrow
+DESCRIPTION:Confirm or decline BAC Fall Invitational by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -78,12 +80,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
 SUMMARY:Confirm by: ESWIM AGI
-DESCRIPTION:Tell your coach whether you are racing ESWIM AGI.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm ESWIM AGI tomorrow
+DESCRIPTION:Confirm or decline ESWIM AGI by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -104,13 +107,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
 SUMMARY:Confirm by: Ontario Junior International
-DESCRIPTION:Tell your coach whether you are racing Ontario Junior Interna
- tional.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm Ontario Junior International tomorrow
+DESCRIPTION:Confirm or decline Ontario Junior International by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -131,12 +134,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
 SUMMARY:Confirm by: Mississauga Open
-DESCRIPTION:Tell your coach whether you are racing Mississauga Open.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm Mississauga Open tomorrow
+DESCRIPTION:Confirm or decline Mississauga Open by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -157,13 +161,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261201
 DTEND;VALUE=DATE:20261202
 SUMMARY:Confirm by: ROW Dean Boles Invitational
-DESCRIPTION:Tell your coach whether you are racing ROW Dean Boles Invitat
- ional.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm ROW Dean Boles Invitational tomorrow
+DESCRIPTION:Confirm or decline ROW Dean Boles Invitational by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -184,13 +188,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261201
 DTEND;VALUE=DATE:20261202
 SUMMARY:Confirm by: BAC Winter LC Invitational
-DESCRIPTION:Tell your coach whether you are racing BAC Winter LC Invitati
- onal.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm BAC Winter LC Invitational tomorrow
+DESCRIPTION:Confirm or decline BAC Winter LC Invitational by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -211,13 +215,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270118
 DTEND;VALUE=DATE:20270119
 SUMMARY:Confirm by: Western Region SC Champs
-DESCRIPTION:Tell your coach whether you are racing Western Region SC Cham
- ps.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm Western Region SC Champs tomorrow
+DESCRIPTION:Confirm or decline Western Region SC Champs by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -238,13 +242,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270214
 DTEND;VALUE=DATE:20270215
 SUMMARY:Confirm by: Ontario Age Group Champs
-DESCRIPTION:Tell your coach whether you are racing Ontario Age Group Cham
- ps.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm Ontario Age Group Champs tomorrow
+DESCRIPTION:Confirm or decline Ontario Age Group Champs by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -265,13 +269,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270308
 DTEND;VALUE=DATE:20270309
 SUMMARY:Confirm by: Canadian Swimming Trials
-DESCRIPTION:Tell your coach whether you are racing Canadian Swimming Tria
- ls.
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm Canadian Swimming Trials tomorrow
+DESCRIPTION:Confirm or decline Canadian Swimming Trials by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -292,13 +296,13 @@ DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270308
 DTEND;VALUE=DATE:20270309
 SUMMARY:Confirm by: ROW Cunningham Classic
-DESCRIPTION:Tell your coach whether you are racing ROW Cunningham Classic
- .
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm ROW Cunningham Classic tomorrow
+DESCRIPTION:Confirm or decline ROW Cunningham Classic by tomorrow
 END:VALARM
 END:VEVENT
 END:VCALENDAR
