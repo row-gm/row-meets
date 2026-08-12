@@ -1,15 +1,15 @@
-group_code,display_name,pathway,sort_order,show_on_page
-RSA,ROW Swim Academy,Academy,1,No
-REC AM,Recreation AM,Recreation,2,No
-REC PM,Recreation PM,Recreation,3,No
-TOPS 2,TOPS 2,Junior,4,Yes
-TOPS 1,TOPS 1,Junior,5,Yes
-JD2,Junior Development 2,Junior,6,Yes
-JD1,Junior Development 1,Junior,7,Yes
-AGD2,Age Group Development 2,Regional,8,Yes
-AGD1,Age Group Development 1,Regional,9,Yes
-SD,Senior Development,Regional,10,Yes
-PD3,Provincial Development 3,Provincial,11,Yes
-PD2,Provincial Development 2,Provincial,12,Yes
-PD1,Provincial Development 1,Provincial,13,Yes
-ND,National Development,National,14,Yes
+group_code,display_name,pathway,sort_order,show_meets,show_events
+RSA,ROW Swim Academy,Academy,1,No,Yes
+REC AM,Recreation AM,Recreation,2,No,Yes
+REC PM,Recreation PM,Recreation,3,No,Yes
+TOPS 2,TOPS 2,Junior,4,Yes,Yes
+TOPS 1,TOPS 1,Junior,5,Yes,Yes
+JD2,Junior Development 2,Junior,6,Yes,Yes
+JD1,Junior Development 1,Junior,7,Yes,Yes
+AGD2,Age Group Development 2,Regional,8,Yes,Yes
+AGD1,Age Group Development 1,Regional,9,Yes,Yes
+SD,Senior Development,Regional,10,Yes,Yes
+PD3,Provincial Development 3,Provincial,11,Yes,Yes
+PD2,Provincial Development 2,Provincial,12,Yes,Yes
+PD1,Provincial Development 1,Provincial,13,Yes,Yes
+ND,National Development,National,14,Yes,Yes

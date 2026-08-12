@@ -1,0 +1,14 @@
+kind,name,colour,description,sort_order,,Event types,Meet types
+Meet,Peak,Navy,The top of your racing calendar. This is the biggest meet of your season.,1,,New Parent Meeting,Peak
+Meet,Performance,Teal,"You prepare for this one, and you race it chasing a personal best.",2,,All Parent Meeting,Performance
+Meet,Pathway Skills,Tide,You put what you have been working on in training to the test.,3,,Annual General Meeting,Pathway Skills
+Meet,Team,Plum,"You race for the team, and you are there for the swimmers beside you.",4,,Social Event,Team
+Event,New Parent Meeting,Deep Blue,Important introduction to your coach and to ROW (FPP),5,,Holiday,
+Event,All Parent Meeting,Deep Blue,Join other ROW families and our coaches to discuss the season (FPP),6,,Pool Closure,
+Event,Annual General Meeting,Deep Blue,Be part of the Club's official business and governance event (FPP),7,,Program Break,
+Event,Social Event,Rose,Group and Club level social events are great fun!,8,,Registration,
+Event,Holiday,Slate,We all need some down time,9,,Team Building,
+Event,Pool Closure,Slate,Planned pool closures.,10,,,
+Event,Program Break,Slate,Planned off time for our swimmers and coaches.,11,,,
+Event,Registration,Red,Key dates in our registration process.,12,,,
+Event,Team Building,Plum,Special events where our swimmers and coaches build team connection,13,,,
