@@ -37,6 +37,30 @@ BODY = "Arial, Helvetica, sans-serif"
 MONO = "'Courier New', Courier, monospace"
 UI = "Arial, Helvetica, sans-serif"
 
+def _split(cell):
+    return [t.strip() for t in (cell or "").replace(";", ",").split(",") if t.strip()]
+
+
+def _resolve(m, codes, default_col):
+    """See resolve_groups in build_meet_schedule.py. Same rules, same words."""
+    meet_types = [n for n, _, _ in MEET_TYPES]
+    default = _split(m.get(default_col, ""))
+    default_types = [t for t in default if t in meet_types]
+    out = {}
+    for code in codes:
+        tags = _split(m.get(code, ""))
+        if any(t.lower() == "none" for t in tags):
+            continue
+        if not tags:
+            if default:
+                out[code] = list(default)
+            continue
+        if not any(t in meet_types for t in tags) and default_types:
+            tags = default_types + tags
+        out[code] = tags
+    return out
+
+
 def _shows(g, kind):
     """True if this group should appear for `kind` ("meets" or "events").
     Falls back to the old show_on_page column so an older groups.csv still works."""
@@ -90,7 +114,10 @@ payload = {
         "confirmed": e["confirmed"].strip().lower() == "yes",
         "description": e["description"].strip(),
         "link": e["info_link"].strip(),
-        "going": {cc: True for cc in codes if e.get(cc, "").strip()},
+        "going": {cc: True for cc in codes
+                  if e.get(cc, "").strip()
+                  and e[cc].strip().lower() != "none"},
+        "notFor": [cc for cc in codes if e.get(cc, "").strip().lower() == "none"],
     } for e in events],
     "meets": [{
         "id": m["meet_id"].strip(),
@@ -107,8 +134,7 @@ payload = {
         "eligibility": m["eligibility"].strip(),
         "link": m["info_link"].strip(),
         "notes": m["notes"].strip(),
-        "going": {c: [t.strip() for t in m[c].replace(";", ",").split(",") if t.strip()]
-                  for c in codes if m[c].strip()},
+        "going": _resolve(m, codes, "all_groups"),
     } for m in meets],
 }
 
@@ -321,6 +347,8 @@ function render() {{
   data.showMeets = data.showMeets || {{}};
   data.showEvents = data.showEvents || {{}};
   data.eventTypes = data.eventTypes || {{}};
+  data.meetTypeNames = data.meetTypeNames || [];
+  data.eligibilityNames = data.eligibilityNames || [];
   var code = document.getElementById('group').value;
   var list = data.meets.filter(function (m) {{ return !code || m.going[code]; }});
   var g = data.groups.filter(function (x) {{ return x.code === code; }})[0];
@@ -376,7 +404,10 @@ function render() {{
      eligibility, so sharing the meets table would leave four columns empty on
      every row. */
   var evs = data.events.filter(function (e) {{
-    return showE && (!code || e.all || e.going[code]);
+    if (!showE) return false;
+    if (!code) return true;
+    if ((e.notFor || []).indexOf(code) > -1) return false;
+    return e.all || e.going[code];
   }});
   document.getElementById('eventshead').style.display = evs.length ? '' : 'none';
   if (!evs.length) {{
@@ -492,16 +523,34 @@ function build(meetRows, groupRows, eventRows) {{
       return {{ code: g.group_code, name: g.display_name, pathway: g.pathway }};
     }});
   var codes = gs.map(function (g) {{ return g.code; }});
-  var ms = meetRows.map(function (m) {{
-    var going = {{}};
+  var meetTypes = FALLBACK.meetTypeNames || [];
+  function splitCell(v) {{
+    return (v || '').replace(/;/g, ',').split(',')
+      .map(function (t) {{ return t.trim(); }}).filter(Boolean);
+  }}
+  /* Default from all_groups, exceptions in the group cells, None to opt out.
+     Mirrors _resolve() on the build side. */
+  function resolve(row) {{
+    var def = splitCell(row.all_groups);
+    var defTypes = def.filter(function (t) {{ return meetTypes.indexOf(t) > -1; }});
+    var out = {{}};
     codes.forEach(function (c) {{
-      var v = (m[c] || '').trim();
-      if (v) {{
-        going[c] = v.replace(/;/g, ',').split(',')
-          .map(function (t) {{ return t.trim(); }})
-          .filter(Boolean);
+      var tags = splitCell(row[c]);
+      if (tags.some(function (t) {{ return t.toLowerCase() === 'none'; }})) return;
+      if (!tags.length) {{
+        if (def.length) out[c] = def.slice();
+        return;
       }}
+      if (!tags.some(function (t) {{ return meetTypes.indexOf(t) > -1; }}) && defTypes.length) {{
+        tags = defTypes.concat(tags);
+      }}
+      out[c] = tags;
     }});
+    return out;
+  }}
+
+  var ms = meetRows.map(function (m) {{
+    var going = resolve(m);
     return {{
       id: m.meet_id, name: m.meet_name, start: m.start_date,
       end: m.end_date || m.start_date, city: m.city, venue: m.venue, pool: m.pool,
@@ -531,14 +580,19 @@ function build(meetRows, groupRows, eventRows) {{
     }};
   }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
 
-  // Every key the renderer reads must be here. Returning a partial object is
-  // what broke this page: data.events was undefined and rendering stopped.
-  return {{
-    season: FALLBACK.season, built: FALLBACK.built,
+  /* Every key the renderer reads must be here. Returning a partial object has
+     broken this page twice: first data.events was missing, then the two type
+     name lists were, and a missing key throws inside the row loop and takes the
+     whole render down with it. Built from FALLBACK's own keys so a new one
+     cannot be forgotten again. */
+  var live = {{
     groups: gs, meets: ms, events: es,
-    showMeets: showMeets, showEvents: showEvents,
-    eventTypes: FALLBACK.eventTypes
+    showMeets: showMeets, showEvents: showEvents
   }};
+  for (var k in FALLBACK) {{
+    if (!(k in live)) live[k] = FALLBACK[k];
+  }}
+  return live;
 }}
 
 /* Live data when it is reachable, the built-in copy when it is not. Opening this
