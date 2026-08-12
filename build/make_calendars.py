@@ -36,6 +36,10 @@ OUT = os.environ.get("ROW_MEETS_CAL_OUT",
 
 GROUPS_CSV = os.path.join(ROOT, "data", "groups.csv")
 MEETS_CSV = os.path.join(ROOT, "data", "meets.csv")
+
+# Kept in step with build/content.py. A calendar entry that can be acted on
+# beats one that tells you to go and find the right page yourself.
+CONFIRM_URL = "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}"
 EVENTS_CSV = os.path.join(ROOT, "data", "events.csv")
 PACKAGE_DIR = os.path.join(ROOT, "packages")
 GROUPS_CSV = GROUPS_CSV if os.path.exists(GROUPS_CSV) else GROUPS_CSV.replace(".csv", "_sample.csv")
@@ -112,6 +116,15 @@ def load():
     return groups, meets, events
 
 
+def confirm_text(code):
+    """The confirm reminder, with a direct link when there is a code."""
+    base = "Log into your ROW member account and Confirm or Decline attendance."
+    code = (code or "").strip()
+    if code:
+        return base + " " + CONFIRM_URL.replace("{code}", code)
+    return base
+
+
 def ics_for(group, meets, events):
     code = group["group_code"]
     name = group["display_name"]
@@ -178,7 +191,7 @@ def ics_for(group, meets, events):
                 f"DTSTART;VALUE=DATE:{c1}",
                 f"DTEND;VALUE=DATE:{c2}",
                 f"SUMMARY:{esc('Confirm by: ' + m['meet_name'])}",
-                f"DESCRIPTION:{esc('Log into your ROW member account and Confirm or Decline attendance.')}",
+                f"DESCRIPTION:{esc(confirm_text(m.get('confirm_code', '')))}",
                 "TRANSP:TRANSPARENT",
                 # A day-before nudge, since the deadline is the point of this entry.
                 "BEGIN:VALARM",
@@ -230,7 +243,7 @@ def ics_for(group, meets, events):
                 f"DTSTART;VALUE=DATE:{c1}",
                 f"DTEND;VALUE=DATE:{c2}",
                 f"SUMMARY:{esc('Confirm by: ' + e['event_name'])}",
-                f"DESCRIPTION:{esc('Log into your ROW member account and Confirm or Decline attendance.')}",
+                f"DESCRIPTION:{esc(confirm_text(e.get('confirm_code', '')))}",
                 "TRANSP:TRANSPARENT",
                 "BEGIN:VALARM", "TRIGGER:-P1D", "ACTION:DISPLAY",
                 f"DESCRIPTION:{esc('Confirm or decline ' + e['event_name'] + ' by tomorrow')}",
@@ -254,12 +267,18 @@ os.makedirs(OUT, exist_ok=True)
 existing = {fn for fn in os.listdir(OUT) if fn.endswith(".ics")} if os.path.isdir(OUT) else set()
 
 written = []
+skipped = []
 for g in groups:
     body = ics_for(g, meets, events)
+    n = body.count("BEGIN:VEVENT")
     fn = f"row-{slug(g['group_code'])}.ics"
+    if n == 0:
+        # An empty calendar is worse than no calendar: a family subscribes, sees
+        # nothing, and concludes the whole thing is broken.
+        skipped.append(g["group_code"])
+        continue
     with open(os.path.join(OUT, fn), "w", encoding="utf-8", newline="") as f:
         f.write(body)
-    n = body.count("BEGIN:VEVENT")
     written.append((g, fn, n))
 
 # A plain index so a family can find their own file. Not a CMS fragment; this one
@@ -353,7 +372,8 @@ for fn in orphans:
 
 print(f"wrote {len(written)} calendars to {OUT}")
 if orphans:
-    print(f"removed {len(orphans)} calendar(s) for groups no longer shown: "
-          + ", ".join(orphans))
+    print(f"removed {len(orphans)} calendar(s) no longer needed: " + ", ".join(orphans))
+if skipped:
+    print(f"no calendar for {', '.join(skipped)}: nothing scheduled yet")
 for g, fn, n in written:
     print(f"  {g['group_code']:8s} {fn:22s} {n:>3} entries")

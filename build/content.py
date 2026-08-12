@@ -15,7 +15,7 @@ import os
 DEFAULT_TEXT = {
     # --- hosted schedule page ---
     "schedule_eyebrow": "ROW Swim Club",
-    "schedule_title": "Meet Schedule",
+    "schedule_title": "Meet &amp; Event Schedule",
     "schedule_subtitle": ("Our {season} meet schedule &mdash; updated regularly as "
                           "information is confirmed. Choose your group to see just yours."),
     "group_label": "View Your Group",
@@ -28,9 +28,10 @@ DEFAULT_TEXT = {
     # --- slim CMS page ---
     "slim_subtitle": ("Where you race this season, what each meet is for, and how to get "
                       "your group's dates into your calendar."),
-    "doorway_title": "See the full schedule",
-    "doorway_body": ("Every meet, with a filter for your group. It updates the moment a date "
-                     "changes, so what you see there is always current."),
+    "doorway_title": "Find your group's meets",
+    "doorway_body": ("Every meet of the season, filtered to your group. Add it to your "
+                     "digital calendar while you are there, and it updates itself when a "
+                     "date changes."),
     "doorway_button": "Open the {season} schedule",
     "calcard_title": "Never miss a Confirm By date",
     "calcard_body": ("Your group has its own calendar. Add it once and every meet lands in "
@@ -40,6 +41,23 @@ DEFAULT_TEXT = {
     "closing": ("Not sure which meets are right for you? Ask your coach on deck. For entries "
                 "and payments, your family can email the club office at "
                 "<strong>office@rowswimming.ca</strong>."),
+
+    # The TeamUnify confirmation page. {code} is replaced by the confirm_code
+    # column on the Meets or Events sheet. Set this once and every meet and event
+    # links straight to its own confirmation screen.
+    #
+    # NOT YET VERIFIED. The sample URL supplied was the admin view
+    # (/controller/cms/admin/index#/calendar-team-events/ev:NNNNN), which a
+    # member cannot use. Open one event while signed in as an ordinary member,
+    # copy the address, and put the member-facing pattern here.
+    "confirm_url": "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}",
+    "confirm_link_label": "Confirm",
+    # SportsEngine's own walkthrough of committing to a meet or event. Linked
+    # from a small ? beside the Confirm By heading rather than written out again
+    # here: their article stays current, ours would not.
+    "confirm_help_url": ("https://motion-help.sportsengine.com/en/articles/"
+                         "8537937-how-to-commit-sign-up-for-a-meet-event"),
+    "confirm_help_label": "How to confirm or decline",
 
     # --- shared ---
     "meets_heading": "Meets",
@@ -69,7 +87,10 @@ DEFAULT_FAQ = [
      "Talk to your coach about which meets matter most for you this season."),
     ("What does <strong>Confirm By</strong> mean?",
      "It is the date we need your answer by. Log into your ROW member account and confirm or "
-     "decline each meet. If we do not hear from you by that date, you are not entered."),
+     "decline each meet. If we do not hear from you by that date, you are not entered. "
+     '<a href="https://motion-help.sportsengine.com/en/articles/'
+     '8537937-how-to-commit-sign-up-for-a-meet-event" target="_blank">'
+     "Step by step instructions</a>."),
     ("What if I cannot make a meet I am entered in?",
      "Decline it in your ROW member account before the Confirm By date, and tell your coach. "
      "After that date the club has usually paid your entry, so it cannot be refunded."),

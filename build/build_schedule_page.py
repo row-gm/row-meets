@@ -84,6 +84,7 @@ payload = {
         "location": e["location"].strip(),
         "all": e["all_groups"].strip().lower() == "yes",
         "confirmBy": e["confirm_by"].strip(),
+        "confirmCode": e.get("confirm_code", "").strip(),
         "confirmed": e["confirmed"].strip().lower() == "yes",
         "description": e["description"].strip(),
         "link": e["info_link"].strip(),
@@ -100,6 +101,7 @@ payload = {
         "home": m["hosted_by_row"].strip().lower() == "yes",
         "confirmed": m["confirmed"].strip().lower() == "yes",
         "confirmBy": m["confirm_by"].strip(),
+        "confirmCode": m.get("confirm_code", "").strip(),
         "eligibility": m["eligibility"].strip(),
         "link": m["info_link"].strip(),
         "notes": m["notes"].strip(),
@@ -120,12 +122,16 @@ MEANING_JSON = json.dumps(
 GROUPCARD_BODY = json.dumps(TEXT["groupcard_body"])
 GROUPCARD_BUTTON = json.dumps(TEXT["groupcard_button"])
 SCHEDULE_EMPTY = json.dumps(TEXT["schedule_empty"])
+CONFIRM_URL_JSON = json.dumps(TEXT["confirm_url"])
+CONFIRM_LABEL_JSON = json.dumps(TEXT["confirm_link_label"])
+HELP_URL_JSON = json.dumps(TEXT["confirm_help_url"])
+HELP_LABEL_JSON = json.dumps(TEXT["confirm_help_label"])
 EVENT_MEANING_JSON = json.dumps([[n, h, d] for n, h, d in EVENT_TYPES])
 
 html = f"""<!DOCTYPE html>
 <html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ROW Meet Schedule {SEASON}</title>
+<title>ROW {TEXT['schedule_title']} {SEASON}</title>
 <style>
 *{{box-sizing:border-box;}}
 body{{margin:0;background:{FOAM};color:{INK};font-family:{BODY};line-height:1.6;}}
@@ -175,6 +181,10 @@ tbody tr:nth-child(even){{background:{ROW_ALT};}}
 letter-spacing:0.05em;text-transform:uppercase;color:{FOAM};border-radius:4px;
 padding:3px 7px;margin:0 4px 3px 0;white-space:nowrap;}}
 .legend td{{font-size:14px;}}
+a.help{{display:inline-block;width:15px;height:15px;line-height:15px;text-align:center;
+border-radius:50%;background:{FOAM};color:{NAVY};font-size:10px;font-weight:700;
+text-decoration:none;vertical-align:middle;opacity:0.75;}}
+a.help:hover{{opacity:1;}}
 .legend td:first-child{{white-space:nowrap;}}
 .empty{{padding:26px;text-align:center;color:{INK_SOFT};background:{ROW_ALT};
 border:1px solid {LINE};border-radius:10px;margin-top:14px;}}
@@ -233,6 +243,10 @@ font-size:13px;color:{INK_SOFT};}}
 <script>
 var FALLBACK = {json.dumps(payload)};
 var CAL_BASE = 'https://row-gm.github.io/row-meets/calendars';
+var CONFIRM_URL = {CONFIRM_URL_JSON};
+var CONFIRM_LABEL = {CONFIRM_LABEL_JSON};
+var HELP_URL = {HELP_URL_JSON};
+var HELP_LABEL = {HELP_LABEL_JSON};
 var TYPE_BG = {TYPE_BG_JSON};
 var MEANING = {MEANING_JSON};
 var EVENT_MEANING = {EVENT_MEANING_JSON};
@@ -261,6 +275,16 @@ function confirmLabel(m) {{
   var c = d(m.confirmBy);
   return MON[c.m-1] + ' ' + c.day;
 }}
+function th(label) {{
+  /* The one question this column reliably raises, answered where it is asked.
+     Small, muted, and skipped entirely by anyone who already knows. */
+  if (label === 'Confirm By' && HELP_URL) {{
+    return '<th>' + label + ' <a class="help" href="' + esc(HELP_URL) +
+      '" target="_blank" title="' + esc(HELP_LABEL) + '">?</a></th>';
+  }}
+  return '<th>' + label + '</th>';
+}}
+
 function typesFor(m, code) {{
   if (code && m.going[code]) return m.going[code];
   var all = {{}};
@@ -297,9 +321,7 @@ function render() {{
       '<div class="empty">' + {SCHEDULE_EMPTY} + '</div>';
   }} else {{
     var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
-    var h = '<table><thead><tr>' +
-      head.map(function (x) {{ return '<th>' + x + '</th>'; }}).join('') +
-      '</tr></thead><tbody>';
+    var h = '<table><thead><tr>' + head.map(th).join('') + '</tr></thead><tbody>';
     list.forEach(function (m) {{
       var name = m.link
         ? '<a href="' + esc(m.link) + '" target="_blank">' + esc(m.name) + '</a>'
@@ -337,8 +359,7 @@ function render() {{
     document.getElementById('events').innerHTML = '';
   }} else {{
     var eh = '<table><thead><tr>' +
-      ['Date','Time','Event','Location','Confirm By']
-        .map(function (x) {{ return '<th>' + x + '</th>'; }}).join('') +
+      ['Date','Time','Event','Location','Confirm By'].map(th).join('') +
       '</tr></thead><tbody>';
     evs.forEach(function (e) {{
       var nm = e.link
@@ -461,7 +482,8 @@ function build(meetRows, groupRows, eventRows) {{
       id: m.meet_id, name: m.meet_name, start: m.start_date,
       end: m.end_date || m.start_date, city: m.city, venue: m.venue, pool: m.pool,
       home: /^yes$/i.test(m.hosted_by_row), confirmed: /^yes$/i.test(m.confirmed),
-      confirmBy: m.confirm_by, eligibility: m.eligibility, link: m.info_link,
+      confirmBy: m.confirm_by, confirmCode: (m.confirm_code || '').trim(),
+      eligibility: m.eligibility, link: m.info_link,
       notes: m.notes, going: going
     }};
   }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
@@ -479,7 +501,8 @@ function build(meetRows, groupRows, eventRows) {{
       start: e.start_date, end: e.end_date || e.start_date,
       startTime: e.start_time || '', endTime: e.end_time || '',
       location: e.location || '', all: /^yes$/i.test(e.all_groups || ''),
-      confirmBy: e.confirm_by || '', confirmed: /^yes$/i.test(e.confirmed || ''),
+      confirmBy: e.confirm_by || '', confirmCode: (e.confirm_code || '').trim(),
+      confirmed: /^yes$/i.test(e.confirmed || ''),
       description: e.description || '', link: e.info_link || '', going: going
     }};
   }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
