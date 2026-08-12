@@ -34,4 +34,15 @@ ACTION:DISPLAY
 DESCRIPTION:Confirm or decline ROW Novice Meet I by tomorrow
 END:VALARM
 END:VEVENT
+BEGIN:VEVENT
+UID:registration-launch-2-tops-1@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20260910
+DTEND;VALUE=DATE:20260911
+SUMMARY:Registration Opens: Junior & Recreation Pathway
+DESCRIPTION:Registration opens for Junior pathway groups
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+LOCATION:Online
+END:VEVENT
 END:VCALENDAR
