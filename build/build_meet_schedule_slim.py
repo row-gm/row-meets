@@ -25,7 +25,7 @@ SHARED_CSS = os.path.join(HERE, "row_stylesheet.css")
 
 SEASON = "2026-27"
 TEXT, FAQ = content.load(ROOT, season=SEASON)
-MEET_TYPES, _EVENT_TYPES = content.load_types(ROOT)
+MEET_TYPES, _EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
 
 MEETS_BASE = "https://row-gm.github.io/row-meets"
 SCHEDULE_URL = f"{MEETS_BASE}/schedule/"
@@ -33,12 +33,13 @@ SCHEDULE_URL = f"{MEETS_BASE}/schedule/"
 TYPE_COLOUR = {n: h for n, h, _ in MEET_TYPES}
 CATEGORY_MEANING = [(n, d or TEXT.get(content.TAG_KEYS.get(n, ""), ""))
                     for n, _, d in MEET_TYPES]
-EXTRA_TAGS = [
-    ("Qualifiers Only", R.FLAG, TEXT[content.TAG_KEYS["Qualifiers Only"]]),
-    # "This page" would be a lie here: the pasted page does not update itself.
-    # The schedule and the calendars do, so those are what this names.
-    ("Not confirmed", R.AMBER, TEXT[content.TAG_KEYS["Not confirmed"]]),
-]
+# Eligibility tags come from the Types sheet. "Not confirmed" is appended by
+# hand because it is a status the build sets, not a value anyone enters.
+# "This page" would be a lie in its wording: the pasted page does not update
+# itself. The schedule and the calendars do, so those are what it names.
+EXTRA_TAGS = [(n, h, d or TEXT.get(content.TAG_KEYS.get(n, ""), ""))
+              for n, h, d in ELIGIBILITY]
+EXTRA_TAGS.append(("Not confirmed", R.AMBER, TEXT[content.TAG_KEYS["Not confirmed"]]))
 
 page = R.wrap(
     R.hero("ROW Swim Club", TEXT["schedule_title"], TEXT["slim_subtitle"]),

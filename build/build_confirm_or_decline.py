@@ -80,6 +80,9 @@ questions = [
      "Change it to Decline if the Confirm By date has not passed. After that date, tell "
      "your coach as soon as you know, so they can adjust relays and the meet sheet. The "
      "entry fee cannot be refunded."),
+    ("A meet is marked " + R.pill("Coach Decision", "#5C6B2F") + ". What does that mean?",
+     "Your coach chooses who is invited to that one. If it is on your swimmer's list, they "
+     "have been invited, so confirm or decline exactly as you would for any other meet."),
     ("Our swimmer needs a qualifying time for a meet. Do we still answer?",
      "Yes. Confirm if you would like them to race and your coach will tell you whether "
      "they have the time. Meets that need one are marked "

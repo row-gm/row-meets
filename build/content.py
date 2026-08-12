@@ -131,6 +131,12 @@ DEFAULT_TYPES = [
     ("Event", "Pool Closure", "Slate", ""),
     ("Event", "Program Break", "Slate", ""),
     ("Event", "Registration", "Red", ""),
+    ("Eligibility", "All Welcome", "Grey",
+     "Open to everyone in your group. Confirm or decline as usual."),
+    ("Eligibility", "Qualifiers Only", "Red", DEFAULT_TEXT["tag_qualifiers_only"]),
+    ("Eligibility", "Coach Decision", "Olive",
+     "Your coach chooses who is invited to this one. If the meet is on your "
+     "swimmer\u2019s list, confirm or decline as usual."),
 ]
 
 
@@ -172,7 +178,7 @@ def load_types(root):
                 colour = (row.get("colour") or "").strip()
                 desc = (row.get("description") or "").strip()
                 order = (row.get("sort_order") or "").strip()
-                if kind in ("Meet", "Event") and name:
+                if kind in ("Meet", "Event", "Eligibility") and name:
                     rows.append((kind, name, colour, desc,
                                  int(order) if order.isdigit() else 999))
         rows.sort(key=lambda r: r[4])
@@ -180,7 +186,7 @@ def load_types(root):
     if not rows:
         rows = list(DEFAULT_TYPES)
 
-    out = {"Meet": [], "Event": []}
+    out = {"Meet": [], "Event": [], "Eligibility": []}
     for kind, name, colour, desc in rows:
         assert colour in palette, (
             f'Type "{name}" uses colour "{colour}", which is not in the palette. '
@@ -191,7 +197,14 @@ def load_types(root):
             f"text at {_contrast(hexc):.2f}:1. It needs 4.5:1 or more.")
         out[kind].append((name, hexc, desc))
     assert out["Meet"], "types.csv has no Meet rows"
-    return out["Meet"], out["Event"]
+    if not out["Eligibility"]:
+        # Older Types sheets predate this kind. Fall back so a build never stops
+        # because a sheet has not been updated yet.
+        out["Eligibility"] = [
+            ("All Welcome", palette["Grey"], ""),
+            ("Qualifiers Only", palette["Red"], DEFAULT_TEXT["tag_qualifiers_only"]),
+        ]
+    return out["Meet"], out["Event"], out["Eligibility"]
 
 
 TAG_KEYS = {

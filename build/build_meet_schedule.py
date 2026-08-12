@@ -46,10 +46,11 @@ MEETS_CSV = MEETS_CSV if os.path.exists(MEETS_CSV) else MEETS_CSV.replace(".csv"
 # on the site, which is the trap row-swimming-math is already stuck in.
 MEETS_BASE = "https://row-gm.github.io/row-meets"
 CAL_BASE = f"{MEETS_BASE}/calendars"
-PACKAGE_BASE = f"{MEETS_BASE}/packages"
 
 SEASON = "2026-27"
-MEET_TYPES, _EVENT_TYPES = content.load_types(ROOT)
+MEET_TYPES, _EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
+ELIGIBLE_NAMES = [n for n, _, _ in ELIGIBILITY]
+ELIGIBLE_COLOUR = {n: h for n, h, _ in ELIGIBILITY}
 _T, _F = content.load(ROOT, season=SEASON)
 TEXT_FALLBACK = {n: _T.get(content.TAG_KEYS.get(n, ""), "") for n, _, _ in MEET_TYPES}
 
@@ -82,9 +83,13 @@ AMBER = "#8A6420"   # dark bronze, for a date that is not settled
 
 MEET_CATEGORY = {n: (h, FOAM) for n, h, _ in MEET_TYPES}
 
-# Valid values for a group cell. Adding a row to the Types sheet makes it valid
-# here, in the page, and in the spreadsheet dropdown, with no code change.
-GROUP_TAGS = [n for n, _, _ in MEET_TYPES]
+# A group cell holds one or more meet types, and may also hold an eligibility
+# value that overrides the meet-level one for that group. That override is real:
+# the same meet is often open to the senior groups and coach-selected for others.
+# Qualifying standards are still meet-level, because a standard does not vary by
+# group; a selection does.
+MEET_TYPE_NAMES = [n for n, _, _ in MEET_TYPES]
+GROUP_TAGS = MEET_TYPE_NAMES + ELIGIBLE_NAMES
 
 CATEGORY_MEANING = [(n, d or TEXT_FALLBACK.get(n, "")) for n, _, d in MEET_TYPES]
 
@@ -125,8 +130,13 @@ def load():
         assert m["_going"], f"{m['meet_name']}: no group is racing this meet"
         # What the meet is, taken from the groups going. One type for most meets,
         # two where a pathway treats it differently.
-        m["_types"] = sorted({t for v in m["_going"].values() for t in v},
-                             key=GROUP_TAGS.index)
+        m["_types"] = sorted({t for v in m["_going"].values() for t in v
+                              if t in MEET_TYPE_NAMES}, key=MEET_TYPE_NAMES.index)
+        # What each group actually sees, once its own override is applied.
+        m["_elig"] = {}
+        for code, tags in m["_going"].items():
+            own = [t for t in tags if t in ELIGIBLE_NAMES]
+            m["_elig"][code] = own[0] if own else m["eligibility"].strip()
         host = m["hosted_by_row"].strip().lower()
         assert host in ("yes", "no"), f"{m['meet_name']}: hosted_by_row must be Yes or No"
         m["_home"] = host == "yes"
@@ -136,8 +146,9 @@ def load():
         bad = sorted({t for v in m["_going"].values() for t in v if t not in GROUP_TAGS})
         assert not bad, (f"{m['meet_name']}: group cells take {GROUP_TAGS} "
                          f"(comma separated) or blank. Got {bad}")
-        assert m["eligibility"].strip() in ("All Welcome", "Qualifiers Only"), \
-            f"{m['meet_name']}: eligibility must be All Welcome or Qualifiers Only"
+        assert m["eligibility"].strip() in ELIGIBLE_NAMES, (
+            f"{m['meet_name']}: eligibility \"{m['eligibility'].strip()}\" is not on the "
+            f"Types sheet. Valid: {', '.join(ELIGIBLE_NAMES)}")
         assert m["pool"].strip() in ("25m", "50m"), \
             f"{m['meet_name']}: pool must be 25m or 50m"
         if m["confirm_by"].strip():
@@ -253,24 +264,15 @@ def going_text(m):
     return f'<span style="font-weight:700;color:{NAVY};">' + " &middot; ".join(going) + "</span>"
 
 
-PACKAGE_DIR = os.path.join(ROOT, "packages")
-
-
 def meet_url(m):
-    """Where a meet name points.
+    """Where a meet name points: whatever is in info_link, or nowhere.
 
-    1. info_link, if it holds a URL. Use this for anything hosted elsewhere.
-    2. Otherwise a meet package PDF named <meet_id>.pdf in data/packages. Drop the
-       file in, commit it, and the link appears. Nothing to type, nothing to typo.
-    3. Otherwise no link.
+    An earlier version also looked for a PDF named after the meet_id in a
+    packages folder in the repo. That was dropped: it needed GitHub, which is
+    the one part of this nobody should have to touch, and it meant two ways to
+    get a link with one of them invisible from the spreadsheet.
     """
-    url = m["info_link"].strip()
-    if url:
-        return url
-    pdf = os.path.join(PACKAGE_DIR, f"{m['meet_id'].strip()}.pdf")
-    if os.path.exists(pdf):
-        return f"{PACKAGE_BASE}/{m['meet_id'].strip()}.pdf"
-    return ""
+    return m["info_link"].strip()
 
 
 def linked_name(m, colour=None, size=None):
@@ -297,14 +299,18 @@ def confirm_label(m):
     return f"{MONTHS[d.month - 1][:3]} {d.day}"
 
 
+def elig_tag(m, code=None):
+    """That group's eligibility, falling back to the meet's own."""
+    val = (m["_elig"].get(code) if code else None) or m["eligibility"].strip()
+    return cell_pill(val, ELIGIBLE_COLOUR.get(val, INK_SOFT))
+
+
 def eligibility_tag(m, compact=False):
     """Two values, one vocabulary across the page and the spreadsheet.
     Red only on the one that can stop a family's plan."""
     val = m["eligibility"].strip()
     mk = cell_pill if compact else pill
-    if val == "Qualifiers Only":
-        return mk(val, FLAG)
-    return mk("All Welcome", INK_SOFT)
+    return mk(val, ELIGIBLE_COLOUR.get(val, INK_SOFT))
 
 
 all_rows = []
@@ -378,10 +384,10 @@ GROUP_COLS = ["Meet Date", "Confirm By", "Meet Name", "Location", "Pool", "Meet 
 GROUP_WIDTHS = ["11%", "11%", "26%", "14%", "8%", "16%", "14%"]
 
 
-def meet_cells(m, tags=None):
+def meet_cells(m, tags=None, code=None):
     """One row of a group table. `tags` are that group's own meet types; without
     them the row falls back to the meet's overall category."""
-    types = tags or m["_types"]
+    types = [t for t in (tags or m["_types"]) if t in MEET_TYPE_NAMES] or m["_types"]
     name = linked_name(m)
     if m["_home"]:
         name += (f'<span style="display:block;color:{INK_SOFT};font-size:12.5px;'
@@ -389,7 +395,7 @@ def meet_cells(m, tags=None):
     name += status_note(m, block=True)
     type_cell = " ".join(category_pill(t, True) for t in types)
     return [date_label(m), confirm_label(m), name, m["city"], m["pool"].strip(),
-            type_cell, eligibility_tag(m, True)]
+            type_cell, elig_tag(m, code)]
 
 
 def block_shell(title, subtitle, body, cal_code=None):
@@ -424,7 +430,7 @@ def group_block(g):
         body = p("No meets scheduled yet.", size="14px", color=INK_SOFT, margin="0")
     else:
         body = sched_table(GROUP_COLS,
-                           [meet_cells(m, m["_going"][code]) for m in mine],
+                           [meet_cells(m, m["_going"][code], code) for m in mine],
                            GROUP_WIDTHS, framed=False)
     return block_shell(g["display_name"], code, body, cal_code=code)
 

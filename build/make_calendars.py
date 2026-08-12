@@ -41,7 +41,6 @@ MEETS_CSV = os.path.join(ROOT, "data", "meets.csv")
 # beats one that tells you to go and find the right page yourself.
 CONFIRM_URL = "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}"
 EVENTS_CSV = os.path.join(ROOT, "data", "events.csv")
-PACKAGE_DIR = os.path.join(ROOT, "packages")
 GROUPS_CSV = GROUPS_CSV if os.path.exists(GROUPS_CSV) else GROUPS_CSV.replace(".csv", "_sample.csv")
 MEETS_CSV = MEETS_CSV if os.path.exists(MEETS_CSV) else MEETS_CSV.replace(".csv", "_sample.csv")
 
@@ -50,7 +49,6 @@ DOMAIN = "rowswimming.ca"
 # Where the folder will be served from once the repo exists.
 MEETS_BASE = "https://row-gm.github.io/row-meets"
 PAGES_BASE = f"{MEETS_BASE}/calendars"
-PACKAGE_BASE = f"{MEETS_BASE}/packages"
 
 def tags_of(cell):
     return [t.strip() for t in cell.replace(";", ",").split(",") if t.strip()]
@@ -172,13 +170,10 @@ def ics_for(group, meets, events):
             "TRANSP:TRANSPARENT",
         ]
         # Calendar apps show URL as a clickable link on the event.
-        # Same rule as the page: an explicit link wins, otherwise a package PDF
-        # named after the meet_id, otherwise no link.
-        url = m["info_link"].strip()
-        if not url and os.path.exists(os.path.join(PACKAGE_DIR, f"{m['meet_id'].strip()}.pdf")):
-            url = f"{PACKAGE_BASE}/{m['meet_id'].strip()}.pdf"
-        if url:
-            lines.append(f"URL:{url}")
+        # info_link is the only route. Put the PDF in the CMS or Drive and paste
+        # the address into the sheet.
+        if m["info_link"].strip():
+            lines.append(f"URL:{m['info_link'].strip()}")
         lines.append("END:VEVENT")
 
         if m["_confirm"]:

@@ -26,7 +26,7 @@ SEASON = "2026-27"
 
 # Page copy comes from the Text sheet in the spreadsheet.
 TEXT, _FAQ = content.load(ROOT, season=SEASON)
-MEET_TYPES, EVENT_TYPES = content.load_types(ROOT)
+MEET_TYPES, EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
 NAVY, TEAL, CYAN, RED = "#0A2E3F", "#136B77", "#3FBFB0", "#D64545"
 SAND, FOAM, INK, INK_SOFT, LINE = "#F3EFE4", "#FFFFFF", "#152225", "#4B5B60", "#DAD3C2"
 ROW_ALT = "#FAF8F2"
@@ -73,6 +73,8 @@ payload = {
     "showEvents": {code: _shows(g, "events")
                    for g, code in zip(groups, codes)},
     "eventTypes": {n: h for n, h, _ in EVENT_TYPES},
+    "eligibilityNames": [n for n, _, _ in ELIGIBILITY],
+    "meetTypeNames": [n for n, _, _ in MEET_TYPES],
     "events": [{
         "id": e["event_id"].strip(),
         "name": e["event_name"].strip(),
@@ -111,14 +113,17 @@ payload = {
 }
 
 TYPE_BG = {n: h for n, h, _ in MEET_TYPES}
-TYPE_BG["Qualifiers Only"] = FLAG
+# Eligibility values and their colours come from the Types sheet too, so adding
+# one there needs no code change.
+TYPE_BG.update({n: h for n, h, _ in ELIGIBILITY})
 TYPE_BG["Not confirmed"] = AMBER
 TYPE_BG_JSON = json.dumps(TYPE_BG)
 # Descriptions come from the Types sheet where given, and fall back to the Text
 # sheet so the wording written earlier is not lost.
 MEANING_JSON = json.dumps(
     [[n, d or TEXT.get(content.TAG_KEYS.get(n, ""), "")] for n, _, d in MEET_TYPES]
-    + [[n, TEXT[content.TAG_KEYS[n]]] for n in ("Qualifiers Only", "Not confirmed")])
+    + [[n, d or TEXT.get(content.TAG_KEYS.get(n, ""), "")] for n, _, d in ELIGIBILITY]
+    + [[n, TEXT[content.TAG_KEYS["Not confirmed"]]] for n in ("Not confirmed",)])
 GROUPCARD_BODY = json.dumps(TEXT["groupcard_body"])
 GROUPCARD_BUTTON = json.dumps(TEXT["groupcard_button"])
 SCHEDULE_EMPTY = json.dumps(TEXT["schedule_empty"])
@@ -285,11 +290,29 @@ function th(label) {{
   return '<th>' + label + '</th>';
 }}
 
+function isType(t) {{ return data.meetTypeNames.indexOf(t) > -1; }}
+function isElig(t) {{ return data.eligibilityNames.indexOf(t) > -1; }}
+
 function typesFor(m, code) {{
-  if (code && m.going[code]) return m.going[code];
+  if (code && m.going[code]) return m.going[code].filter(isType);
   var all = {{}};
-  for (var k in m.going) m.going[k].forEach(function (t) {{ all[t] = 1; }});
-  return Object.keys(TYPE_BG).filter(function (t) {{ return all[t]; }});
+  for (var k in m.going) m.going[k].forEach(function (t) {{ if (isType(t)) all[t] = 1; }});
+  return data.meetTypeNames.filter(function (t) {{ return all[t]; }});
+}}
+
+/* A group cell may carry an eligibility value, which overrides the meet's own
+   for that group. The same meet is often open to the senior groups and
+   coach-selected for others. */
+function eligFor(m, code) {{
+  if (code && m.going[code]) {{
+    var own = m.going[code].filter(isElig);
+    if (own.length) return [own[0]];
+  }}
+  if (code) return [m.eligibility];
+  var all = {{}};
+  for (var k in m.going) m.going[k].forEach(function (t) {{ if (isElig(t)) all[t] = 1; }});
+  all[m.eligibility] = 1;
+  return data.eligibilityNames.filter(function (t) {{ return all[t]; }});
 }}
 
 function render() {{
@@ -340,8 +363,9 @@ function render() {{
         '<td data-label="Type">' + typesFor(m, code).map(function (t) {{
             return tag(t, TYPE_BG[t] || '{INK_SOFT}');
           }}).join('') + '</td>' +
-        '<td data-label="Entry">' + (m.eligibility === 'Qualifiers Only'
-          ? tag('Qualifiers Only','{FLAG}') : tag('All Welcome','{INK_SOFT}')) + '</td>' +
+        '<td data-label="Entry">' + eligFor(m, code).map(function (e) {{
+            return tag(e, TYPE_BG[e] || '{INK_SOFT}');
+          }}).join('') + '</td>' +
         '</tr>';
     }});
     document.getElementById('out').innerHTML = h + '</tbody></table>';
