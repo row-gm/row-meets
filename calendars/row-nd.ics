@@ -307,8 +307,8 @@ END:VEVENT
 BEGIN:VEVENT
 UID:registration-launch-1-nd@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20260908
-DTEND;VALUE=DATE:20260909
+DTSTART;VALUE=DATE:20260901
+DTEND;VALUE=DATE:20260902
 SUMMARY:Registration Opens: National\, Provincial\, Regional Pathway
 DESCRIPTION:Registration opens for National\, Provincial\, Regional pathw
  ay groups
