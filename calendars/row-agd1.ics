@@ -90,6 +90,33 @@ DESCRIPTION:Confirm or decline ESWIM AGI by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:nothers-london-agd1@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261120
+DTEND;VALUE=DATE:20261123
+SUMMARY:Nothers Invitational
+LOCATION:Canada Games Aquatic Centre\, London
+DESCRIPTION:Pathway Skills for AGD1. 25m pool. All swimmers not AGI eligi
+ ble or coaches discretion. Confirm by 2026-10-03.
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:nothers-london-agd1-confirm@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261003
+DTEND;VALUE=DATE:20261004
+SUMMARY:Confirm by: Nothers Invitational
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Confirm or decline Nothers Invitational by tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:mssac-open-agd1@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261218
