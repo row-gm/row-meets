@@ -156,28 +156,31 @@ END:VEVENT
 BEGIN:VEVENT
 UID:ymca-kick-off-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20260913
-DTEND;VALUE=DATE:20260914
-SUMMARY:YMCA Team Day (not confirmed)
+DTSTART:20260913T90000
+DTEND:20260913T133000
+SUMMARY:YMCA Team Day (Half Day)
 DESCRIPTION:A fun day of activities to kick off the year! Confirm by 2026
  -09-01.
-STATUS:TENTATIVE
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 LOCATION:YMCA Camp Ki-Wa-Y
+URL:https://www.rowswimming.ca/page/calendar#/team-events/upcoming/177343
+ 0
 END:VEVENT
 BEGIN:VEVENT
 UID:ymca-kick-off-jd2-confirm@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20260901
 DTEND;VALUE=DATE:20260902
-SUMMARY:Confirm by: YMCA Team Day
+SUMMARY:Confirm by: YMCA Team Day (Half Day)
 DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
- dance.
+ dance. https://www.rowswimming.ca/controller/cms/index#/team-events/ev:1
+ 773430
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm or decline YMCA Team Day by tomorrow
+DESCRIPTION:Confirm or decline YMCA Team Day (Half Day) by tomorrow
 END:VALARM
 END:VEVENT
 END:VCALENDAR
