@@ -201,7 +201,7 @@ color:{NAVY};font-size:14px;}}
 table{{border-collapse:collapse;width:100%;margin:14px 0 0;font-size:14px;}}
 th{{background:{NAVY};color:{FOAM};text-align:left;padding:11px 12px;
 font-family:{UI};font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
-font-size:11px;}}
+font-size:11px;white-space:nowrap;}}
 td{{border-top:1px solid {LINE};padding:12px;vertical-align:top;}}
 tbody tr:nth-child(even){{background:{ROW_ALT};}}
 .date{{font-family:{MONO};font-weight:700;color:{NAVY};white-space:nowrap;}}
@@ -216,6 +216,10 @@ a.help{{display:inline-block;width:15px;height:15px;line-height:15px;text-align:
 border-radius:50%;background:{FOAM};color:{NAVY};font-size:10px;font-weight:700;
 text-decoration:none;vertical-align:middle;opacity:0.75;}}
 a.help:hover{{opacity:1;}}
+span.info{{display:inline-block;width:15px;height:15px;line-height:15px;text-align:center;
+border-radius:50%;background:{FOAM};color:{NAVY};font-size:10px;font-weight:700;
+vertical-align:middle;opacity:0.75;cursor:default;}}
+span.info:hover{{opacity:1;}}
 .legend td:first-child{{white-space:nowrap;}}
 .empty{{padding:26px;text-align:center;color:{INK_SOFT};background:{ROW_ALT};
 border:1px solid {LINE};border-radius:10px;margin-top:14px;}}
@@ -307,11 +311,8 @@ function confirmLabel(m) {{
   return MON[c.m-1] + ' ' + c.day;
 }}
 function th(label) {{
-  /* The one question this column reliably raises, answered where it is asked.
-     Small, muted, and skipped entirely by anyone who already knows. */
-  if (label === 'Confirm By' && HELP_URL) {{
-    return '<th>' + label + ' <a class="help" href="' + esc(HELP_URL) +
-      '" target="_blank" title="' + esc(HELP_LABEL) + '">?</a></th>';
+  if (label === 'Confirm By') {{
+    return '<th>' + label + ' <span class="info" title="You must Confirm or Decline events for your group with a date listed. Click the event name link to open the confirmation page.">ℹ</span></th>';
   }}
   return '<th>' + label + '</th>';
 }}
@@ -371,7 +372,7 @@ function render() {{
     document.getElementById('out').innerHTML =
       '<div class="empty">' + {SCHEDULE_EMPTY} + '</div>';
   }} else {{
-    var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
+    var head = ['Meet Date','Meet Name','Location','Pool','Meet Type','Eligibility','Confirm By'];
     var h = '<table><thead><tr>' + head.map(th).join('') + '</tr></thead><tbody>';
     list.forEach(function (m) {{
       var name = m.link
@@ -383,7 +384,6 @@ function render() {{
       if (m.notes) extra += '<div class="muted">' + esc(m.notes) + '</div>';
       h += '<tr>' +
         '<td data-label="Date" class="date">' + dateLabel(m) + '</td>' +
-        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
         '<td data-label="Meet"><span class="name">' + name + '</span>' + extra + '</td>' +
         '<td data-label="Where">' + esc(m.city) +
           '<div class="muted">' + esc(m.venue) + '</div></td>' +
@@ -394,6 +394,7 @@ function render() {{
         '<td data-label="Entry">' + eligFor(m, code).map(function (e) {{
             return tag(e, TYPE_BG[e] || '{INK_SOFT}');
           }}).join('') + '</td>' +
+        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
         '</tr>';
     }});
     document.getElementById('out').innerHTML = h + '</tbody></table>';
