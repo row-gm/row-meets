@@ -9,33 +9,6 @@ X-WR-CALDESC:Provincial Development 2 meet schedule and confirmation date
 X-PUBLISHED-TTL:PT12H
 REFRESH-INTERVAL;VALUE=DURATION:PT12H
 BEGIN:VEVENT
-UID:row-fall-first-try-pd2@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261017
-DTEND;VALUE=DATE:20261018
-SUMMARY:ROW Fall First Try
-LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Team for PD2. 25m pool. Our first officiating and volunteer o
- pportunity! Confirm by 2026-10-03.
-STATUS:CONFIRMED
-TRANSP:TRANSPARENT
-END:VEVENT
-BEGIN:VEVENT
-UID:row-fall-first-try-pd2-confirm@rowswimming.ca
-DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20261003
-DTEND;VALUE=DATE:20261004
-SUMMARY:Confirm by: ROW Fall First Try
-DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
- dance.
-TRANSP:TRANSPARENT
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Confirm or decline ROW Fall First Try by tomorrow
-END:VALARM
-END:VEVENT
-BEGIN:VEVENT
 UID:bac-fall-invitational-pd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261106
