@@ -1,5 +1,20 @@
 event_id,event_name,event_type,start_date,end_date,start_time,end_time,location,all_groups,confirm_by,confirm_code,confirmed,description,info_link,RSA,REC AM,REC PM,TOPS 2,TOPS 1,JD2,JD1,AGD2,AGD1,SD,PD3,PD2,PD1,ND
-registration-launch-1,"Registration Opens: National, Provincial, Regional Pathway",Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,"Registration opens for National, Provincial, Regional pathway groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
-registration-launch-2,Registration Opens: Junior & Recreation Pathway,Registration,2026-09-05,2026-09-05,,,Online,No,,,Yes,Registration opens for Junior pathway groups,,,Yes,Yes,Yes,Yes,Yes,Yes,,,,,,,
-registration-launch-3,Registration Opens: ROW Swim Academy,Registration,2026-09-08,2026-09-08,,,Online,No,,,Yes,Registration opens for ROW Swim Academy,,Yes,,,,,,,,,,,,,
+registration-launch-1,Registration Opens,Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,"Registration opens for National, Provincial, Regional pathway groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+registration-launch-2,Registration Opens,Registration,2026-09-05,2026-09-05,,,Online,No,,,Yes,Registration opens for Junior pathway groups,,,Yes,Yes,Yes,Yes,Yes,Yes,,,,,,,
+registration-launch-3,Registration Opens,Registration,2026-09-08,2026-09-08,,,Online,No,,,Yes,Registration opens for ROW Swim Academy,,Yes,,,,,,,,,,,,,
 grassroots-dev-weekend,Swim ON Grassroots Development Day,Coaching Development,2026-11-14,2026-11-15,,,WLU Pool,Yes,,,Yes,A weekend event of coaching development offered in partnership with Swim Ontario.,,,,,,,,,,,,,,,
+season-start-up-1,Season Start Up,Program Dates,2026-09-14,2026-09-14,,,,No,,,Yes,"Season kick off - National, Provincial, Regional groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+season-start-up-2,Season Start Up,Program Dates,2026-09-21,2026-09-21,,,,No,,,Yes,"Season kick off - Junior, Recreation groups",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
+season-start-up-rsa,Season Start Up,Program Dates,2026-09-27,2026-09-27,,,,No,,,Yes,Season kick-off - ROW Swim Academy,,Yes,,,,,,,,,,,,,
+registration-due-1,Registration deadline,Program Dates,2026-09-13,2026-09-13,,,,No,,,Yes,"All National, Provincial, Regional swimmers must be registered in order to participate in practice.",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+registration-due-2,Registration deadline,Program Dates,2026-09-20,2026-09-20,,,,No,,,Yes,"All Junior Development, TOPS, and Recreational swimmers must be registered in order to participate in practice.",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
+fees-due-1,Monthly Training Fees Due,Program Dates,2026-10-15,2026-10-15,,,,No,,,Yes,Training fees payment due,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-2,Monthly Training Fees Due,Program Dates,2026-11-15,2026-11-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-3,Monthly Training Fees Due,Program Dates,2026-12-15,2026-12-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-4,Monthly Training Fees Due,Program Dates,2027-01-15,2027-01-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-5,Monthly Training Fees Due,Program Dates,2027-02-15,2027-02-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-6,Monthly Training Fees Due,Program Dates,2027-03-15,2027-03-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-7,Monthly Training Fees Due,Program Dates,2027-04-15,2027-04-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-8,Monthly Training Fees Due,Program Dates,2027-05-15,2027-05-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-9,Monthly Training Fees Due,Program Dates,2027-06-15,2027-06-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+fees-due-10,Monthly Training Fees Due,Program Dates,2027-07-15,2027-07-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
