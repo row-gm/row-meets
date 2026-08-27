@@ -193,11 +193,11 @@ border-radius:8px;text-decoration:none;border:0;cursor:pointer;white-space:nowra
 .btn:hover{{background:{NAVY};}}
 .btn.done{{background:{TIDE};}}
 .calcard{{background:{ROW_ALT};border:2px solid {TEAL};border-radius:12px;
-padding:18px 20px;margin:16px 0 0;display:flex;gap:16px;align-items:center;
-flex-wrap:wrap;}}
+padding:18px 20px;margin:16px 0 0;}}
 .calcard .t{{font-family:{UI};font-weight:700;text-transform:uppercase;letter-spacing:0.05em;
-color:{NAVY};font-size:14px;}}
-.calcard .d{{font-size:14px;color:{INK_SOFT};flex:1;min-width:220px;}}
+color:{NAVY};font-size:14px;margin-bottom:4px;}}
+.calcard .d{{font-size:14px;color:{INK_SOFT};margin-bottom:14px;}}
+.calcard-actions{{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}}
 table{{border-collapse:collapse;width:100%;margin:14px 0 0;font-size:14px;}}
 th{{background:{NAVY};color:{FOAM};text-align:left;padding:11px 12px;
 font-family:{UI};font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
@@ -261,7 +261,7 @@ font-size:13px;color:{INK_SOFT};}}
 .cal-note{{margin:0;padding:2px 16px 12px;font-size:13px;color:{INK_SOFT};}}
 .calhelp-link{{display:inline-block;font-size:13px;color:{TEAL};opacity:0.85;
   text-decoration:underline;cursor:pointer;background:none;border:none;
-  font-family:{BODY};padding:0;margin-top:8px;}}
+  font-family:{BODY};padding:0;}}
 .calhelp-link:hover{{opacity:1;}}
 </style></head><body>
 
@@ -485,10 +485,12 @@ function render() {{
   document.getElementById('calcard').innerHTML = !g ? '' :
     '<div class="calcard"><div class="t">' + esc(g.name) + '</div>' +
     '<div class="d">' + {GROUPCARD_BODY} + '</div>' +
+    '<div class="calcard-actions">' +
     '<button class="btn" id="copycal" data-url="' + CAL_BASE + '/row-' +
     g.code.toLowerCase().replace(/ /g,'-') + '.ics">' + {GROUPCARD_BUTTON} +
     '</button>' +
     '<button class="calhelp-link" onclick="openCalHelp()">How to add this to your calendar &rsaquo;</button>' +
+    '</div>' +
     '</div>';
 
   var showM = !code || data.showMeets[code] !== false;
