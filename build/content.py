@@ -207,6 +207,27 @@ def load_types(root):
     return out["Meet"], out["Event"], out["Eligibility"]
 
 
+def load_pool_types(root):
+    """Pool kind names from the Types sheet.
+
+    Returns a list of pool name strings (e.g. ["25m", "50m"]).
+    Falls back to a sensible default if types.csv has no Pool rows,
+    so a build never fails just because the sheet predates this column.
+    """
+    path = os.path.join(root, "data", "types.csv")
+    names = []
+    if os.path.exists(path):
+        with open(path, encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                kind = (row.get("kind") or "").strip().title()
+                name = (row.get("name") or "").strip()
+                if kind == "Pool" and name:
+                    names.append(name)
+    if not names:
+        names = ["25m", "50m"]
+    return names
+
+
 TAG_KEYS = {
     "Peak": "tag_peak",
     "Performance": "tag_performance",
