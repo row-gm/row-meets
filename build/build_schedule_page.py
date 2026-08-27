@@ -259,7 +259,7 @@ font-size:13px;color:{INK_SOFT};}}
   line-height:2;color:{INK};}}
 .cal-steps li{{padding-left:4px;}}
 .cal-note{{margin:0;padding:2px 16px 12px;font-size:13px;color:{INK_SOFT};}}
-.calhelp-link{{display:inline-block;font-size:13px;color:{FOAM};opacity:0.8;
+.calhelp-link{{display:inline-block;font-size:13px;color:{TEAL};opacity:0.85;
   text-decoration:underline;cursor:pointer;background:none;border:none;
   font-family:{BODY};padding:0;margin-top:8px;}}
 .calhelp-link:hover{{opacity:1;}}
