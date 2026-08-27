@@ -207,6 +207,29 @@ def load_types(root):
     return out["Meet"], out["Event"], out["Eligibility"]
 
 
+def load_pool_types(root):
+    """Pool types from the Types sheet (kind = Pool), sorted by sort_order.
+
+    Pool types do not carry colours — they are displayed as plain text, not
+    coloured tags — so this is a plain name list with no palette check.
+    Falls back to the three built-in values if no Pool rows exist yet.
+    """
+    path = os.path.join(root, "data", "types.csv")
+    if os.path.exists(path):
+        names = []
+        with open(path, encoding="utf-8-sig") as f:
+            for row in csv.DictReader(f):
+                kind = (row.get("kind") or "").strip().title()
+                name = (row.get("name") or "").strip()
+                order = (row.get("sort_order") or "").strip()
+                if kind == "Pool" and name:
+                    names.append((int(order) if order.isdigit() else 999, name))
+        if names:
+            names.sort()
+            return [n for _, n in names]
+    return ["25m", "50m", "OW"]
+
+
 TAG_KEYS = {
     "Peak": "tag_peak",
     "Performance": "tag_performance",
