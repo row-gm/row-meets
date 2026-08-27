@@ -143,44 +143,158 @@ DESCRIPTION:Confirm or decline ROW Cunningham Classic by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:row-club-championships-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270515
+DTEND;VALUE=DATE:20270517
+SUMMARY:ROW Club Championships (not confirmed)
+LOCATION:Wilfrid Laurier University\, Waterloo
+DESCRIPTION:Team for JD2. 50m pool. 25m & 50m sessions. All ROW welcome.
+STATUS:TENTATIVE
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
 UID:registration-launch-2-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20260905
 DTEND;VALUE=DATE:20260906
-SUMMARY:Registration Opens: Junior & Recreation Pathway
+SUMMARY:Registration Opens
 DESCRIPTION:Registration opens for Junior pathway groups
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 LOCATION:Online
 END:VEVENT
 BEGIN:VEVENT
-UID:ymca-kick-off-jd2@rowswimming.ca
+UID:registration-due-2-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART:20260913T90000
-DTEND:20260913T133000
-SUMMARY:YMCA Team Day (Half Day)
-DESCRIPTION:A fun day of activities to kick off the year! Confirm by 2026
- -09-01.
+DTSTART;VALUE=DATE:20260920
+DTEND;VALUE=DATE:20260921
+SUMMARY:Registration deadline
+DESCRIPTION:All Junior Development\, TOPS\, and Recreational swimmers mus
+ t be registered in order to participate in practice.
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
-LOCATION:YMCA Camp Ki-Wa-Y
-URL:https://www.rowswimming.ca/page/calendar#/team-events/upcoming/177343
- 0
 END:VEVENT
 BEGIN:VEVENT
-UID:ymca-kick-off-jd2-confirm@rowswimming.ca
+UID:season-start-up-2-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20260901
-DTEND;VALUE=DATE:20260902
-SUMMARY:Confirm by: YMCA Team Day (Half Day)
-DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
- dance. https://www.rowswimming.ca/controller/cms/index#/team-events/ev:1
- 773430
+DTSTART;VALUE=DATE:20260921
+DTEND;VALUE=DATE:20260922
+SUMMARY:Season Start Up
+DESCRIPTION:Season kick off - Junior\, Recreation groups
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
-BEGIN:VALARM
-TRIGGER:-P1D
-ACTION:DISPLAY
-DESCRIPTION:Confirm or decline YMCA Team Day (Half Day) by tomorrow
-END:VALARM
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-1-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261015
+DTEND;VALUE=DATE:20261016
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:grassroots-dev-weekend-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261116
+SUMMARY:Swim ON Grassroots Development Day
+DESCRIPTION:A weekend event of coaching development offered in partnershi
+ p with Swim Ontario.
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+LOCATION:WLU Pool
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-2-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261115
+DTEND;VALUE=DATE:20261116
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-3-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261215
+DTEND;VALUE=DATE:20261216
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-4-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270115
+DTEND;VALUE=DATE:20270116
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-5-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270215
+DTEND;VALUE=DATE:20270216
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-6-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270315
+DTEND;VALUE=DATE:20270316
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-7-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270415
+DTEND;VALUE=DATE:20270416
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-8-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270515
+DTEND;VALUE=DATE:20270516
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-9-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270615
+DTEND;VALUE=DATE:20270616
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:fees-due-10-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270715
+DTEND;VALUE=DATE:20270716
+SUMMARY:Monthly Training Fees Due
+DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
 END:VEVENT
 END:VCALENDAR
