@@ -51,6 +51,7 @@ SEASON = "2026-27"
 MEET_TYPES, _EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
 ELIGIBLE_NAMES = [n for n, _, _ in ELIGIBILITY]
 ELIGIBLE_COLOUR = {n: h for n, h, _ in ELIGIBILITY}
+POOL_NAMES = content.load_pool_types(ROOT)
 _T, _F = content.load(ROOT, season=SEASON)
 TEXT_FALLBACK = {n: _T.get(content.TAG_KEYS.get(n, ""), "") for n, _, _ in MEET_TYPES}
 
@@ -149,8 +150,8 @@ def load():
         assert m["eligibility"].strip() in ELIGIBLE_NAMES, (
             f"{m['meet_name']}: eligibility \"{m['eligibility'].strip()}\" is not on the "
             f"Types sheet. Valid: {', '.join(ELIGIBLE_NAMES)}")
-        assert m["pool"].strip() in ("25m", "50m"), \
-            f"{m['meet_name']}: pool must be 25m or 50m"
+        assert m["pool"].strip() in POOL_NAMES, \
+            f"{m['meet_name']}: pool must be one of: {', '.join(POOL_NAMES)}"
         if m["confirm_by"].strip():
             m["_confirm"] = date.fromisoformat(m["confirm_by"].strip())
             assert m["_confirm"] <= m["_start"], \
