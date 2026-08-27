@@ -150,8 +150,9 @@ def load():
         assert m["eligibility"].strip() in ELIGIBLE_NAMES, (
             f"{m['meet_name']}: eligibility \"{m['eligibility'].strip()}\" is not on the "
             f"Types sheet. Valid: {', '.join(ELIGIBLE_NAMES)}")
-        assert m["pool"].strip() in POOL_NAMES, \
-            f"{m['meet_name']}: pool must be one of: {', '.join(POOL_NAMES)}"
+        if POOL_NAMES:
+            assert m["pool"].strip() in POOL_NAMES, \
+                f"{m['meet_name']}: pool must be one of: {', '.join(POOL_NAMES)}"
         if m["confirm_by"].strip():
             m["_confirm"] = date.fromisoformat(m["confirm_by"].strip())
             assert m["_confirm"] <= m["_start"], \

@@ -223,8 +223,8 @@ def load_pool_types(root):
                 name = (row.get("name") or "").strip()
                 if kind == "Pool" and name:
                     names.append(name)
-    if not names:
-        names = ["25m", "50m"]
+    # No Pool rows defined in types.csv → return empty list so callers
+    # can skip pool validation rather than enforcing a wrong fallback.
     return names
 
 
