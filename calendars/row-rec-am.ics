@@ -12,10 +12,22 @@ UID:registration-launch-2-rec-am@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20260905
 DTEND;VALUE=DATE:20260906
-SUMMARY:Registration Opens: Junior & Recreation Pathway
+SUMMARY:Registration Opens
 DESCRIPTION:Registration opens for Junior pathway groups
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 LOCATION:Online
+END:VEVENT
+BEGIN:VEVENT
+UID:grassroots-dev-weekend-rec-am@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261114
+DTEND;VALUE=DATE:20261116
+SUMMARY:Swim ON Grassroots Development Day
+DESCRIPTION:A weekend event of coaching development offered in partnershi
+ p with Swim Ontario.
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+LOCATION:WLU Pool
 END:VEVENT
 END:VCALENDAR
