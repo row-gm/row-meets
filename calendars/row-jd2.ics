@@ -116,6 +116,33 @@ DESCRIPTION:Confirm or decline ROW Novice Meet I by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:gmac-winter-skills-jd2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270207
+DTEND;VALUE=DATE:20270208
+SUMMARY:GMAC Winter Skills and Thrills
+LOCATION:University of Guelph\, Guelph
+DESCRIPTION:Pathway Skills for JD2. 25m pool. Swimmers from all eligible 
+ groups are invited. Confirm by 2027-01-18.
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:gmac-winter-skills-jd2-confirm@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270118
+DTEND;VALUE=DATE:20270119
+SUMMARY:Confirm by: GMAC Winter Skills and Thrills
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Confirm or decline GMAC Winter Skills and Thrills by tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:row-cunningham-classic-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270409
