@@ -436,7 +436,12 @@ function dateLabel(m) {{
 function confirmLabel(m) {{
   if (!m.confirmBy) return '\\u2014';
   var c = d(m.confirmBy);
-  return MON[c.m-1] + ' ' + c.day;
+  var label = MON[c.m-1] + ' ' + c.day;
+  if (m.confirmCode && CONFIRM_URL) {{
+    var url = CONFIRM_URL.replace('{{code}}', m.confirmCode);
+    return '<a href="' + esc(url) + '" target="_blank">' + label + '</a>';
+  }}
+  return label;
 }}
 function th(label) {{
   return '<th>' + label + '</th>';

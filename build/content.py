@@ -50,7 +50,7 @@ DEFAULT_TEXT = {
     # (/controller/cms/admin/index#/calendar-team-events/ev:NNNNN), which a
     # member cannot use. Open one event while signed in as an ordinary member,
     # copy the address, and put the member-facing pattern here.
-    "confirm_url": "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}",
+    "confirm_url": "https://www.rowswimming.ca/page/calendar#/team-events/upcoming/{code}",
     "confirm_link_label": "Confirm",
     # SportsEngine's own walkthrough of committing to a meet or event. Linked
     # from a small ? beside the Confirm By heading rather than written out again
