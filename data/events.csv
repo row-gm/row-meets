@@ -2,13 +2,14 @@ event_id,event_name,event_type,start_date,end_date,start_time,end_time,location,
 registration-launch-1,Registration Opens,Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,"Registration opens for National, Provincial, Regional pathway groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 registration-launch-2,Registration Opens,Registration,2026-09-03,2026-09-03,,,Online,No,,,Yes,Registration opens for Junior pathway groups,,,Yes,Yes,Yes,Yes,Yes,Yes,,,,,,,
 registration-launch-3,Registration Opens,Registration,2026-09-05,2026-09-05,,,Online,No,,,Yes,Registration opens for ROW Swim Academy,,Yes,,,,,,,,,,,,,
-grassroots-dev-weekend,Swim ON Grassroots Development Day,Coaching Development,2026-11-14,2026-11-15,,,WLU Pool,Yes,,,Yes,A weekend event of coaching development offered in partnership with Swim Ontario.,,,,,,,,,,,,,,,
+registration-due-1,Registration deadline,Program Dates,2026-09-13,2026-09-13,,,,No,,,Yes,"All National, Provincial, Regional swimmers must be registered in order to participate in practice.",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 season-start-up-1,Season Start Up,Program Dates,2026-09-14,2026-09-14,,,,No,,,Yes,"Season kick off - National, Provincial, Regional groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+registration-due-2,Registration deadline,Program Dates,2026-09-20,2026-09-20,,,,No,,,Yes,"All Junior Development, TOPS, and Recreational swimmers must be registered in order to participate in practice.",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
 season-start-up-2,Season Start Up,Program Dates,2026-09-21,2026-09-21,,,,No,,,Yes,"Season kick off - Junior, Recreation groups",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
 season-start-up-rsa,Season Start Up,Program Dates,2026-09-27,2026-09-27,,,,No,,,Yes,Season kick-off - ROW Swim Academy,,Yes,,,,,,,,,,,,,
-registration-due-1,Registration deadline,Program Dates,2026-09-13,2026-09-13,,,,No,,,Yes,"All National, Provincial, Regional swimmers must be registered in order to participate in practice.",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
-registration-due-2,Registration deadline,Program Dates,2026-09-20,2026-09-20,,,,No,,,Yes,"All Junior Development, TOPS, and Recreational swimmers must be registered in order to participate in practice.",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
 fees-due-1,Monthly Training Fees Due,Program Dates,2026-10-15,2026-10-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+row-awards-banquet,ROW Annual Awards Banquet,Social Event,2026-10-18,2026-10-18,10:30,14:00,St. George Banquet Hall,No,2026-10-12,1778569,Yes,ROW Swim Club Annual Awards Banquet,https://www.rowswimming.ca/page/calendar#/team-events/upcoming/1778569,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
+grassroots-dev-weekend,Swim ON Grassroots Development Day,Coaching Development,2026-11-14,2026-11-15,,,WLU Pool,Yes,,,Yes,A weekend event of coaching development offered in partnership with Swim Ontario.,,,,,,,,,,,,,,,
 fees-due-2,Monthly Training Fees Due,Program Dates,2026-11-15,2026-11-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 fees-due-3,Monthly Training Fees Due,Program Dates,2026-12-15,2026-12-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 fees-due-4,Monthly Training Fees Due,Program Dates,2027-01-15,2027-01-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
@@ -18,4 +19,3 @@ fees-due-7,Monthly Training Fees Due,Program Dates,2027-04-15,2027-04-15,,,,No,,
 fees-due-8,Monthly Training Fees Due,Program Dates,2027-05-15,2027-05-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 fees-due-9,Monthly Training Fees Due,Program Dates,2027-06-15,2027-06-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 fees-due-10,Monthly Training Fees Due,Program Dates,2027-07-15,2027-07-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
-row-awards-banquet,ROW Annual Awards Banquet,Social Event,2026-10-18,2026-10-18,10:30,14:00,St. George Banquet Hall,No,2026-10-12,1778569,Yes,ROW Swim Club Annual Awards Banquet,https://www.rowswimming.ca/page/calendar#/team-events/upcoming/1778569,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
