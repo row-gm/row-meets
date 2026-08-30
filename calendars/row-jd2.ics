@@ -147,11 +147,11 @@ UID:row-cunningham-classic-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270409
 DTEND;VALUE=DATE:20270412
-SUMMARY:ROW Cunningham Classic (not confirmed)
+SUMMARY:ROW Cunningham Classic
 LOCATION:Wilfrid Laurier University\, Waterloo
 DESCRIPTION:Pathway Skills for JD2. 50m pool. Swimmers from all eligible 
  groups are invited. Confirm by 2027-03-08.
-STATUS:TENTATIVE
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
@@ -201,10 +201,11 @@ UID:row-club-championships-jd2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270515
 DTEND;VALUE=DATE:20270517
-SUMMARY:ROW Club Championships (not confirmed)
+SUMMARY:ROW Club Championships
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Team for JD2. 50m pool. 25m & 50m sessions. All ROW welcome.
-STATUS:TENTATIVE
+DESCRIPTION:Team for JD2. 25m/50m pool. 25m & 50m sessions. All ROW welco
+ me.
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT

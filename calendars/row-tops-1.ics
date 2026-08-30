@@ -93,11 +93,11 @@ UID:row-club-championships-tops-1@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270515
 DTEND;VALUE=DATE:20270517
-SUMMARY:ROW Club Championships (not confirmed)
+SUMMARY:ROW Club Championships
 LOCATION:Wilfrid Laurier University\, Waterloo
-DESCRIPTION:Team for TOPS 1. 50m pool. 25m & 50m sessions. All ROW welcom
- e.
-STATUS:TENTATIVE
+DESCRIPTION:Team for TOPS 1. 25m/50m pool. 25m & 50m sessions. All ROW we
+ lcome.
+STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 END:VEVENT
 BEGIN:VEVENT
