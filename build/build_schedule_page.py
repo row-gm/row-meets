@@ -113,7 +113,9 @@ payload = {
         "confirmCode": e.get("confirm_code", "").strip(),
         "confirmed": e["confirmed"].strip().lower() == "yes",
         "description": e["description"].strip(),
-        "link": e["info_link"].strip(),
+        "link": e["info_link"].strip() or (
+            TEXT["confirm_url"].replace("{code}", e.get("confirm_code", "").strip())
+            if e.get("confirm_code", "").strip() else ""),
         "going": {cc: True for cc in codes
                   if e.get(cc, "").strip()
                   and e[cc].strip().lower() != "none"},
@@ -206,7 +208,10 @@ td{{border-top:1px solid {LINE};padding:12px;vertical-align:top;}}
 tbody tr:nth-child(even){{background:{ROW_ALT};}}
 .date{{font-family:{MONO};font-weight:700;color:{NAVY};white-space:nowrap;}}
 .name{{font-weight:700;color:{NAVY};}}
-.name a{{color:{NAVY};}}
+.name a{{color:#0066CC;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;}}
+.name a:hover{{color:#004999;}}
+.date a{{color:#0066CC;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;}}
+.date a:hover{{color:#004999;}}
 .muted{{color:{INK_SOFT};font-size:13px;}}
 .tag{{display:inline-block;font-family:{UI};font-weight:700;font-size:10.5px;
 letter-spacing:0.05em;text-transform:uppercase;color:{FOAM};border-radius:4px;
@@ -711,7 +716,9 @@ function build(meetRows, groupRows, eventRows) {{
       location: e.location || '', all: /^yes$/i.test(e.all_groups || ''),
       confirmBy: e.confirm_by || '', confirmCode: (e.confirm_code || '').trim(),
       confirmed: /^yes$/i.test(e.confirmed || ''),
-      description: e.description || '', link: e.info_link || '', going: going
+      description: e.description || '',
+      link: e.info_link || (e.confirm_code ? CONFIRM_URL.replace('{{code}}', (e.confirm_code || '').trim()) : ''),
+      going: going
     }};
   }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
 
