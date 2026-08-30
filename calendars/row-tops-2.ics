@@ -12,7 +12,7 @@ UID:row-novice-meet-dec-tops-2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261205
 DTEND;VALUE=DATE:20261206
-SUMMARY:ROW Novice Meet I
+SUMMARY:ROW Novice Meet 1
 LOCATION:Wilfrid Laurier University\, Waterloo
 DESCRIPTION:Pathway Skills for TOPS 2. 25m pool. Swimmers from all eligib
  le groups are invited. Confirm by 2026-10-03.
@@ -24,14 +24,14 @@ UID:row-novice-meet-dec-tops-2-confirm@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20261003
 DTEND;VALUE=DATE:20261004
-SUMMARY:Confirm by: ROW Novice Meet I
+SUMMARY:Confirm by: ROW Novice Meet 1
 DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
  dance.
 TRANSP:TRANSPARENT
 BEGIN:VALARM
 TRIGGER:-P1D
 ACTION:DISPLAY
-DESCRIPTION:Confirm or decline ROW Novice Meet I by tomorrow
+DESCRIPTION:Confirm or decline ROW Novice Meet 1 by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
@@ -62,6 +62,33 @@ DESCRIPTION:Confirm or decline GMAC Winter Skills and Thrills by tomorrow
 END:VALARM
 END:VEVENT
 BEGIN:VEVENT
+UID:row-novice-meet-may-tops-2@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270501
+DTEND;VALUE=DATE:20270502
+SUMMARY:ROW Novice Meet 2
+LOCATION:Wilfrid Laurier University\, Waterloo
+DESCRIPTION:Pathway Skills for TOPS 2. 25m pool. Swimmers from all eligib
+ le groups are invited. Confirm by 2027-04-10.
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:row-novice-meet-may-tops-2-confirm@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20270410
+DTEND;VALUE=DATE:20270411
+SUMMARY:Confirm by: ROW Novice Meet 2
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance.
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Confirm or decline ROW Novice Meet 2 by tomorrow
+END:VALARM
+END:VEVENT
+BEGIN:VEVENT
 UID:row-club-championships-tops-2@rowswimming.ca
 DTSTAMP:20260809T000000Z
 DTSTART;VALUE=DATE:20270515
@@ -76,8 +103,8 @@ END:VEVENT
 BEGIN:VEVENT
 UID:registration-launch-2-tops-2@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20260905
-DTEND;VALUE=DATE:20260906
+DTSTART;VALUE=DATE:20260903
+DTEND;VALUE=DATE:20260904
 SUMMARY:Registration Opens
 DESCRIPTION:Registration opens for Junior pathway groups
 STATUS:CONFIRMED

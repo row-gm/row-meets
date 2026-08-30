@@ -210,8 +210,8 @@ END:VEVENT
 BEGIN:VEVENT
 UID:registration-launch-2-jd1@rowswimming.ca
 DTSTAMP:20260809T000000Z
-DTSTART;VALUE=DATE:20260905
-DTEND;VALUE=DATE:20260906
+DTSTART;VALUE=DATE:20260903
+DTEND;VALUE=DATE:20260904
 SUMMARY:Registration Opens
 DESCRIPTION:Registration opens for Junior pathway groups
 STATUS:CONFIRMED
@@ -248,6 +248,35 @@ SUMMARY:Monthly Training Fees Due
 DESCRIPTION:Monthly Training Fees Due (credit card\, e-transfer\, AFT)
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:row-awards-banquet-jd1@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART:20261018T103000
+DTEND:20261018T140000
+SUMMARY:ROW Annual Awards Banquet
+DESCRIPTION:ROW Swim Club Annual Awards Banquet Confirm by 2026-10-12.
+STATUS:CONFIRMED
+TRANSP:TRANSPARENT
+LOCATION:St. George Banquet Hall
+URL:https://www.rowswimming.ca/page/calendar#/team-events/upcoming/177856
+ 9
+END:VEVENT
+BEGIN:VEVENT
+UID:row-awards-banquet-jd1-confirm@rowswimming.ca
+DTSTAMP:20260809T000000Z
+DTSTART;VALUE=DATE:20261012
+DTEND;VALUE=DATE:20261013
+SUMMARY:Confirm by: ROW Annual Awards Banquet
+DESCRIPTION:Log into your ROW member account and Confirm or Decline atten
+ dance. https://www.rowswimming.ca/controller/cms/index#/team-events/ev:1
+ 778569
+TRANSP:TRANSPARENT
+BEGIN:VALARM
+TRIGGER:-P1D
+ACTION:DISPLAY
+DESCRIPTION:Confirm or decline ROW Annual Awards Banquet by tomorrow
+END:VALARM
 END:VEVENT
 BEGIN:VEVENT
 UID:grassroots-dev-weekend-jd1@rowswimming.ca
