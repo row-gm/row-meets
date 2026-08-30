@@ -208,7 +208,10 @@ td{{border-top:1px solid {LINE};padding:12px;vertical-align:top;}}
 tbody tr:nth-child(even){{background:{ROW_ALT};}}
 .date{{font-family:{MONO};font-weight:700;color:{NAVY};white-space:nowrap;}}
 .name{{font-weight:700;color:{NAVY};}}
-.name a{{color:{NAVY};}}
+.name a{{color:{TEAL};text-decoration:underline;}}
+.name a:hover{{opacity:0.8;}}
+.date a{{color:{TEAL};text-decoration:underline;}}
+.date a:hover{{opacity:0.8;}}
 .muted{{color:{INK_SOFT};font-size:13px;}}
 .tag{{display:inline-block;font-family:{UI};font-weight:700;font-size:10.5px;
 letter-spacing:0.05em;text-transform:uppercase;color:{FOAM};border-radius:4px;
