@@ -1,7 +1,7 @@
 event_id,event_name,event_type,start_date,end_date,start_time,end_time,location,all_groups,confirm_by,confirm_code,confirmed,description,info_link,RSA,REC AM,REC PM,TOPS 2,TOPS 1,JD2,JD1,AGD2,AGD1,SD,PD3,PD2,PD1,ND
 registration-launch-1,Registration Opens,Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,"Registration opens for National, Provincial, Regional pathway groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 registration-launch-2,Registration Opens,Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,Registration opens for Junior pathway groups,,,Yes,Yes,Yes,Yes,Yes,Yes,,,,,,,
-registration-launch-3,Registration Opens,Registration,2026-09-08,2026-09-08,,,Online,No,,,Yes,Registration opens for ROW Swim Academy,,Yes,,,,,,,,,,,,,
+registration-launch-3,Registration Opens,Registration,2026-09-10,2026-09-10,,,Online,No,,,Yes,Registration opens for ROW Swim Academy,,Yes,,,,,,,,,,,,,
 registration-due-1,Registration deadline,Program Dates,2026-09-13,2026-09-13,,,,No,,,Yes,"All National, Provincial, Regional swimmers must be registered in order to participate in practice.",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 season-start-up-1,Season Start Up,Program Dates,2026-09-14,2026-09-14,,,,No,,,Yes,"Season kick off - National, Provincial, Regional groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 registration-due-2,Registration deadline,Program Dates,2026-09-20,2026-09-20,,,,No,,,Yes,"All Junior Development, TOPS, and Recreational swimmers must be registered in order to participate in practice.",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
