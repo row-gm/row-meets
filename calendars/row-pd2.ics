@@ -312,6 +312,7 @@ DESCRIPTION:Registration opens for National\, Provincial\, Regional pathw
 STATUS:CONFIRMED
 TRANSP:TRANSPARENT
 LOCATION:Online
+URL:https://www.rowswimming.ca/page/for-parents/team-registration
 END:VEVENT
 BEGIN:VEVENT
 UID:registration-due-1-pd2@rowswimming.ca
