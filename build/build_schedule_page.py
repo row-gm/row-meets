@@ -26,7 +26,8 @@ SEASON = "2026-27"
 
 # Page copy comes from the Text sheet in the spreadsheet.
 TEXT, _FAQ = content.load(ROOT, season=SEASON)
-MEET_TYPES, EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
+MEET_TYPES, EVENT_TYPES, ELIGIBILITY, POOLS = content.load_types(ROOT)
+POOL_NAMES = [n for n, _, _ in POOLS]
 NAVY, TEAL, CYAN, RED = "#0A2E3F", "#136B77", "#3FBFB0", "#D64545"
 SAND, FOAM, INK, INK_SOFT, LINE = "#F3EFE4", "#FFFFFF", "#152225", "#4B5B60", "#DAD3C2"
 ROW_ALT = "#FAF8F2"
@@ -108,14 +109,12 @@ payload = {
         "startTime": e["start_time"].strip(),
         "endTime": e["end_time"].strip(),
         "location": e["location"].strip(),
-        "all": e["all_groups"].strip().lower() == "yes",
+        "all": e.get("all_groups", "").strip().lower() == "yes",
         "confirmBy": e["confirm_by"].strip(),
         "confirmCode": e.get("confirm_code", "").strip(),
         "confirmed": e["confirmed"].strip().lower() == "yes",
         "description": e["description"].strip(),
-        "link": e["info_link"].strip() or (
-            TEXT["confirm_url"].replace("{code}", e.get("confirm_code", "").strip())
-            if e.get("confirm_code", "").strip() else ""),
+        "link": e.get("info_link", "").strip(),
         "going": {cc: True for cc in codes
                   if e.get(cc, "").strip()
                   and e[cc].strip().lower() != "none"},
@@ -134,7 +133,7 @@ payload = {
         "confirmBy": m["confirm_by"].strip(),
         "confirmCode": m.get("confirm_code", "").strip(),
         "eligibility": m["eligibility"].strip(),
-        "link": m["info_link"].strip(),
+        "link": m.get("info_link", "").strip(),
         "notes": m["notes"].strip(),
         "going": _resolve(m, codes, "all_groups"),
     } for m in meets],
@@ -195,11 +194,11 @@ border-radius:8px;text-decoration:none;border:0;cursor:pointer;white-space:nowra
 .btn:hover{{background:{NAVY};}}
 .btn.done{{background:{TIDE};}}
 .calcard{{background:{ROW_ALT};border:2px solid {TEAL};border-radius:12px;
-padding:18px 20px;margin:16px 0 0;}}
+padding:18px 20px;margin:16px 0 0;display:flex;gap:16px;align-items:center;
+flex-wrap:wrap;}}
 .calcard .t{{font-family:{UI};font-weight:700;text-transform:uppercase;letter-spacing:0.05em;
-color:{NAVY};font-size:14px;margin-bottom:4px;}}
-.calcard .d{{font-size:14px;color:{INK_SOFT};margin-bottom:14px;}}
-.calcard-actions{{display:flex;align-items:center;gap:14px;flex-wrap:wrap;}}
+color:{NAVY};font-size:14px;}}
+.calcard .d{{font-size:14px;color:{INK_SOFT};flex:1;min-width:220px;}}
 table{{border-collapse:collapse;width:100%;margin:14px 0 0;font-size:14px;}}
 th{{background:{NAVY};color:{FOAM};text-align:left;padding:11px 12px;
 font-family:{UI};font-weight:700;text-transform:uppercase;letter-spacing:0.08em;
@@ -208,10 +207,7 @@ td{{border-top:1px solid {LINE};padding:12px;vertical-align:top;}}
 tbody tr:nth-child(even){{background:{ROW_ALT};}}
 .date{{font-family:{MONO};font-weight:700;color:{NAVY};white-space:nowrap;}}
 .name{{font-weight:700;color:{NAVY};}}
-.name a{{color:#0066CC;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;}}
-.name a:hover{{color:#004999;}}
-.date a{{color:#0066CC;text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:3px;}}
-.date a:hover{{color:#004999;}}
+.name a{{color:{NAVY};}}
 .muted{{color:{INK_SOFT};font-size:13px;}}
 .tag{{display:inline-block;font-family:{UI};font-weight:700;font-size:10.5px;
 letter-spacing:0.05em;text-transform:uppercase;color:{FOAM};border-radius:4px;
@@ -242,32 +238,6 @@ font-size:13px;color:{INK_SOFT};}}
   .count{{margin-left:0;}}
   select{{width:100%;}}
 }}
-/* Calendar help modal */
-.modal-overlay{{display:none;position:fixed;inset:0;z-index:200;
-  background:rgba(10,46,63,0.72);padding:16px 16px 40px;overflow-y:auto;}}
-.modal-box{{background:{FOAM};max-width:520px;margin:40px auto;border-radius:14px;
-  overflow:hidden;box-shadow:0 8px 40px rgba(0,0,0,0.28);}}
-.modal-head{{background:{NAVY};color:{FOAM};padding:18px 22px;display:flex;
-  align-items:center;justify-content:space-between;}}
-.modal-head strong{{font-size:16px;font-family:{UI};}}
-.modal-close{{background:none;border:none;color:{FOAM};font-size:26px;cursor:pointer;
-  line-height:1;padding:0 4px;opacity:0.8;}}
-.modal-close:hover{{opacity:1;}}
-.modal-body{{padding:20px 22px;}}
-.modal-intro{{margin:0 0 18px;color:{INK_SOFT};font-size:14px;line-height:1.6;}}
-.cal-section{{margin:0 0 14px;border:1px solid {LINE};border-radius:10px;overflow:hidden;}}
-.cal-head{{padding:10px 16px;font-family:{UI};font-weight:700;font-size:13px;
-  letter-spacing:0.04em;color:{FOAM};display:flex;align-items:center;gap:10px;}}
-.cal-icon{{width:22px;height:22px;border-radius:5px;background:{FOAM};flex:none;
-  display:flex;align-items:center;justify-content:center;font-weight:900;font-size:13px;}}
-.cal-steps{{margin:0;padding:12px 16px 12px 36px;font-size:14px;
-  line-height:2;color:{INK};}}
-.cal-steps li{{padding-left:4px;}}
-.cal-note{{margin:0;padding:2px 16px 12px;font-size:13px;color:{INK_SOFT};}}
-.calhelp-link{{display:inline-block;font-size:13px;color:{TEAL};opacity:0.85;
-  text-decoration:underline;cursor:pointer;background:none;border:none;
-  font-family:{BODY};padding:0;}}
-.calhelp-link:hover{{opacity:1;}}
 </style></head><body>
 
 <div class="hero"><div class="wrap">
@@ -302,96 +272,6 @@ font-size:13px;color:{INK_SOFT};}}
   </footer>
 </div>
 
-<!-- Calendar help modal -->
-<div class="modal-overlay" id="calhelp" onclick="closeCalHelp(event)">
-  <div class="modal-box" role="dialog" aria-modal="true" aria-labelledby="calhelp-title">
-    <div class="modal-head">
-      <strong id="calhelp-title">How to add your group calendar</strong>
-      <button class="modal-close" onclick="document.getElementById('calhelp').style.display='none'"
-        aria-label="Close">&times;</button>
-    </div>
-    <div class="modal-body">
-      <p class="modal-intro">Copy the calendar link, then follow the steps for your app.
-        The calendar updates whenever the schedule changes &mdash; you only need to add
-        it once.</p>
-
-      <!-- Google Calendar -->
-      <div class="cal-section">
-        <div class="cal-head" style="background:#136B77;">
-          <div class="cal-icon" style="color:#136B77;">G</div>
-          Google Calendar &mdash; computer or Android
-        </div>
-        <ol class="cal-steps">
-          <li>Open <strong>Google Calendar</strong> in your browser.</li>
-          <li>On the left side, find <strong>Other calendars</strong> and click the <strong>+</strong> sign.</li>
-          <li>Choose <strong>From URL</strong>.</li>
-          <li>Paste the link you copied and click <strong>Add calendar</strong>.</li>
-        </ol>
-        <p class="cal-note">Updates can take a few hours to appear.</p>
-      </div>
-
-      <!-- iPhone / iPad -->
-      <div class="cal-section">
-        <div class="cal-head" style="background:#3F5560;">
-          <svg class="cal-icon" viewBox="0 0 22 22" style="background:{FOAM};color:#3F5560;">
-            <rect x="7" y="2" width="8" height="1.5" rx="0.75" fill="#3F5560"/>
-            <rect x="5" y="4" width="12" height="16" rx="3" fill="none" stroke="#3F5560" stroke-width="1.5"/>
-            <circle cx="11" cy="17" r="1" fill="#3F5560"/>
-          </svg>
-          iPhone or iPad
-        </div>
-        <ol class="cal-steps">
-          <li>Open the <strong>Settings</strong> app.</li>
-          <li>Scroll down and tap <strong>Calendar</strong>, then <strong>Accounts</strong>.</li>
-          <li>Tap <strong>Add Account</strong>, then <strong>Other</strong>.</li>
-          <li>Tap <strong>Add Subscribed Calendar</strong>.</li>
-          <li>Paste the link and tap <strong>Next</strong>, then <strong>Save</strong>.</li>
-        </ol>
-        <p class="cal-note">The calendar appears in your iPhone Calendar app automatically.</p>
-      </div>
-
-      <!-- Mac -->
-      <div class="cal-section">
-        <div class="cal-head" style="background:#4B5B60;">
-          <svg class="cal-icon" viewBox="0 0 22 22" style="background:{FOAM};color:#4B5B60;">
-            <rect x="3" y="5" width="16" height="13" rx="2" fill="none" stroke="#4B5B60" stroke-width="1.5"/>
-            <line x1="3" y1="8.5" x2="19" y2="8.5" stroke="#4B5B60" stroke-width="1.5"/>
-            <line x1="11" y1="18" x2="11" y2="21" stroke="#4B5B60" stroke-width="1.5"/>
-            <line x1="7" y1="21" x2="15" y2="21" stroke="#4B5B60" stroke-width="1.5"/>
-          </svg>
-          Mac &mdash; Calendar app
-        </div>
-        <ol class="cal-steps">
-          <li>Open the <strong>Calendar</strong> app on your Mac.</li>
-          <li>In the menu bar at the top, click <strong>File</strong>.</li>
-          <li>Click <strong>New Calendar Subscription&hellip;</strong></li>
-          <li>Paste the link and click <strong>Subscribe</strong>.</li>
-          <li>Choose how often to refresh, then click <strong>OK</strong>.</li>
-        </ol>
-      </div>
-
-      <!-- Outlook -->
-      <div class="cal-section">
-        <div class="cal-head" style="background:#26456E;">
-          <div class="cal-icon" style="color:#26456E;">O</div>
-          Outlook &mdash; browser or desktop app
-        </div>
-        <ol class="cal-steps">
-          <li>Open <strong>Outlook Calendar</strong>.</li>
-          <li>Click <strong>Add calendar</strong> (top left or in the sidebar).</li>
-          <li>Choose <strong>Subscribe from web</strong>.</li>
-          <li>Paste the link and click <strong>Import</strong>.</li>
-        </ol>
-        <p class="cal-note">In the Outlook desktop app, go to File &gt; Account Settings &gt;
-          Internet Calendars &gt; New, then paste the link.</p>
-      </div>
-
-      <button class="btn" onclick="document.getElementById('calhelp').style.display='none'"
-        style="margin-top:4px;">Close</button>
-    </div>
-  </div>
-</div>
-
 <script>
 var FALLBACK = {json.dumps(payload)};
 var CAL_BASE = 'https://row-gm.github.io/row-meets/calendars';
@@ -402,22 +282,6 @@ var HELP_LABEL = {HELP_LABEL_JSON};
 var TYPE_BG = {TYPE_BG_JSON};
 var MEANING = {MEANING_JSON};
 var EVENT_MEANING = {EVENT_MEANING_JSON};
-function openCalHelp() {{
-  document.getElementById('calhelp').style.display = 'block';
-  document.body.style.overflow = 'hidden';
-}}
-function closeCalHelp(e) {{
-  if (e.target === document.getElementById('calhelp')) {{
-    document.getElementById('calhelp').style.display = 'none';
-    document.body.style.overflow = '';
-  }}
-}}
-document.addEventListener('keydown', function(e) {{
-  if (e.key === 'Escape') {{
-    document.getElementById('calhelp').style.display = 'none';
-    document.body.style.overflow = '';
-  }}
-}});
 var DASH = String.fromCharCode(8211), EMDASH = String.fromCharCode(8212);
 var MON = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 var data = FALLBACK;
@@ -441,14 +305,15 @@ function dateLabel(m) {{
 function confirmLabel(m) {{
   if (!m.confirmBy) return '\\u2014';
   var c = d(m.confirmBy);
-  var label = MON[c.m-1] + ' ' + c.day;
-  if (m.confirmCode && CONFIRM_URL) {{
-    var url = CONFIRM_URL.replace('{{code}}', m.confirmCode);
-    return '<a href="' + esc(url) + '" target="_blank">' + label + '</a>';
-  }}
-  return label;
+  return MON[c.m-1] + ' ' + c.day;
 }}
 function th(label) {{
+  /* The one question this column reliably raises, answered where it is asked.
+     Small, muted, and skipped entirely by anyone who already knows. */
+  if (label === 'Confirm By' && HELP_URL) {{
+    return '<th>' + label + ' <a class="help" href="' + esc(HELP_URL) +
+      '" target="_blank" title="' + esc(HELP_LABEL) + '">?</a></th>';
+  }}
   return '<th>' + label + '</th>';
 }}
 
@@ -495,13 +360,9 @@ function render() {{
   document.getElementById('calcard').innerHTML = !g ? '' :
     '<div class="calcard"><div class="t">' + esc(g.name) + '</div>' +
     '<div class="d">' + {GROUPCARD_BODY} + '</div>' +
-    '<div class="calcard-actions">' +
     '<button class="btn" id="copycal" data-url="' + CAL_BASE + '/row-' +
     g.code.toLowerCase().replace(/ /g,'-') + '.ics">' + {GROUPCARD_BUTTON} +
-    '</button>' +
-    '<button class="calhelp-link" onclick="openCalHelp()">How to add this to your calendar &rsaquo;</button>' +
-    '</div>' +
-    '</div>';
+    '</button></div>';
 
   var showM = !code || data.showMeets[code] !== false;
   var showE = !code || data.showEvents[code] !== false;
@@ -511,7 +372,7 @@ function render() {{
     document.getElementById('out').innerHTML =
       '<div class="empty">' + {SCHEDULE_EMPTY} + '</div>';
   }} else {{
-    var head = ['Meet Date','Meet Name','Location','Pool','Meet Type','Eligibility','Confirm By'];
+    var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
     var h = '<table><thead><tr>' + head.map(th).join('') + '</tr></thead><tbody>';
     list.forEach(function (m) {{
       var name = m.link
@@ -523,6 +384,7 @@ function render() {{
       if (m.notes) extra += '<div class="muted">' + esc(m.notes) + '</div>';
       h += '<tr>' +
         '<td data-label="Date" class="date">' + dateLabel(m) + '</td>' +
+        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
         '<td data-label="Meet"><span class="name">' + name + '</span>' + extra + '</td>' +
         '<td data-label="Where">' + esc(m.city) +
           '<div class="muted">' + esc(m.venue) + '</div></td>' +
@@ -533,7 +395,6 @@ function render() {{
         '<td data-label="Entry">' + eligFor(m, code).map(function (e) {{
             return tag(e, TYPE_BG[e] || '{INK_SOFT}');
           }}).join('') + '</td>' +
-        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
         '</tr>';
     }});
     document.getElementById('out').innerHTML = h + '</tbody></table>';
@@ -716,9 +577,7 @@ function build(meetRows, groupRows, eventRows) {{
       location: e.location || '', all: /^yes$/i.test(e.all_groups || ''),
       confirmBy: e.confirm_by || '', confirmCode: (e.confirm_code || '').trim(),
       confirmed: /^yes$/i.test(e.confirmed || ''),
-      description: e.description || '',
-      link: e.info_link || (e.confirm_code ? CONFIRM_URL.replace('{{code}}', (e.confirm_code || '').trim()) : ''),
-      going: going
+      description: e.description || '', link: e.info_link || '', going: going
     }};
   }}).sort(function (a, b) {{ return a.start < b.start ? -1 : a.start > b.start ? 1 : 0; }});
 

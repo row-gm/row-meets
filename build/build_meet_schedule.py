@@ -48,10 +48,10 @@ MEETS_BASE = "https://row-gm.github.io/row-meets"
 CAL_BASE = f"{MEETS_BASE}/calendars"
 
 SEASON = "2026-27"
-MEET_TYPES, _EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
+MEET_TYPES, _EVENT_TYPES, ELIGIBILITY, POOLS = content.load_types(ROOT)
+POOL_NAMES = [n for n, _, _ in POOLS]
 ELIGIBLE_NAMES = [n for n, _, _ in ELIGIBILITY]
 ELIGIBLE_COLOUR = {n: h for n, h, _ in ELIGIBILITY}
-POOL_NAMES = content.load_pool_types(ROOT)
 _T, _F = content.load(ROOT, season=SEASON)
 TEXT_FALLBACK = {n: _T.get(content.TAG_KEYS.get(n, ""), "") for n, _, _ in MEET_TYPES}
 
@@ -70,6 +70,42 @@ GROUP_DETAIL = "group"
 
 def split_tags(cell):
     return [t.strip() for t in cell.replace(";", ",").split(",") if t.strip()]
+
+
+NOT_RACING = "None"
+
+
+def resolve_groups(m, codes):
+    """Work out what each group is doing, from a default and its exceptions.
+
+    `all_groups` holds a meet type that applies to every group. A group cell is
+    the exception to it:
+
+        blank             inherit the default
+        None              not racing, whatever the default says
+        a meet type       replaces the default type for that group
+        an eligibility    keeps the default type, overrides eligibility
+
+    Same idea on the Events sheet, so there is one thing to learn rather than
+    two. Without a default, a blank cell simply means not racing, which is how
+    this worked before `all_groups` existed.
+    """
+    default = split_tags(m.get("all_groups", ""))
+    default_types = [t for t in default if t in MEET_TYPE_NAMES]
+    out = {}
+    for code in codes:
+        tags = split_tags(m[code])
+        if any(t.lower() == NOT_RACING.lower() for t in tags):
+            continue
+        if not tags:
+            if default:
+                out[code] = list(default)
+            continue
+        if not any(t in MEET_TYPE_NAMES for t in tags) and default_types:
+            # The cell only overrode eligibility, so keep the default type.
+            tags = default_types + tags
+        out[code] = tags
+    return out
 
 # Tag colours. Every tag on this page carries white text, so every background here
 # clears 4.5:1 against white. Measured, not eyeballed:
@@ -127,7 +163,7 @@ def load():
         assert not missing, f"meets.csv is missing group columns: {missing}"
         m["_start"] = date.fromisoformat(m["start_date"].strip())
         m["_end"] = date.fromisoformat((m["end_date"] or m["start_date"]).strip())
-        m["_going"] = {c: split_tags(m[c]) for c in codes if m[c].strip()}
+        m["_going"] = resolve_groups(m, codes)
         assert m["_going"], f"{m['meet_name']}: no group is racing this meet"
         # What the meet is, taken from the groups going. One type for most meets,
         # two where a pathway treats it differently.
@@ -144,15 +180,17 @@ def load():
         conf = m["confirmed"].strip().lower()
         assert conf in ("yes", "no"), f"{m['meet_name']}: confirmed must be Yes or No"
         m["_confirmed"] = conf == "yes"
-        bad = sorted({t for v in m["_going"].values() for t in v if t not in GROUP_TAGS})
-        assert not bad, (f"{m['meet_name']}: group cells take {GROUP_TAGS} "
-                         f"(comma separated) or blank. Got {bad}")
+        cells = [m[c] for c in codes] + [m.get("all_groups", "")]
+        bad = sorted({t for cell in cells for t in split_tags(cell)
+                      if t not in GROUP_TAGS and t.lower() != NOT_RACING.lower()})
+        assert not bad, (f"{m['meet_name']}: group cells take {GROUP_TAGS}, "
+                         f"or None, comma separated. Got {bad}")
         assert m["eligibility"].strip() in ELIGIBLE_NAMES, (
             f"{m['meet_name']}: eligibility \"{m['eligibility'].strip()}\" is not on the "
             f"Types sheet. Valid: {', '.join(ELIGIBLE_NAMES)}")
-        if POOL_NAMES:
-            assert m["pool"].strip() in POOL_NAMES, \
-                f"{m['meet_name']}: pool must be one of: {', '.join(POOL_NAMES)}"
+        assert m["pool"].strip() in POOL_NAMES, (
+            f"{m['meet_name']}: pool \"{m['pool'].strip()}\" is not on the Types sheet. "
+            f"Valid: {', '.join(POOL_NAMES)}")
         if m["confirm_by"].strip():
             m["_confirm"] = date.fromisoformat(m["confirm_by"].strip())
             assert m["_confirm"] <= m["_start"], \
@@ -274,7 +312,7 @@ def meet_url(m):
     the one part of this nobody should have to touch, and it meant two ways to
     get a link with one of them invisible from the spreadsheet.
     """
-    return m["info_link"].strip()
+    return m.get("info_link", "").strip()
 
 
 def linked_name(m, colour=None, size=None):

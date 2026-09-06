@@ -25,10 +25,11 @@ SHARED_CSS = os.path.join(HERE, "row_stylesheet.css")
 
 SEASON = "2026-27"
 TEXT, FAQ = content.load(ROOT, season=SEASON)
-MEET_TYPES, _EVENT_TYPES, ELIGIBILITY = content.load_types(ROOT)
+MEET_TYPES, _EVENT_TYPES, ELIGIBILITY, POOLS = content.load_types(ROOT)
+POOL_NAMES = [n for n, _, _ in POOLS]
 
-MEETS_BASE = "https://row-gm.github.io/row-meets"
-SCHEDULE_URL = f"{MEETS_BASE}/schedule/"
+# This page no longer links to the schedule. It is the landing page under the
+# Meets and Events menu; the schedule is reached from its own menu item.
 
 TYPE_COLOUR = {n: h for n, h, _ in MEET_TYPES}
 CATEGORY_MEANING = [(n, d or TEXT.get(content.TAG_KEYS.get(n, ""), ""))
@@ -44,8 +45,6 @@ EXTRA_TAGS.append(("Not confirmed", R.AMBER, TEXT[content.TAG_KEYS["Not confirme
 page = R.wrap(
     R.hero("ROW Swim Club", TEXT["schedule_title"], TEXT["slim_subtitle"]),
     R.lanes(),
-    R.cta(TEXT["doorway_title"], TEXT["doorway_body"],
-          TEXT["doorway_button"], SCHEDULE_URL),
     R.h2(TEXT["legend_heading"]),
     R.p(TEXT["legend_intro"]),
     R.table(["Tag", "What it means"],

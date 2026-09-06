@@ -24,6 +24,8 @@ Run after build_meet_schedule.py. Reads the same two CSVs.
 
 import csv
 import os
+
+import content
 from datetime import date, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -51,7 +53,28 @@ MEETS_BASE = "https://row-gm.github.io/row-meets"
 PAGES_BASE = f"{MEETS_BASE}/calendars"
 
 def tags_of(cell):
-    return [t.strip() for t in cell.replace(";", ",").split(",") if t.strip()]
+    return [t.strip() for t in (cell or "").replace(";", ",").split(",") if t.strip()]
+
+
+def resolve_groups(m, codes, meet_types):
+    """Default from all_groups, exceptions in the group cells, None to opt out.
+    Same rules as build_meet_schedule.py; kept in step by hand because these two
+    scripts do not import from each other."""
+    default = tags_of(m.get("all_groups", ""))
+    default_types = [t for t in default if t in meet_types]
+    out = {}
+    for code in codes:
+        tags = tags_of(m.get(code, ""))
+        if any(t.lower() == "none" for t in tags):
+            continue
+        if not tags:
+            if default:
+                out[code] = list(default)
+            continue
+        if not any(t in meet_types for t in tags) and default_types:
+            tags = default_types + tags
+        out[code] = tags
+    return out
 
 
 def esc(t):
@@ -98,6 +121,9 @@ def load():
         m["_end"] = date.fromisoformat((m["end_date"] or m["start_date"]).strip())
         m["_confirm"] = (date.fromisoformat(m["confirm_by"].strip())
                          if m["confirm_by"].strip() else None)
+    meet_types = [n for n, _, _ in content.load_types(ROOT)[0]]
+    for m in meets:
+        m["_going"] = resolve_groups(m, [g["group_code"] for g in groups], meet_types)
     meets.sort(key=lambda m: m["_start"])
 
     events = []
@@ -109,7 +135,7 @@ def load():
             e["_end"] = date.fromisoformat((e["end_date"] or e["start_date"]).strip())
             e["_confirm"] = (date.fromisoformat(e["confirm_by"].strip())
                              if e["confirm_by"].strip() else None)
-            e["_all"] = e["all_groups"].strip().lower() == "yes"
+            e["_all"] = e.get("all_groups", "").strip().lower() == "yes"
         events.sort(key=lambda e: e["_start"])
     return groups, meets, events
 
@@ -140,7 +166,7 @@ def ics_for(group, meets, events):
     stamp = "20260809T000000Z"
 
     for m in meets:
-        if not m.get(code, "").strip():
+        if code not in m["_going"]:
             continue
         tags = tags_of(m[code])
         tentative = m["confirmed"].strip().lower() != "yes"
@@ -172,7 +198,7 @@ def ics_for(group, meets, events):
         # Calendar apps show URL as a clickable link on the event.
         # info_link is the only route. Put the PDF in the CMS or Drive and paste
         # the address into the sheet.
-        if m["info_link"].strip():
+        if m.get("info_link", "").strip():
             lines.append(f"URL:{m['info_link'].strip()}")
         lines.append("END:VEVENT")
 
@@ -198,7 +224,10 @@ def ics_for(group, meets, events):
             ]
 
     for e in events:
-        if not (e["_all"] or e.get(code, "").strip()):
+        cell = e.get(code, "").strip()
+        if cell.lower() == "none":
+            continue          # marked for everyone, except this group
+        if not (e["_all"] or cell):
             continue
         timed = e["start_time"].strip() and e["end_time"].strip()
         if timed:
@@ -223,7 +252,7 @@ def ics_for(group, meets, events):
               "TRANSP:TRANSPARENT"]
         if e["location"].strip():
             ev.append(f"LOCATION:{esc(e['location'].strip())}")
-        if e["info_link"].strip():
+        if e.get("info_link", "").strip():
             ev.append(f"URL:{e['info_link'].strip()}")
         ev.append("END:VEVENT")
         lines += ev

@@ -50,7 +50,7 @@ DEFAULT_TEXT = {
     # (/controller/cms/admin/index#/calendar-team-events/ev:NNNNN), which a
     # member cannot use. Open one event while signed in as an ordinary member,
     # copy the address, and put the member-facing pattern here.
-    "confirm_url": "https://www.rowswimming.ca/page/calendar#/team-events/upcoming/{code}",
+    "confirm_url": "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}",
     "confirm_link_label": "Confirm",
     # SportsEngine's own walkthrough of committing to a meet or event. Linked
     # from a small ? beside the Confirm By heading rather than written out again
@@ -134,6 +134,10 @@ DEFAULT_TYPES = [
     ("Eligibility", "All Welcome", "Grey",
      "Open to everyone in your group. Confirm or decline as usual."),
     ("Eligibility", "Qualifiers Only", "Red", DEFAULT_TEXT["tag_qualifiers_only"]),
+    ("Pool", "25m", "Clay", ""),
+    ("Pool", "50m", "Clay", ""),
+    ("Pool", "25m/50m", "Clay", ""),
+    ("Pool", "OW", "Clay", ""),
     ("Eligibility", "Coach Decision", "Olive",
      "Your coach chooses who is invited to this one. If the meet is on your "
      "swimmer\u2019s list, confirm or decline as usual."),
@@ -178,7 +182,7 @@ def load_types(root):
                 colour = (row.get("colour") or "").strip()
                 desc = (row.get("description") or "").strip()
                 order = (row.get("sort_order") or "").strip()
-                if kind in ("Meet", "Event", "Eligibility") and name:
+                if kind in ("Meet", "Event", "Eligibility", "Pool") and name:
                     rows.append((kind, name, colour, desc,
                                  int(order) if order.isdigit() else 999))
         rows.sort(key=lambda r: r[4])
@@ -186,7 +190,7 @@ def load_types(root):
     if not rows:
         rows = list(DEFAULT_TYPES)
 
-    out = {"Meet": [], "Event": [], "Eligibility": []}
+    out = {"Meet": [], "Event": [], "Eligibility": [], "Pool": []}
     for kind, name, colour, desc in rows:
         assert colour in palette, (
             f'Type "{name}" uses colour "{colour}", which is not in the palette. '
@@ -204,28 +208,11 @@ def load_types(root):
             ("All Welcome", palette["Grey"], ""),
             ("Qualifiers Only", palette["Red"], DEFAULT_TEXT["tag_qualifiers_only"]),
         ]
-    return out["Meet"], out["Event"], out["Eligibility"]
-
-
-def load_pool_types(root):
-    """Pool kind names from the Types sheet.
-
-    Returns a list of pool name strings (e.g. ["25m", "50m"]).
-    Falls back to a sensible default if types.csv has no Pool rows,
-    so a build never fails just because the sheet predates this column.
-    """
-    path = os.path.join(root, "data", "types.csv")
-    names = []
-    if os.path.exists(path):
-        with open(path, encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
-                kind = (row.get("kind") or "").strip().title()
-                name = (row.get("name") or "").strip()
-                if kind == "Pool" and name:
-                    names.append(name)
-    # No Pool rows defined in types.csv → return empty list so callers
-    # can skip pool validation rather than enforcing a wrong fallback.
-    return names
+    if not out["Pool"]:
+        # Older Types sheets have no Pool rows. 25m and 50m are not the whole
+        # story: a meet can run both, and open water is neither.
+        out["Pool"] = [(n, palette["Clay"], "") for n in ("25m", "50m", "25m/50m", "OW")]
+    return out["Meet"], out["Event"], out["Eligibility"], out["Pool"]
 
 
 TAG_KEYS = {
