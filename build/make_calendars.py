@@ -41,7 +41,7 @@ MEETS_CSV = os.path.join(ROOT, "data", "meets.csv")
 
 # Kept in step with build/content.py. A calendar entry that can be acted on
 # beats one that tells you to go and find the right page yourself.
-CONFIRM_URL = "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}"
+CONFIRM_URL = "https://www.rowswimming.ca/page/calendar#/team-events/upcoming/{code}"
 EVENTS_CSV = os.path.join(ROOT, "data", "events.csv")
 GROUPS_CSV = GROUPS_CSV if os.path.exists(GROUPS_CSV) else GROUPS_CSV.replace(".csv", "_sample.csv")
 MEETS_CSV = MEETS_CSV if os.path.exists(MEETS_CSV) else MEETS_CSV.replace(".csv", "_sample.csv")

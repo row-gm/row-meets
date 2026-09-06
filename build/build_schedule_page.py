@@ -302,6 +302,11 @@ function dateLabel(m) {{
   if (a.m === b.m) return MON[a.m-1] + ' ' + a.day + '\\u2013' + b.day;
   return MON[a.m-1] + ' ' + a.day + ' \\u2013 ' + MON[b.m-1] + ' ' + b.day;
 }}
+function confirmUrl(code) {{
+  if (!code || !CONFIRM_URL) return '';
+  return CONFIRM_URL.split('{{code}}').join(encodeURIComponent(code));
+}}
+
 function confirmLabel(m) {{
   if (!m.confirmBy) return '\\u2014';
   var c = d(m.confirmBy);
@@ -375,8 +380,9 @@ function render() {{
     var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
     var h = '<table><thead><tr>' + head.map(th).join('') + '</tr></thead><tbody>';
     list.forEach(function (m) {{
-      var name = m.link
-        ? '<a href="' + esc(m.link) + '" target="_blank">' + esc(m.name) + '</a>'
+      var url = m.link || confirmUrl(m.confirmCode);
+      var name = url
+        ? '<a href="' + esc(url) + '" target="_blank">' + esc(m.name) + '</a>'
         : esc(m.name);
       var extra = '';
       if (m.home) extra += '<div class="muted">At our pool. Officials needed.</div>';
@@ -418,8 +424,9 @@ function render() {{
       ['Date','Time','Event','Location','Confirm By'].map(th).join('') +
       '</tr></thead><tbody>';
     evs.forEach(function (e) {{
-      var nm = e.link
-        ? '<a href="' + esc(e.link) + '" target="_blank">' + esc(e.name) + '</a>'
+      var eurl = e.link || confirmUrl(e.confirmCode);
+      var nm = eurl
+        ? '<a href="' + esc(eurl) + '" target="_blank">' + esc(e.name) + '</a>'
         : esc(e.name);
       var extra = '<div>' + tag(e.type, data.eventTypes[e.type] || '{INK_SOFT}') + '</div>';
       if (!e.confirmed) extra += '<div>' + tag('Not confirmed','{AMBER}') + '</div>';
