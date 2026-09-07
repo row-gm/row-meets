@@ -55,7 +55,8 @@ DEFAULT_TEXT = {
     # here: their article stays current, ours would not.
     "confirm_help_url": ("https://motion-help.sportsengine.com/en/articles/"
                          "8537937-how-to-commit-sign-up-for-a-meet-event"),
-    "confirm_help_label": "How to confirm or decline",
+    "confirm_help_label": "Click on the Meet Name to reach the Confirm / Decline "
+                            "page for each event.",
 
     # --- shared ---
     "meets_heading": "Meets",
