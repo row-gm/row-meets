@@ -42,15 +42,13 @@ DEFAULT_TEXT = {
                 "and payments, your family can email the club office at "
                 "<strong>office@rowswimming.ca</strong>."),
 
-    # The TeamUnify confirmation page. {code} is replaced by the confirm_code
-    # column on the Meets or Events sheet. Set this once and every meet and event
-    # links straight to its own confirmation screen.
+    # The members site event page. {code} is replaced by the confirm_code column
+    # on the Meets or Events sheet. Set once, and every meet and event links
+    # straight to its own page.
     #
-    # NOT YET VERIFIED. The sample URL supplied was the admin view
-    # (/controller/cms/admin/index#/calendar-team-events/ev:NNNNN), which a
-    # member cannot use. Open one event while signed in as an ordinary member,
-    # copy the address, and put the member-facing pattern here.
-    "confirm_url": "https://www.rowswimming.ca/controller/cms/index#/team-events/ev:{code}",
+    # Taken from a real link in the workbook, not guessed: the Events sheet was
+    # already using this form for the awards banquet.
+    "confirm_url": "https://www.rowswimming.ca/page/calendar#/team-events/upcoming/{code}",
     "confirm_link_label": "Confirm",
     # SportsEngine's own walkthrough of committing to a meet or event. Linked
     # from a small ? beside the Confirm By heading rather than written out again
