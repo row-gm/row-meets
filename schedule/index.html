@@ -215,7 +215,10 @@ function render() {
     document.getElementById('out').innerHTML =
       '<div class="empty">' + "No meets listed for this group yet." + '</div>';
   } else {
-    var head = ['Meet Date','Confirm By','Meet Name','Location','Pool','Meet Type','Eligibility'];
+    /* First four columns match the events table below, so a reader moving
+       between them finds the same thing in the same place. Each table's own
+       columns follow. */
+    var head = ['Date','Name','Location','Confirm By','Pool','Type','Eligibility'];
     var h = '<table><thead><tr>' + head.map(th).join('') + '</tr></thead><tbody>';
     list.forEach(function (m) {
       var url = m.link || confirmUrl(m.confirmCode);
@@ -228,15 +231,15 @@ function render() {
       if (m.notes) extra += '<div class="muted">' + esc(m.notes) + '</div>';
       h += '<tr>' +
         '<td data-label="Date" class="date">' + dateLabel(m) + '</td>' +
-        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
-        '<td data-label="Meet"><span class="name">' + name + '</span>' + extra + '</td>' +
-        '<td data-label="Where">' + esc(m.city) +
+        '<td data-label="Name"><span class="name">' + name + '</span>' + extra + '</td>' +
+        '<td data-label="Location">' + esc(m.city) +
           '<div class="muted">' + esc(m.venue) + '</div></td>' +
+        '<td data-label="Confirm by" class="date">' + confirmLabel(m) + '</td>' +
         '<td data-label="Pool">' + esc(m.pool) + '</td>' +
         '<td data-label="Type">' + typesFor(m, code).map(function (t) {
             return tag(t, TYPE_BG[t] || '#4B5B60');
           }).join('') + '</td>' +
-        '<td data-label="Entry">' + eligFor(m, code).map(function (e) {
+        '<td data-label="Eligibility">' + eligFor(m, code).map(function (e) {
             return tag(e, TYPE_BG[e] || '#4B5B60');
           }).join('') + '</td>' +
         '</tr>';
@@ -259,24 +262,28 @@ function render() {
     document.getElementById('events').innerHTML = '';
   } else {
     var eh = '<table><thead><tr>' +
-      ['Date','Time','Event','Location','Confirm By'].map(th).join('') +
+      ['Date','Name','Location','Confirm By','Time','Type'].map(th).join('') +
       '</tr></thead><tbody>';
     evs.forEach(function (e) {
       var eurl = e.link || confirmUrl(e.confirmCode);
       var nm = eurl
         ? '<a href="' + esc(eurl) + '" target="_blank">' + esc(e.name) + '</a>'
         : esc(e.name);
-      var extra = '<div>' + tag(e.type, data.eventTypes[e.type] || '#4B5B60') + '</div>';
+      /* The type tag moves to its own column, matching the meets table, so it
+         is no longer buried under the name. */
+      var extra = '';
       if (!e.confirmed) extra += '<div>' + tag('Not confirmed','#8A6420') + '</div>';
       if (e.description) extra += '<div class="muted">' + esc(e.description) + '</div>';
       var time = (e.startTime && e.endTime)
         ? esc(e.startTime) + '&ndash;' + esc(e.endTime) : 'All day';
       eh += '<tr>' +
         '<td data-label="Date" class="date">' + dateLabel(e) + '</td>' +
-        '<td data-label="Time" class="date">' + time + '</td>' +
-        '<td data-label="Event"><span class="name">' + nm + '</span>' + extra + '</td>' +
-        '<td data-label="Where">' + (e.location ? esc(e.location) : '&mdash;') + '</td>' +
+        '<td data-label="Name"><span class="name">' + nm + '</span>' + extra + '</td>' +
+        '<td data-label="Location">' + (e.location ? esc(e.location) : '&mdash;') + '</td>' +
         '<td data-label="Confirm by" class="date">' + confirmLabel(e) + '</td>' +
+        '<td data-label="Time" class="date">' + time + '</td>' +
+        '<td data-label="Type">' +
+          tag(e.type, data.eventTypes[e.type] || '#4B5B60') + '</td>' +
         '</tr>';
     });
     document.getElementById('events').innerHTML = eh + '</tbody></table>';
