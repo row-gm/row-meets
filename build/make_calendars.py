@@ -26,7 +26,7 @@ import csv
 import os
 
 import content
-from datetime import date, timedelta
+from datetime import date, datetime, timedelta, timezone
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 # In the row-meets repo the scripts live in build/ and everything else hangs off the
@@ -47,6 +47,12 @@ GROUPS_CSV = GROUPS_CSV if os.path.exists(GROUPS_CSV) else GROUPS_CSV.replace(".
 MEETS_CSV = MEETS_CSV if os.path.exists(MEETS_CSV) else MEETS_CSV.replace(".csv", "_sample.csv")
 
 SEASON = "2026-27"
+
+# Days since the start of 2026. A client that already holds an event compares
+# SEQUENCE and DTSTAMP before accepting a newer copy, so both have to move when
+# a rebuild happens. DTSTAMP used to be a hardcoded constant, which meant an
+# updated deadline looked identical to the one already in someone's calendar.
+SEQUENCE = (date.today() - date(2026, 1, 1)).days
 DOMAIN = "rowswimming.ca"
 # Where the folder will be served from once the repo exists.
 MEETS_BASE = "https://row-gm.github.io/row-meets"
@@ -160,10 +166,10 @@ def ics_for(group, meets, events):
         "METHOD:PUBLISH",
         f"X-WR-CALNAME:ROW {code} Meets {SEASON}",
         f"X-WR-CALDESC:{esc(name)} meet schedule and confirmation dates.",
-        "X-PUBLISHED-TTL:PT12H",
-        "REFRESH-INTERVAL;VALUE=DURATION:PT12H",
+        "X-PUBLISHED-TTL:PT4H",
+        "REFRESH-INTERVAL;VALUE=DURATION:PT4H",
     ]
-    stamp = "20260809T000000Z"
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
 
     for m in meets:
         if code not in m["_going"]:
@@ -187,6 +193,8 @@ def ics_for(group, meets, events):
             "BEGIN:VEVENT",
             f"UID:{m['meet_id']}-{slug(code)}@{DOMAIN}",
             f"DTSTAMP:{stamp}",
+            f"LAST-MODIFIED:{stamp}",
+            f"SEQUENCE:{SEQUENCE}",
             f"DTSTART;VALUE=DATE:{d1}",
             f"DTEND;VALUE=DATE:{d2}",
             f"SUMMARY:{esc(title)}",
@@ -209,6 +217,8 @@ def ics_for(group, meets, events):
                 "BEGIN:VEVENT",
                 f"UID:{m['meet_id']}-{slug(code)}-confirm@{DOMAIN}",
                 f"DTSTAMP:{stamp}",
+                f"LAST-MODIFIED:{stamp}",
+                f"SEQUENCE:{SEQUENCE}",
                 f"DTSTART;VALUE=DATE:{c1}",
                 f"DTEND;VALUE=DATE:{c2}",
                 f"SUMMARY:{esc('Confirm by: ' + m['meet_name'])}",
@@ -245,7 +255,7 @@ def ics_for(group, meets, events):
         if e["_confirm"]:
             desc += f" Confirm by {e['_confirm'].isoformat()}."
         ev = ["BEGIN:VEVENT", f"UID:{e['event_id']}-{slug(code)}@{DOMAIN}",
-              f"DTSTAMP:{stamp}"] + dt + [
+              f"DTSTAMP:{stamp}", f"LAST-MODIFIED:{stamp}", f"SEQUENCE:{SEQUENCE}"] + dt + [
               f"SUMMARY:{esc(title)}",
               f"DESCRIPTION:{esc(desc)}",
               "STATUS:TENTATIVE" if tentative else "STATUS:CONFIRMED",
@@ -264,6 +274,8 @@ def ics_for(group, meets, events):
                 "BEGIN:VEVENT",
                 f"UID:{e['event_id']}-{slug(code)}-confirm@{DOMAIN}",
                 f"DTSTAMP:{stamp}",
+                f"LAST-MODIFIED:{stamp}",
+                f"SEQUENCE:{SEQUENCE}",
                 f"DTSTART;VALUE=DATE:{c1}",
                 f"DTEND;VALUE=DATE:{c2}",
                 f"SUMMARY:{esc('Confirm by: ' + e['event_name'])}",
