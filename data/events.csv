@@ -1,12 +1,7 @@
 event_id,event_name,event_type,start_date,end_date,start_time,end_time,location,all_groups,confirm_by,confirm_code,confirmed,description,info_link,RSA,REC AM,REC PM,TOPS 2,TOPS 1,JD2,JD1,AGD2,AGD1,SD,PD3,PD2,PD1,ND
-registration-launch-1,Registration Opens,Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,"Registration opens for National, Provincial, Regional pathway groups",https://www.rowswimming.ca/page/for-parents/team-registration,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
-registration-launch-2,Registration Opens,Registration,2026-09-01,2026-09-01,,,Online,No,,,Yes,Registration opens for Junior pathway groups,https://www.rowswimming.ca/page/for-parents/team-registration,,Yes,Yes,Yes,Yes,Yes,Yes,,,,,,,
-registration-launch-3,Registration Opens,Registration,2026-09-10,2026-09-10,,,Online,No,,,Yes,Registration opens for ROW Swim Academy,https://www.rowswimming.ca/page/calendar#/team-events/upcoming/1778440,Yes,,,,,,,,,,,,,
-registration-due-1,Registration deadline,Program Dates,2026-09-13,2026-09-13,,,,No,,,Yes,"All National, Provincial, Regional swimmers must be registered in order to participate in practice.",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
-season-start-up-1,Season Start Up,Program Dates,2026-09-14,2026-09-14,,,,No,,,Yes,"Season kick off - National, Provincial, Regional groups",,,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 registration-due-2,Registration deadline,Program Dates,2026-09-20,2026-09-20,,,,No,,,Yes,"All Junior Development, TOPS, and Recreational swimmers must be registered in order to participate in practice.",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
 season-start-up-2,Season Start Up,Program Dates,2026-09-21,2026-09-21,,,,No,,,Yes,"Season kick off - Junior, Recreation groups",,,,Yes,Yes,Yes,Yes,Yes,,,,,,,
-season-start-up-rsa,Season Start Up,Program Dates,2026-09-27,2026-09-27,,,,No,,,Yes,Season kick-off - ROW Swim Academy,,Yes,,,,,,,,,,,,,
+season-start-up-rsa,Season Start Up,Program Dates,2026-09-26,2026-09-26,,,,No,,,Yes,Season kick-off - ROW Swim Academy,,Yes,,,,,,,,,,,,,
 off-the-blocks,Off the Blocks,All Parent Meeting,2026-10-03,2026-10-03,14:00,17:00,Kitchener Memorial Auditorium,Yes,2026-10-03,1786414,Yes,"Parents Meeting with General Manager, Board of Directors, Lead Volunteers",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 fees-due-1,Monthly Training Fees Due,Program Dates,2026-10-15,2026-10-15,,,,No,,,Yes,"Monthly Training Fees Due (credit card, e-transfer, AFT)",,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
 row-awards-banquet,ROW Annual Awards Banquet,Social Event,2026-10-18,2026-10-18,10:30,14:00,St. George Banquet Hall,No,2026-10-12,1778569,Yes,ROW Swim Club Annual Awards Banquet,,,,,,,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes,Yes
