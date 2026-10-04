@@ -317,6 +317,106 @@ for g in groups:
         f.write(body)
     written.append((g, fn, n))
 
+# An all-club file, every meet and event once, for whoever runs the club. Each
+# entry names the groups going rather than being repeated per group. Written but
+# deliberately left off the index: a parent who subscribed to this would get
+# every group's schedule and think the system was broken.
+ALL_FILE = "row-all.ics"
+
+
+def ics_all(groups, meets, events):
+    """One calendar holding everything, with no group filter."""
+    stamp = datetime.now(timezone.utc).strftime("%Y%m%dT%H%M%SZ")
+    codes = [g["group_code"] for g in groups]
+    lines = [
+        "BEGIN:VCALENDAR", "VERSION:2.0",
+        f"PRODID:-//ROW Swim Club//All Groups {SEASON}//EN",
+        "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+        f"X-WR-CALNAME:ROW All Groups {SEASON}",
+        "X-WR-CALDESC:Every meet and event, all groups.",
+        "X-PUBLISHED-TTL:PT4H",
+        "REFRESH-INTERVAL;VALUE=DURATION:PT4H",
+    ]
+
+    def base(uid, dt, summary, desc, confirmed, location="", url=""):
+        out = ["BEGIN:VEVENT", f"UID:{uid}-all@{DOMAIN}", f"DTSTAMP:{stamp}",
+               f"LAST-MODIFIED:{stamp}", f"SEQUENCE:{SEQUENCE}"] + dt + [
+               f"SUMMARY:{esc(summary)}", f"DESCRIPTION:{esc(desc)}",
+               "STATUS:CONFIRMED" if confirmed else "STATUS:TENTATIVE",
+               "TRANSP:TRANSPARENT"]
+        if location:
+            out.append(f"LOCATION:{esc(location)}")
+        if url:
+            out.append(f"URL:{url}")
+        out.append("END:VEVENT")
+        return out
+
+    for m in meets:
+        going = [c for c in codes if c in m["_going"]]
+        if not going:
+            continue
+        who = "Whole club" if len(going) == len(codes) else ", ".join(going)
+        tentative = m["confirmed"].strip().lower() != "yes"
+        title = m["meet_name"] + (" (not confirmed)" if tentative else "")
+        desc = f"{who}. {m['pool']} pool. {m.get('eligibility', '').strip()}."
+        if m["notes"].strip():
+            desc += " " + m["notes"].strip()
+        url = m.get("info_link", "").strip()
+        if not url and m.get("confirm_code", "").strip():
+            url = CONFIRM_URL.replace("{code}", m["confirm_code"].strip())
+        lines += base(m["meet_id"],
+                      [f"DTSTART;VALUE=DATE:{m['_start'].strftime('%Y%m%d')}",
+                       f"DTEND;VALUE=DATE:{(m['_end'] + timedelta(days=1)).strftime('%Y%m%d')}"],
+                      title, desc, not tentative,
+                      m["venue"] + ", " + m["city"], url)
+        if m["_confirm"]:
+            lines += base(m["meet_id"] + "-confirm",
+                          [f"DTSTART;VALUE=DATE:{m['_confirm'].strftime('%Y%m%d')}",
+                           f"DTEND;VALUE=DATE:{(m['_confirm'] + timedelta(days=1)).strftime('%Y%m%d')}"],
+                          "Confirm by: " + m["meet_name"],
+                          confirm_text(m.get("confirm_code", "")) + " " + who, True)
+
+    for e in events:
+        going = [c for c in codes if e.get(c, "").strip()
+                 and e[c].strip().lower() != "none"]
+        if not (e["_all"] or going):
+            continue
+        who = "Whole club" if e["_all"] else ", ".join(going)
+        timed = e["start_time"].strip() and e["end_time"].strip()
+        if timed:
+            s = e["_start"].strftime("%Y%m%d") + "T" + e["start_time"].strip().replace(":", "") + "00"
+            t = e["_end"].strftime("%Y%m%d") + "T" + e["end_time"].strip().replace(":", "") + "00"
+            dt = [f"DTSTART:{s}", f"DTEND:{t}"]
+        else:
+            dt = [f"DTSTART;VALUE=DATE:{e['_start'].strftime('%Y%m%d')}",
+                  f"DTEND;VALUE=DATE:{(e['_end'] + timedelta(days=1)).strftime('%Y%m%d')}"]
+        tentative = e["confirmed"].strip().lower() != "yes"
+        title = e["event_name"] + (" (not confirmed)" if tentative else "")
+        desc = (e["description"].strip() or e["event_type"].strip()) + " " + who
+        url = e.get("info_link", "").strip()
+        if not url and e.get("confirm_code", "").strip():
+            url = CONFIRM_URL.replace("{code}", e["confirm_code"].strip())
+        lines += base(e["event_id"], dt, title, desc, not tentative,
+                      e["location"].strip(), url)
+        if e["_confirm"]:
+            lines += base(e["event_id"] + "-confirm",
+                          [f"DTSTART;VALUE=DATE:{e['_confirm'].strftime('%Y%m%d')}",
+                           f"DTEND;VALUE=DATE:{(e['_confirm'] + timedelta(days=1)).strftime('%Y%m%d')}"],
+                          "Confirm by: " + e["event_name"],
+                          confirm_text(e.get("confirm_code", "")) + " " + who, True)
+
+    lines.append("END:VCALENDAR")
+    folded = []
+    for ln in lines:
+        folded += fold(ln)
+    return "\r\n".join(folded) + "\r\n"
+
+
+_all_body = ics_all(groups, meets, events)
+with open(os.path.join(OUT, ALL_FILE), "w", encoding="utf-8", newline="") as f:
+    f.write(_all_body)
+print(f"  {'ALL':8s} {ALL_FILE:22s} {_all_body.count('BEGIN:VEVENT'):>3} entries (not listed)")
+
 # A plain index so a family can find their own file. Not a CMS fragment; this one
 # is served from GitHub Pages, so it may carry a <style> block and real links.
 # A copy button, not a link. Clicking an .ics link downloads the file, which is
@@ -402,7 +502,7 @@ document.querySelectorAll('button.copy').forEach(function (b) {{
 with open(os.path.join(OUT, "index.html"), "w", encoding="utf-8") as f:
     f.write(index)
 
-orphans = sorted(existing - {fn for _, fn, _ in written})
+orphans = sorted(existing - {fn for _, fn, _ in written} - {ALL_FILE})
 for fn in orphans:
     os.remove(os.path.join(OUT, fn))
 
