@@ -29,6 +29,7 @@ TEXT, _FAQ = content.load(ROOT, season=SEASON)
 MEET_TYPES, EVENT_TYPES, ELIGIBILITY, POOLS = content.load_types(ROOT)
 POOL_NAMES = [n for n, _, _ in POOLS]
 NAVY, TEAL, CYAN, RED = "#0A2E3F", "#136B77", "#3FBFB0", "#D64545"
+LINK = "#0B5FD0"   # link blue, 5.90:1 on white, 5.55:1 on the striped row
 SAND, FOAM, INK, INK_SOFT, LINE = "#F3EFE4", "#FFFFFF", "#152225", "#4B5B60", "#DAD3C2"
 ROW_ALT = "#FAF8F2"
 TIDE, PLUM, FLAG, AMBER = "#12786C", "#6E3D6B", "#C23A3A", "#8A6420"
@@ -207,7 +208,11 @@ td{{border-top:1px solid {LINE};padding:12px;vertical-align:top;}}
 tbody tr:nth-child(even){{background:{ROW_ALT};}}
 .date{{font-family:{MONO};font-weight:700;color:{NAVY};white-space:nowrap;}}
 .name{{font-weight:700;color:{NAVY};}}
-.name a{{color:{NAVY};}}
+/* A linked name was navy, the same as an unlinked one, so nothing marked it as
+   clickable. Brighter blue plus an underline. {LINK} clears AA on white and on
+   the striped rows. */
+.name a{{color:{LINK};text-decoration:underline;text-underline-offset:2px;}}
+.name a:hover{{color:{NAVY};}}
 .muted{{color:{INK_SOFT};font-size:13px;}}
 .tag{{display:inline-block;font-family:{UI};font-weight:700;font-size:10.5px;
 letter-spacing:0.05em;text-transform:uppercase;color:{FOAM};border-radius:4px;
