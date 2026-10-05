@@ -451,6 +451,13 @@ button.copy:hover{{background:#136B77;}}
 button.copy:focus-visible{{outline:3px solid #136B77;outline-offset:2px;}}
 button.copy.done{{background:#12786C;}}
 .note{{border-left:4px solid #3FBFB0;background:#EFFAF8;padding:14px 18px;border-radius:0 8px 8px 0;}}
+.next{{display:none;border:2px solid #12786C;background:#F1FBF8;padding:16px 20px;
+border-radius:10px;margin:18px 0;}}
+.next.show{{display:block;}}
+.next strong{{color:#0A2E3F;}}
+.next ol{{margin:10px 0 6px;padding-left:22px;}}
+.next li{{margin:0 0 8px;}}
+.next .small{{font-size:13px;color:#4B5B60;margin:10px 0 0;}}
 </style></head><body>
 <h1>ROW Meet Calendars {SEASON}</h1>
 <p>Add your group's meets to your digital calendar. You get the meet dates and
@@ -470,6 +477,22 @@ Other, Add Subscribed Calendar, paste the link.</p>
 <table><tr><th>Group</th><th>Code</th><th>Meets and reminders</th><th></th></tr>
 {rows}
 </table>
+<div class="next" id="next">
+<strong>Copied. Now add it to your calendar.</strong>
+<p>Your calendar app will not find it on its own. Open the app and add a calendar
+<em>by URL</em>, then paste.</p>
+<ol>
+<li><strong>Google Calendar</strong>, on a computer: left side, next to
+<em>Other calendars</em>, click <strong>+</strong>, then <strong>From URL</strong>,
+paste, <strong>Add calendar</strong>. It appears on your phone too.</li>
+<li><strong>iPhone or iPad</strong>: Settings, Apps, Calendar, Calendar Accounts,
+Add Account, Other, <strong>Add Subscribed Calendar</strong>, paste.</li>
+<li><strong>Outlook</strong>: Add calendar, <strong>Subscribe from web</strong>, paste.</li>
+</ol>
+<p class="small">Pasted it somewhere and nothing happened? You may have opened the
+link instead of adding it. That downloads a copy that never updates. Add it by URL.</p>
+</div>
+
 <p>Calendars refresh on their own, though some apps take up to a day. Meets marked
 <em>not confirmed</em> can still move.</p>
 <script>
@@ -479,6 +502,11 @@ document.querySelectorAll('button.copy').forEach(function (b) {{
     function done() {{
       b.textContent = 'Copied';
       b.classList.add('done');
+      // The steps matter most at this moment, so show them here rather than
+      // leaving someone to scroll back up and find them.
+      var n = document.getElementById('next');
+      n.classList.add('show');
+      n.scrollIntoView({{behavior: 'smooth', block: 'center'}});
       setTimeout(function () {{ b.textContent = label; b.classList.remove('done'); }}, 1800);
     }}
     if (navigator.clipboard && window.isSecureContext) {{
