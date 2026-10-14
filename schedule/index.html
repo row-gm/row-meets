@@ -152,7 +152,13 @@ function confirmUrl(code) {
 function confirmLabel(m) {
   if (!m.confirmBy) return '\u2014';
   var c = d(m.confirmBy);
-  return MON[c.m-1] + ' ' + c.day;
+  var label = MON[c.m-1] + ' ' + c.day;
+  /* The date links to the same place the meet name does. Both routes, one
+     destination: whichever a parent reaches for, they land on the confirm
+     page for that meet. */
+  var u = confirmUrl(m.confirmCode);
+  if (!u) return label;
+  return '<a href="' + esc(u) + '" target="_blank">' + label + '</a>';
 }
 function th(label) {
   /* The one question this column reliably raises, answered where it is asked.
